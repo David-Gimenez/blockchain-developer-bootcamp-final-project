@@ -26,5 +26,8 @@
   "homepage": "https://github.com/David-Gimenez/blockchain-developer-bootcamp-final-project#readme",
   "devDependencies": {
     "truffle": "^5.4.15"
+  },
+  "dependencies": {
+    "truffle-contract-size": "^2.0.1"
   }
 }
