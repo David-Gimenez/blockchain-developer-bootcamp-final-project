@@ -4,27 +4,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <link rel="stylesheet" href="./css/style.css" media="screen"> 
+        <link rel="stylesheet" href="./css/index.css" media="screen">
+        <link rel="stylesheet" href="./css/footer.css" media="screen"> 
 
-        <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-
-        <title>University Builder</title>
+        <title>University Degree Builder</title>
     </head>
 
     <body class="bodyClass">
-        <!--
-        <header class="u-clearfix u-header u-header" id="sec-8ded">
-            <div class="u-align-left u-clearfix u-sheet u-sheet-1">University Builder</div>
-        </header> 
-        -->
-        <!-- From the tutorial ------------------------------------------------------------------------------ -->
-        <!--
-        <div id="mm-detected"></div>
-        <button id="mm-connect">Connect to MetaMask</button>
-        <div id="mm-current-account"></div>
-        <input id="ss-input-box" type="number" placeholder="Provide input"/>
-        <button id="mm-input-button">Submit value</button>
-        -->
 
         <!-- Main Section ------------------------------------------------------------------------------ -->
 
@@ -35,16 +21,18 @@
             </div>
             
             <div id="areasDiv" class="areasDiv">
-                <div id="adminArea" class="pageSection adminArea">
-                    <p class="titleTextClass">Admin</p>
+                <!-- System control Section ------------------------------------------------------------------------------ -->
+                <div id="adminArea" class="pageSection" onclick="location.href='system.html';">
+                    <p class="titleTextClass">System</p>
                     <p class="textClass">
                         This is the main control panel for system administration.
                     </br></br>
                         Allow you to create new universities and set them up.
                     </p>
                 </div>
-    
-                <div id="universityArea" class="pageSection universityArea">
+
+                <!-- University control Section ------------------------------------------------------------------------------ -->
+                <div id="universityArea" class="pageSection" onclick="location.href='university.html';">
                     <p class="titleTextClass">University</p>
                     <p class="textClass">
                         This is the mocked control panel for each University.
@@ -53,7 +41,8 @@
                     </p>
                 </div>
                 
-                <div id="graduateArea" class="pageSection graduateArea">
+                <!-- Graduate control Section ------------------------------------------------------------------------------ -->
+                <div id="graduateArea" class="pageSection" onclick="location.href='graduate.html';">
                     <p class="titleTextClass">Graduate</p>
                     <p class="textClass">
                         This is the administration section mock for graduates.
@@ -65,9 +54,10 @@
             
         </section>
 
+        <!-- Footer Section ------------------------------------------------------------------------------ -->
         <section id="footerSection" class="footerClass">
-            <p class="footerTextClass">This is the landing page of my Final Project for the ConsenSys Academy Boot Camp</p>
-            <p class="footerTextClass">Author: David Gimenez Gutierrez</p>
+            <p class="footerTextClass">This is the landing page for the Final Project of ConsenSys Academy Boot Camp 2021</p>
+            <p class="footerTextClass">Author: David Gimenez Gutierrez &copy;</p>
             <a href="mailto:drgimenez@gmail.com?subject=ConsenSys Academy Boot camp final project">drgimenez@gmail.com</a>
         </section>
 

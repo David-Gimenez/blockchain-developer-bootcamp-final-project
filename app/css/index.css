@@ -55,19 +55,6 @@
     align-content: flex-end;
 }
 
-.footerClass {
-    background-color: black;
-    height: 4rem;
-    width: 100%;
-    text-align: center;
-    position: fixed;
-    bottom: 0%;
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
 .pageSection {
     background-color: black;
     opacity: 80%;
@@ -112,12 +99,4 @@
     padding-left: 20px;
     padding-right: 20px;
     font-family: helvetica;
-}
-
-.footerTextClass {
-    color: white;
-    font-size: 10pt;
-    font-weight: normal;
-    text-align: center;
-    margin: 0%;
 }

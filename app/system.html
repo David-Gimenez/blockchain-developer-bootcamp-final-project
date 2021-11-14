@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="./css/system.css" media="screen"> 
+        <link rel="stylesheet" href="./css/footer.css" media="screen"> 
+
+        <title>System Control Panel</title>
+    </head>
+
+    <body class="bodyClass">
+
+        <!-- Main Section ------------------------------------------------------------------------------ -->
+
+        <section id="mainSection" class="mainSectionClass">
+            <div id="menuDiv" class="menuDivClass">
+                <p class="menuTitleClass">System Control Panel</p>
+
+                <!-- Menu options ---------------------------------------------------------------------- -->
+                <div id="statusDiv" class="menuOptionDivClass menuOptionDivClassActive" onclick="selectMenuOption(this, 'statusContentDiv')">Status</div>
+
+                <div id="setUniversityBytecodeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'setUniversityBytecodeContentDiv')">Set University Template Bytecode</div>
+                
+                <div id="createUniversityDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'createUniversityContentDiv')">Create University Contract</div>
+
+                <div id="extractEthersDiv" class="menuOptionDivClass"onclick="selectMenuOption(this, 'extractEthersContentDiv')">Extract ethers from contract</div>
+
+                <div id="setUniversityBytecodeDiv" class="menuOptionDivClass" onclick="location.href='index.html';">Home</div>
+            </div>
+            
+            <div id="contentDiv" class="contentDivClass"></div>
+            <div id="statusContentDiv" class="contentOptionDivAnimationClass"></div>
+            <div id="setUniversityBytecodeContentDiv" class=""></div>
+            <div id="createUniversityContentDiv" class=""></div>
+            <div id="extractEthersContentDiv" class=""></div>
+        </section>
+
+        <!-- Footer Section ------------------------------------------------------------------------------ -->
+        <section id="footerSection" class="footerClass">
+            <p class="footerTextClass">This is the landing page for the Final Project of ConsenSys Academy Boot Camp 2021</p>
+            <p class="footerTextClass">Author: David Gimenez Gutierrez &copy;</p>
+            <a href="mailto:drgimenez@gmail.com?subject=ConsenSys Academy Boot camp final project">drgimenez@gmail.com</a>
+        </section>
+
+        <script class="u-script" type="text/javascript" src="./js/university.js" defer=""></script>
+    </body>
+</html>
