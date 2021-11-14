@@ -1,0 +1,123 @@
+.bodyClass {
+    margin: 0%;
+    padding: 0%;
+}
+
+.mainSectionClass {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+}
+
+.mainClassBlur {
+    content: url("../img/LandingBackground.jpg");
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    top: 0%;
+    bottom: 0%;
+    
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
+.mainClass {
+    display: block;
+    height: 90%;
+    width: 95%;
+    position: absolute;
+    z-index: 2;
+    top: 5%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    overflow: hidden;
+}
+
+.mainImage {
+    content: url("../img/LandingBackground.jpg");
+    align-content: center;
+}
+
+.areasDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 100%;
+    height: 15rem;
+    position: absolute;
+    z-index: 3;
+    top: 20.5rem;
+    float: left;
+    align-content: flex-end;
+}
+
+.footerClass {
+    background-color: black;
+    height: 4rem;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    bottom: 0%;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pageSection {
+    background-color: black;
+    opacity: 80%;
+    width: 15rem;
+    height: 13rem;
+    position: relative;
+    z-index: 3;
+    float: left;
+    margin-left: 5%;
+    margin-right: 5%;
+    color: white;
+    box-shadow: 10px 10px 2px 1px rgba(255, 255, 255, 0.5);;
+}
+
+.pageSection:hover {
+    background-color: rgb(255, 255, 255);
+    opacity: 80%;
+    width: 15rem;
+    height: 13rem;
+    position: relative;
+    z-index: 3;
+    float: left;
+    margin-left: 5%;
+    margin-right: 5%;
+    color: rgb(0, 0, 0) !important;
+    box-shadow: 10px 10px 2px 1px rgba(0, 0, 0, 0.5);;
+}
+
+
+.titleTextClass {
+    font-size: 24pt;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 15px;
+    margin: 0%;
+}
+
+.textClass {
+    font-size: 12pt;
+    font-weight: normal;
+    text-align: justify;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: helvetica;
+}
+
+.footerTextClass {
+    color: white;
+    font-size: 10pt;
+    font-weight: normal;
+    text-align: center;
+    margin: 0%;
+}
