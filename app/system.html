@@ -30,11 +30,102 @@
                 <div id="setUniversityBytecodeDiv" class="menuOptionDivClass" onclick="location.href='index.html';">Home</div>
             </div>
             
+            <!-- Menu Content ---------------------------------------------------------------------- -->
             <div id="contentDiv" class="contentDivClass"></div>
-            <div id="statusContentDiv" class="contentOptionDivAnimationClass"></div>
-            <div id="setUniversityBytecodeContentDiv" class=""></div>
-            <div id="createUniversityContentDiv" class=""></div>
-            <div id="extractEthersContentDiv" class=""></div>
+
+            <div id="statusContentDiv" class="contentOptionDivAnimationClass">
+                
+                <div id="currentVersionDiv" class="divInformation">
+                    <div class="divTitle">CURRENT VERSION:</div>
+                    <div id="currentVersionValue" class="divValue">...</div>
+                </div>
+                
+                <div id="NumberOfUniversitiesDiv" class="divInformation">
+                    <div class="divTitle">NUMBER OF UNIVERSITIES:</div>
+                    <div id="numberOfUniversitiesValue" class="divValue">...</div>
+                </div>
+                
+                <div id="ConnectedAccountDiv" class="divInformation">
+                    <div class="divTitle">CONNECTED ACCOUNT:</div>
+                    <div id="connectedAccountValue" class="divValue">...</div>
+                </div>
+            </div>
+
+            <div id="setUniversityBytecodeContentDiv" class="">
+                
+                <div id="proxyByteCodeDiv" class="divInformation">
+                    <div class="divTitleBox">University Template Proxy Contract Bytecode:</div>
+                    <textarea id="proxyByteCodeInput" type="text" class="textAreaBox"></textarea>
+                </div>
+                
+                <div id="governanceByeCodeDiv" class="divInformation">
+                    <div class="divTitleBox">University Governance Template Contract Bytecode:</div>
+                    <textarea id="governanceByeCodeInput" type="text" class="textAreaBox"></textarea>
+                </div>
+                
+                <div id="logicbyteCodeDiv" class="divInformation">
+                    <div class="divTitleBox">University Logic Template Contract Bytecode:</div>
+                    <textarea id="logicbyteCodeInput" type="text" class="textAreaBox"></textarea>
+                </div>
+
+                <div id="loadedFromDiv" class="divInformation">
+                    <div class="divTitleBox">Loaded from:</div>
+                    <div id="loadedFromValue" class="divValue">...</div>
+                </div>
+
+                <div id="saveButtonDiv" class="divInformation">
+                    <button id="saveButton" class="saveButton">Save</button>
+                </div>
+            </div>
+
+            <div id="createUniversityContentDiv" class="">
+                
+                <div id="nameDiv" class="divInformation">
+                    <div class="divInputBox">University Name:</div>
+                    <input id="nameInput" type="text" class="inputBox">
+                </div>
+                
+                <div id="fullNameDiv" class="divInformation">
+                    <div class="divInputBox">Full name:</div>
+                    <input id="fullNameInput" type="text" class="inputBox">
+                </div>
+                
+                <div id="countryDiv" class="divInformation">
+                    <div class="divInputBox">Country:</div>
+                    <input id="countryInput" type="text" class="inputBox">
+                </div>
+
+                <div id="stateDiv" class="divInformation">
+                    <div class="divInputBox">State:</div>
+                    <input id="stateInput" type="text" class="inputBox">
+                </div>
+
+                <div id="managernameDiv" class="divInformation">
+                    <div class="divInputBox">Manager name:</div>
+                    <input id="managerNameInput" type="text" class="inputBox">
+                </div>
+
+                <div id="contractAddressDiv" class="divInformation">
+                    <div class="divInputBox">New contract address:</div>
+                    <div id="contractAddressValue" class="divValue">...</div>
+                </div>
+
+                <div id="saveButtonDiv" class="divInformation">
+                    <button id="createButton" class="saveButton">Create</button>
+                </div>
+            </div>
+
+            <div id="extractEthersContentDiv" class="">
+                <div id="extractEthersDiv" class="divInformation">
+                    <div class="divTitle">Current balance in contract:</div>
+                    <div id="currentBalanceValue" class="divValue">...</div>
+                </div>
+
+                <div id="extractButtonDiv" class="divInformation">
+                    <button id="extractButton" class="saveButton">Extract</button>
+                </div>
+            </div>
+
         </section>
 
         <!-- Footer Section ------------------------------------------------------------------------------ -->

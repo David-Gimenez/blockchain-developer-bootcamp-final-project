@@ -94,14 +94,116 @@
     z-index: 2;
     position: absolute;
     overflow: hidden;    
-    opacity: 60%;
+    opacity: 80%;
 
     animation-name: moveLeft;
     animation-duration: 1.5s;
     animation-iteration-count: 1;
+
+    display: flex;
+    flex-direction:column;
+    vertical-align: middle;
+    padding-top: 5%;
+    padding-left: 5%;
 }
 
 @keyframes moveLeft {
     0%   {width:0%;}
     100% {width:70%;}
+}
+
+.divInformation {
+    margin-bottom: 1rem;   
+}
+
+.divTitle {
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(0, 0, 65);
+    display: inline-block;
+    width: 15rem;
+}
+
+.divValue {
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(0, 0, 65);
+    display: inline-block;
+}
+
+.divTitleBox {
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(0, 0, 65);
+    width: 90%;
+}
+
+.textAreaBox {
+    width: 90%;
+    height: 60%;
+    border: 2px solid rgb(0, 0, 50);
+    border-radius: 4px;
+    background-color: rgb(255, 255, 230);
+    font-size: 16px;
+    resize: none;
+    padding: 12px 20px;
+}
+
+.textAreaBox:focus {
+    width: 90%;
+    height: 60%;
+    border: 2px solid rgb(0, 0, 50);
+    border-radius: 4px;
+    background-color: rgb(255, 255, 200);
+    font-size: 16px;
+    resize: none;
+    padding: 12px 20px;
+}
+
+.saveButton {
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.saveButton:hover {
+  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+.divInputBox {
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(0, 0, 65);
+    width: 20%;
+    display: inline-block;
+}
+
+.inputBox {
+    width: fit-content;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 4px;
+    background-color: rgb(255, 255, 230);
+    font-size: 16px;
+}
+
+.inputBox:focus {
+    width: fit-content;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 4px;
+    background-color: rgb(255, 255, 200);
+    font-size: 16px;
 }
