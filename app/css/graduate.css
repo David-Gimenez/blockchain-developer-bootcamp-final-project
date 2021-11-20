@@ -1,0 +1,89 @@
+.bodyClass {
+    margin: 0%;
+    padding: 0%;
+}
+
+.mainSectionClass {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+}
+
+.mainClassBlur {
+    content: url("../img/LandingBackground.jpg");
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    top: 0%;
+    bottom: 0%;
+    
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
+.mainClass {
+    display: flex;
+    width: 95%;
+    position: absolute;
+    z-index: 2;
+    top: 6rem;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.mainImage {
+    content: url("../img/Masters_degree_certificate_templates2.jpg");
+    align-content: center;
+    box-shadow: 10px 10px 20px 5px rgb(0, 0, 0);
+    z-index: 3;
+}
+
+.graduatedName {
+    z-index: 4;
+    position: absolute;
+    top: 32%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.universityName {
+    z-index: 4;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.degreeDate {
+    z-index: 4;
+    position: absolute;
+    top: 78%;
+    left: 63.5%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.homeLink {
+    position: absolute;
+    top: 1rem;
+    left: 16px;
+    color: rgb(255, 255, 255);
+    font-size: 14pt;
+}
+
+.homeLink:hover {
+    cursor: pointer;
+}

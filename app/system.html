@@ -10,7 +10,7 @@
         <title>System Control Panel</title>
     </head>
 
-    <body class="bodyClass">
+    <body class="bodyClass" onload="document.document.body.className += ' load'">
 
         <!-- Main Section ------------------------------------------------------------------------------ -->
 
@@ -27,7 +27,7 @@
 
                 <div id="extractEthersDiv" class="menuOptionDivClass"onclick="selectMenuOption(this, 'extractEthersContentDiv')">Extract ethers from contract</div>
 
-                <div id="setUniversityBytecodeDiv" class="menuOptionDivClass" onclick="location.href='index.html';">Home</div>
+                <div id="homeDiv" class="menuOptionDivClass" onclick="location.href='index.html';">Home</div>
             </div>
             
             <!-- Menu Content ---------------------------------------------------------------------- -->

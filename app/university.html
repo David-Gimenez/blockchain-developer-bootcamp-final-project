@@ -1,1 +1,234 @@
-University Page
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="./css/university.css" media="screen"> 
+        <link rel="stylesheet" href="./css/footer.css" media="screen"> 
+
+        <title>System Control Panel</title>
+    </head>
+
+    <body class="bodyClass">
+
+        <!-- Main Section ------------------------------------------------------------------------------ -->
+        
+        <section id="mainSection" class="mainSectionClass">
+            <div id="menuDiv" class="menuDivClass">
+                <p class="menuTitleClass">System Control Panel</p>
+
+                <!-- Menu options ---------------------------------------------------------------------- -->
+                <div id="statusDiv" class="menuOptionDivClass menuOptionDivClassActive" onclick="selectMenuOption(this, 'statusContentDiv')">Status</div>
+
+                <div id="addPendingDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'addPendingDegreeContentDiv')">Add Degree to process</div>
+                
+                <div id="signPendingDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'signPendingDegreeContentDiv')">Sign Pending Degree</div>
+
+                <div id="publishDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'publishDegreeContentDiv')">Publish Degree</div>
+                
+                <div id="administrationDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'administrationContentDiv')">Administration</div>
+
+                <div id="authorityPersonDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'authorityPersonContentDiv')">Add Authority Person</div>
+
+                <div id="homeDiv" class="menuOptionDivClass" onclick="location.href='index.html';">Home</div>
+            </div>
+            
+            <!-- Menu Content ---------------------------------------------------------------------- -->
+            <div id="contentDiv" class="contentDivClass"></div>
+
+            <div id="statusContentDiv" class="contentOptionDivAnimationClass">
+                
+                <div id="numberDegreeIssuedDiv" class="divInformation">
+                    <div class="divTitle">NUMBER OF DEGREES ISSUED:</div>
+                    <div id="numberDegreesissuedValue" class="divValue">...</div>
+                </div>
+                
+                <div id="numberDegreesRequestedDiv" class="divInformation">
+                    <div class="divTitle">NUMBER OF DEGREES REQUESTED:</div>
+                    <div id="numberdegreesrequestedValue" class="divValue">...</div>
+                </div>
+            </div>
+
+            <div id="addPendingDegreeContentDiv" class="">
+                
+                <div id="ownerDiv" class="divInformation">
+                    <div class="divTitleBox">GRADUATE INFORMATION (owner)</div>
+                </div>
+                
+                <div id="ownerNameDiv" class="divInformation">
+                    <div class="divInputBox">Name:</div>
+                    <input id="ownerNameInput" type="text" class="inputBox">
+                </div>
+
+                <div id="ownerNumberDiv" class="divInformation">
+                    <div class="divInputBox">Graduate enrollment number:</div>
+                    <input id="ownerNumberInput" type="text" class="inputBox">
+                </div>
+
+                <div id="ownerAddressDiv" class="divInformation">
+                    <div class="divInputBox">Ethereum Address:</div>
+                    <input id="ownerAddressInput" type="text" class="inputBox">
+                </div>
+
+                <div id="degreeDiv" class="divInformation">
+                    <div class="divTitleBox">DEGREE INFORMATION</div>
+                </div>
+
+                <div id="degreeNameDiv" class="divInformation">
+                    <div class="divInputBox">Name:</div>
+                    <input id="degreeNameInput" type="text" class="inputBox">
+                </div>
+
+                <div id="degreeDescriptionDiv" class="divInformation">
+                    <div class="divInputBox">Description:</div>
+                    <input id="degreeDescriptionInput" type="text" class="inputBox">
+                </div>
+
+                <div id="degreeLigalStatementDiv" class="divInformation">
+                    <div class="divInputBox">Ligal Statement:</div>
+                    <input id="degreeLigalStatementInput" type="text" class="inputBox">
+                </div>
+
+                <div id="degreeIssueDateDiv" class="divInformation">
+                    <div class="divInputBox">Issue Date:</div>
+                    <input id="degreeIssueDateInput" type="text" class="inputBox">
+                </div>
+
+                <div id="saveButtonDiv" class="divInformation">
+                    <button id="saveButton" class="saveButton">Save</button>
+                </div>
+            </div>
+
+            <div id="signPendingDegreeContentDiv" class="">
+                <div id="ownerDiv" class="divInformation">
+                    <div class="divTitleBox">GET HASH TO SIGN</div>
+                </div>
+
+                <div id="getHashToSignDiv" class="divInformation">
+                    <div class="divTitle">Pending Degree Number:</div>
+                    <input id="getHashToSignInput" type="number" class="inputBox">
+                    <button id="getHashToSignButton" class="saveButton">Get Hash</button>
+                </div>
+
+                <div id="hashToSignDiv" class="divInformation">
+                    <div class="divTitleBox">Hash to Sign:</div>
+                    <textarea id="hashToSignInput" type="text" class="textAreaBox"></textarea>
+                </div>
+
+                <div id="signButtonDiv" class="divInformation">
+                    <button id="signButton" class="saveButton">Sign</button>
+                </div>
+            </div>
+
+            <div id="publishDegreeContentDiv" class="">
+                
+                <div id="publishOwnerDiv" class="divInformation">
+                    <div class="divTitleBox">GRADUATE INFORMATION (owner)</div>
+                </div>
+                
+                <div id="publishOwnerNameDiv" class="divInformation">
+                    <div class="divInputBox">Name:</div>
+                    <input id="publishoOwnerNameInput" type="text" class="inputBox">
+                </div>
+
+                <div id="publishOwnerNumberDiv" class="divInformation">
+                    <div class="divInputBox">Graduate enrollment number:</div>
+                    <input id="publishOwnerNumberInput" type="text" class="inputBox">
+                </div>
+
+                <div id="publishOwnerAddressDiv" class="divInformation">
+                    <div class="divInputBox">Ethereum Address:</div>
+                    <input id="publishOwnerAddressInput" type="text" class="inputBox">
+                </div>
+
+                <div id="publishDegreeDiv" class="divInformation">
+                    <div class="divTitleBox">DEGREE INFORMATION</div>
+                </div>
+
+                <div id="publishDegreeNameDiv" class="divInformation">
+                    <div class="divInputBox">Name:</div>
+                    <input id="publishDegreeNameInput" type="text" class="inputBox">
+                </div>
+
+                <div id="publishDegreeDescriptionDiv" class="divInformation">
+                    <div class="divInputBox">Description:</div>
+                    <input id="publishDegreeDescriptionInput" type="text" class="inputBox">
+                </div>
+
+                <div id="publishDegreeLigalStatementDiv" class="divInformation">
+                    <div class="divInputBox">Ligal Statement:</div>
+                    <input id="publishDegreeLigalStatementInput" type="text" class="inputBox">
+                </div>
+
+                <div id="publishDegreeIssueDateDiv" class="divInformation">
+                    <div class="divInputBox">Issue Date:</div>
+                    <input id="publishDegreeIssueDateInput" type="text" class="inputBox">
+                </div>
+
+                <div id="publishButtonDiv" class="divInformation">
+                    <button id="publishButton" class="saveButton">Publish Contract</button>
+                </div>
+            </div>
+
+            <div id="administrationContentDiv" class="">
+                
+                <div id="governanceContractAddressDiv" class="divInformation">
+                    <div class="divInputBox">Governance Contract Address:</div>
+                    <input id="governanceContractAddressInput" type="text" class="inputBox">
+                    <button id="setGovernanceContractAddressButton" class="saveButton">Save</button>
+                </div>
+                
+                <div id="logicContractAddressDiv" class="divInformation">
+                    <div class="divInputBox">Logic Contract Address:</div>
+                    <input id="logicContractAddressInput" type="text" class="inputBox">
+                    <button id="setLogicContractAddressButton" class="saveButton">Save</button>
+                </div>
+
+                <div id="degreeTemplateBycodeDiv" class="divInformation">
+                    <div class="divTitleBox">Degree Template Contract Bytecode:</div>
+                    <textarea id="degreeTemplateBycodeInput" type="text" class="textAreaBox"></textarea>
+                    <button id="setDegreeTemplateBycodeButton" class="saveButton">Save</button>
+                </div>
+            </div>
+
+            <div id="authorityPersonContentDiv" class="">
+                
+                <div id="authorityPositionDiv" class="divInformation">
+                    <div class="divInputBox">Authority Position:</div>
+                    <select id="authorityPositionSelect">
+                        <option value="Manager" selected>Manager</option>
+                        <option value="Rector">Rector</option>
+                        <option value="Dean">Dean</option>
+                        <option value="Director">Director</option>
+                        </select>                    
+                </div>
+                
+                <div id="authorityPersonNameDiv" class="divInformation">
+                    <div class="divInputBox">Authority Person Name:</div>
+                    <input id="authorityPersonNameInput" type="text" class="inputBox">
+                </div>
+
+                <div id="authorityPersonAddressDiv" class="divInformation">
+                    <div class="divInputBox">Authority Person Address:</div>
+                    <input id="authorityPersonAddressInput" type="text" class="inputBox">
+                </div>
+
+                <div id="addButtonDiv" class="divInformation">
+                    <button id="addButton" class="saveButton">Add Authority Person</button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Footer Section ------------------------------------------------------------------------------ -->
+        <section id="footerSection" class="footerClass">
+            <p class="footerTextClass">This is the landing page for the Final Project of ConsenSys Academy Boot Camp 2021</p>
+            <p class="footerTextClass">Author: David Gimenez Gutierrez &copy;</p>
+            <a href="mailto:drgimenez@gmail.com?subject=ConsenSys Academy Boot camp final project">drgimenez@gmail.com</a>
+        </section>
+
+        <!-- Script Section ------------------------------------------------------------------------------ -->
+        <script class="u-script" type="text/javascript" src="./js/university.js" defer=""></script>
+    </body>
+</html>

@@ -66,7 +66,7 @@
     margin-left: 5%;
     margin-right: 5%;
     color: white;
-    box-shadow: 10px 10px 2px 1px rgba(255, 255, 255, 0.5);;
+    box-shadow: 10px 10px 2px 1px rgba(255, 255, 255, 0.5);
 }
 
 .pageSection:hover {
@@ -80,7 +80,8 @@
     margin-left: 5%;
     margin-right: 5%;
     color: rgb(0, 0, 0) !important;
-    box-shadow: 10px 10px 2px 1px rgba(0, 0, 0, 0.5);;
+    box-shadow: 10px 10px 2px 1px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }
 
 
