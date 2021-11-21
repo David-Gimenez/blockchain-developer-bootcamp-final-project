@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/David-Gimenez/blockchain-developer-bootcamp-final-project#readme",
   "devDependencies": {
+    "chai": "^4.3.4",
     "truffle": "^5.4.15"
   },
   "dependencies": {

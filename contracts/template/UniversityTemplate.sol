@@ -38,21 +38,6 @@ import "./University/UniversityTemplate_State.sol";
         universityInfo                                      = _universityInfo;
         universityInfo.contractAddress                      = address(this);
         authorities[StructDegree.AuthorityPosition.Manager] = _universityManager;
-
-        // --------------------------------------------------
-        // -- State verification
-        // --------------------------------------------------
-
-        // Check University information
-        require(keccak256(bytes(universityInfo.name))           == keccak256(bytes(_universityInfo.name))
-                && keccak256(bytes(universityInfo.fullName))    == keccak256(bytes(_universityInfo.fullName))
-                && keccak256(bytes(universityInfo.country))     == keccak256(bytes( _universityInfo.country))
-                && keccak256(bytes(universityInfo.state))       == keccak256(bytes(_universityInfo.state))
-                && universityInfo.contractAddress               == address(this)
-                
-                // Check manager information
-                && keccak256(bytes(authorities[StructDegree.AuthorityPosition.Manager].name))  == keccak256(bytes(_universityManager.name))
-                && authorities[StructDegree.AuthorityPosition.Manager].accountAddress          == _universityManager.accountAddress, "Assignation mismatch");
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -266,8 +251,8 @@ import "./University/UniversityTemplate_State.sol";
     }
 
     function degreeSignatureCountAndVerification(uint256 _degreeIndex) private view {
-        require(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector].signature.length > 0, "Rector's signature is missing");
-        require(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean].signature.length > 0, "Dean's signature is missing");
+        require(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector].signature.length   > 0, "Rector's signature is missing");
+        require(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean].signature.length     > 0, "Dean's signature is missing");
         require(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director].signature.length > 0, "Director's signature is missing");
     }
     

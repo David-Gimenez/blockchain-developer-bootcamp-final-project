@@ -1,10 +1,12 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.4;
+pragma experimental ABIEncoderV2;
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 // -- Import contracts
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 import "../libraries/StructUniversity.sol";
+import "../template/UniversityTemplate.sol";
 
 /**
  * @title   UniversityBuilder
@@ -24,7 +26,6 @@ contract UniversityBuilder {
     // -- State variables
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     address public owner;
-    bytes   public universityTemplateBytecode;
     uint256 public universityTemplateVersion;
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,14 +33,6 @@ contract UniversityBuilder {
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     uint256 public universitiesNumber;                                          // Number of University contracts created
     mapping(uint256 => StructUniversity.UniversityCollege) public universities; // universitiesNumber => UniveristyCollege
-    
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // -- Modifier
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not authorized.");
-        _;
-    }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constructor
@@ -47,11 +40,6 @@ contract UniversityBuilder {
     constructor(){
         owner               = msg.sender;
         universitiesNumber  = 0;
-
-        // --------------------------------------------------
-        // -- State verification
-        // --------------------------------------------------
-        require(owner == msg.sender && universitiesNumber == 0,"Assignation mismatch");
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -60,22 +48,17 @@ contract UniversityBuilder {
 
     /**
      * Set the bytecode of the university contract template.
-     * @param _universityTemplateBytecode the bytecode of the compiled UniversityTemplate contract.
      * @param _universityTemplateVersion unit256 representing the bytecode version of the compiled UniversityTemplate contract code.
      */
-    function setUniversityTemplate(bytes calldata _universityTemplateBytecode, uint256 _universityTemplateVersion) external onlyOwner() {
+    function setUniversityTemplate(uint256 _universityTemplateVersion) external {
+        // Check owner call
+        onlyOwner();
         // Require valid version number
-        require(_universityTemplateVersion > 0
-                &&
-                _universityTemplateBytecode.length > 0, "Not a valid version or bytecode.");
+        require(_universityTemplateVersion > 0, "Invalid version.");
 
         // Set state variables
-        universityTemplateBytecode  = _universityTemplateBytecode;
+        //universityTemplateAddress  = _universityTemplateAddress;
         universityTemplateVersion   = _universityTemplateVersion;
-
-        // State verification
-        require(keccak256(universityTemplateBytecode)   == keccak256(_universityTemplateBytecode)
-                && universityTemplateVersion            == _universityTemplateVersion, "Set university template mismatch.");
     }
 
     /**
@@ -84,27 +67,25 @@ contract UniversityBuilder {
      * @param _universityManager contains the name and address of the account of the manager of the new University
      * @dev Encode the parameters along with the bytecode of the new contract, create the new university contract and then add it to the universities mapping,
      * then check assignation process result.
-     * @return The address of the new university contract created.
      */
-    function createUniversity(StructUniversity.UniversityCollege calldata _universityCollege, StructUniversity.AuthorityPerson calldata _universityManager) external 
-        onlyOwner() 
-        returns(address)
-    {
+    function createUniversity(StructUniversity.UniversityCollege calldata _universityCollege, StructUniversity.AuthorityPerson calldata _universityManager) external {
+        // Check owner call
+        onlyOwner();
         
         // Require valid university manager address
-        require(universityTemplateBytecode.length            > 0
-            && bytes(_universityCollege.name).length        > 0 
-            && bytes(_universityCollege.fullName).length    > 0 
-            && bytes(_universityCollege.country).length     > 0 
-            && bytes(_universityCollege.state).length       > 0
-            && _universityCollege.contractAddress           == address(0)
-            && _universityManager.accountAddress            != address(0), "Empty bytecode, parameters or invalid address for manager.");
+        require(//universityTemplateAddress                   != address(0)
+            bytes(_universityCollege.name).length          > 0 
+            && bytes(_universityCollege.fullName).length   > 0 
+            && bytes(_universityCollege.country).length    > 0 
+            && bytes(_universityCollege.state).length      > 0
+            && _universityManager.accountAddress           != address(0), "Empty bytecode, parameters or invalid address for manager.");
         
         // Create new University contract
         address newContractAddress;
         
         // Encode the university template bytecode along with the constructor parameters
-        bytes memory newContractBytecode = abi.encodePacked(universityTemplateBytecode, abi.encode(_universityCollege, _universityManager));
+        bytes memory UniversityTemplateByteCode = type(UniversityTemplate).creationCode;
+        bytes memory newContractBytecode = abi.encodePacked(UniversityTemplateByteCode, abi.encode(_universityCollege, _universityManager));
         
         // --------------------------------------------------
         // -- New contract creation
@@ -120,35 +101,20 @@ contract UniversityBuilder {
 
         // Set new university contract address to the university object
         universities[universitiesNumber].contractAddress = newContractAddress;
-
-        // --------------------------------------------------
-        // -- New contract verification
-        // --------------------------------------------------
-        require(_universityCollege.contractAddress != address(0)
-                && 
-                _getUniversityTemplateVersion(_universityCollege.contractAddress) == universityTemplateVersion, "University contract creation failed.");
-
-        // Return new university contract address
-        return _universityCollege.contractAddress;
     }
 
      /**
       * This function allows the owner to extract ethers that may have fallen into the contract by mistake by selfDestruct operation.
       */
-    function extractEthers() external onlyOwner() {
+    function extractEthers() external {
+        // Check owner call
+        onlyOwner();
         require(address(this).balance > 0,"No funds to extract");
         
-        uint256 ownerBalanceBeforeTransfer  = owner.balance;
+        //uint256 ownerBalanceBeforeTransfer  = owner.balance;
         uint256 contractBalanceToTransfer   = address(this).balance;
         
         payable(owner).transfer(contractBalanceToTransfer);
-
-        // State verificacion
-        require(owner.balance > ownerBalanceBeforeTransfer 
-                && 
-                owner.balance <= ownerBalanceBeforeTransfer + contractBalanceToTransfer
-                &&
-                address(this).balance == 0, "Transfer balance mismatch.");
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -161,7 +127,7 @@ contract UniversityBuilder {
      * @dev This method use static call to make a read only operation over an external contract. Next use a assembly code to convert from bytes to uint256.
      * @return _universityTemplateVersion The uint256 value of the getVersion method of the contract called
      */
-    function _getUniversityTemplateVersion(address _universityContractAddress) private view onlyOwner() returns(uint256 _universityTemplateVersion) {
+    function _getUniversityTemplateVersion(address _universityContractAddress) private view returns(uint256 _universityTemplateVersion) {
         require(_universityContractAddress != address(0), "Not a valid address");
         bytes memory methodToCall = abi.encodeWithSignature("VERSION()");
         (bool _success, bytes memory _returnData) = _universityContractAddress.staticcall(methodToCall);
@@ -173,5 +139,12 @@ contract UniversityBuilder {
         assembly {
           _universityTemplateVersion := mload(add(_returnData, 0x20))
         }
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -- Modifiers as private function to reduce size
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    function onlyOwner() private view {
+        require(msg.sender == owner, "Not authorized.");
     }
 }
