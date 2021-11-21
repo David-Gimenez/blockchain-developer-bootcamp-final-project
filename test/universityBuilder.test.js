@@ -1,9 +1,10 @@
 // Contract usage
-const universityBuilder_Contract    = artifacts.require("UniversityBuilder");
-const universityTemplate_Contract   = artifacts.require("UniversityTemplate");
-const transferOnDestroy_Contract    = artifacts.require("TransferOnDestroy");
+const universityBuilder_Contract            = artifacts.require("UniversityBuilder");
+const universityTemplateContainer_contract  = artifacts.require("universityTemplate_Container");
+const universityTemplateContainer           = artifacts.require("universityTemplate");
+const transferOnDestroy_Contract            = artifacts.require("TransferOnDestroy");
 let universityBuilder_Instance;
-let universityTemplate_Instance;
+let universityTemplateContainer_Instance;
 let transferOnDestroy_Instance;
 
 // Libraries required
@@ -14,8 +15,9 @@ const path          = require('path');
 contract("University Builder contract test", async accounts => {
 
     before("", async () => {
-        universityBuilder_Instance = await universityBuilder_Contract.deployed();
-        transferOnDestroy_Instance = await transferOnDestroy_Contract.deployed();
+        universityBuilder_Instance              = await universityBuilder_Contract.deployed();
+        transferOnDestroy_Instance              = await transferOnDestroy_Contract.deployed();
+        universityTemplateContainer_Instance    = await universityTemplateContainer_contract.deployed();
     });
 
     describe("Check contract deploy and state set", async () => {
@@ -48,22 +50,23 @@ contract("University Builder contract test", async accounts => {
             const universityTemplateVersion                 = 100;
 
             // Set University Template bytecode
-            //console.log(universityTemplate_Contract_object.bytecode);
+            //console.log(universityTemplateContainer_Instance.address);
             //return;
-            const tx = await universityBuilder_Instance.setUniversityTemplate(universityTemplateVersion);
+            const tx = await universityBuilder_Instance.setUniversityTemplate(universityTemplateContainer_Instance.address, universityTemplateVersion);
             //console.log(tx);
 
             // Get current university template information
-            //const actualUniversityTemplate          = await universityBuilder_Instance.universityTemplateBytecode();
-            const actualUniversityTemplateVersion   = (await universityBuilder_Instance.universityTemplateVersion()).words[0];;
-
+            const actualUniversityTemplateContractAddress   = await universityBuilder_Instance.universityTemplateContainer();
+            const actualUniversityTemplateContractVersion   = (await universityBuilder_Instance.universityTemplateVersion()).words[0];;
+            //console.log("new address ", actualUniversityTemplateContractAddress);
+            //console.log(await web3.eth.getCode(actualUniversityTemplateAddress));
             // Information hashing
             //const expectedUniversityTemplatehash    = web3.utils.keccak256(universityBuilder_Contract_object.bytecode);
             //const actualUniversityTempateHash       = web3.utils.keccak256(actualUniversityTemplate);
             
             // Assignation check
-            //expect(actualUniversityTempateHash).to.be.equal(expectedUniversityTemplatehash);
-            expect(actualUniversityTemplateVersion).to.be.equal(universityTemplateVersion);
+            expect(actualUniversityTemplateContractAddress).to.be.equal(universityTemplateContainer_Instance.address);
+            expect(actualUniversityTemplateContractVersion).to.be.equal(universityTemplateVersion);
         });
         //-----------------------------------------------------------
         it("Method: createUniversity", async () => {
@@ -86,8 +89,8 @@ contract("University Builder contract test", async accounts => {
             expect(tx, "Contract instance should be constructed.").to.be.ok;
             
             // Get new contract created
-            const newContract           = await universityBuilder_Instance.universities(1);
-            universityTemplate_Instance = await universityTemplate_Contract.at(newContract.contractAddress);
+            const newContract                   = await universityBuilder_Instance.universities(1);
+            const universityTemplate_Instance   = await universityTemplateContainer.at(newContract.contractAddress);
             
             // Load values from new contract
             const universityTemplateVersion = (await universityTemplate_Instance.VERSION()).words[0];
@@ -116,36 +119,36 @@ contract("University Builder contract test", async accounts => {
         });
         //-----------------------------------------------------------
         it("Method: extractEthers", async () => {
-            const amountToTransfer = 10;
+            const amountToTransfer = "10";
 
             // Transfer ethers to the transferOnDestroy_Instance
             await transferOnDestroy_Instance.sendTransaction({
-                from: accounts[0].address,
+                from: accounts[0],
                 value: web3.utils.toWei(amountToTransfer,"ether")
             });
 
             // Balance check transferOnDestroy_Instance
-            const transferOnDestroy_ContractBalance = Web3.utils.fromWei(await web3.eth.getBalance(transferOnDestroy_Instance.address), "ether");
+            const transferOnDestroy_ContractBalance = web3.utils.fromWei(await web3.eth.getBalance(transferOnDestroy_Instance.address), "ether");
             expect(transferOnDestroy_ContractBalance).to.be.equal(amountToTransfer);
 
             // Self destruct contract
             await transferOnDestroy_Instance.selfDestruct(universityBuilder_Instance.address);
 
             // Balance check in universityBuilder_Instance
-            const universityBuilder_ContractBalance = web3.utils.fromWei(await web3.eth.getBalance(universityBuilder_Instance.address), "ether");
-            expect(universityBuilder_ContractBalance).to.be.equal(amountToTransfer);
+            const universityBuilder_ContractBalanceAfterDestroy = web3.utils.fromWei(await web3.eth.getBalance(universityBuilder_Instance.address), "ether");
+            expect(universityBuilder_ContractBalanceAfterDestroy).to.be.equal(amountToTransfer);
 
             // Extract ethers from the contract
-            const signerAccountBalanceBeforeDestroy = await web3.eth.getBalance(signerAccountBalance.address);
+            const signerAccountBalanceBeforeExtract = parseInt(await web3.eth.getBalance(accounts[0])) + 10*10**18;
             await universityBuilder_Instance.extractEthers();
 
             // Balance check in universityBuilder_Instance and signer account
-            const universityBuilder_ContractBalanceAfterDestroy = web3.utils.fromWei(await web3.eth.getBalance(universityBuilder_Instance.address), "ether");
-            const actualSignerAccountBalanceAfterDestroy        = web3.utils.fromWei(await web3.eth.getBalance(accounts[0].address), "ether");
-            const expectedSignerAccountBalanceAfterDestroy      = web3.utils.fromWei(signerAccountBalanceBeforeDestroy, "ether") + 10;
+            const universityBuilder_ContractBalanceAfterExtract = web3.utils.fromWei(await web3.eth.getBalance(universityBuilder_Instance.address), "ether");
+            const actualSignerAccountBalanceAfterExtract        = web3.utils.fromWei(await web3.eth.getBalance(accounts[0]), "ether");
+            const expectedSignerAccountBalanceAfterExtract      = web3.utils.fromWei(signerAccountBalanceBeforeExtract.toString(), "ether");
             
-            expect(universityBuilder_ContractBalanceAfterDestroy).to.be.equal(amountToTransfer);
-            expect(actualSignerAccountBalanceAfterDestroy).to.be.equal(expectedSignerAccountBalanceAfterDestroy);
+            expect(universityBuilder_ContractBalanceAfterExtract).to.be.equal("0");
+            expect(Math.trunc(actualSignerAccountBalanceAfterExtract)).to.be.equal(Math.trunc(expectedSignerAccountBalanceAfterExtract));
         });
         //-----------------------------------------------------------
     });

@@ -6,7 +6,7 @@ pragma experimental ABIEncoderV2;
 // -- Import contracts
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 import "../libraries/StructUniversity.sol";
-import "../template/UniversityTemplate.sol";
+import "../template/UniversityTemplate_Container.sol";
 
 /**
  * @title   UniversityBuilder
@@ -27,6 +27,11 @@ contract UniversityBuilder {
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     address public owner;
     uint256 public universityTemplateVersion;
+
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -- Contracts variables
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    UniversityTemplate_Container public universityTemplateContainer;
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- State mappings
@@ -50,14 +55,16 @@ contract UniversityBuilder {
      * Set the bytecode of the university contract template.
      * @param _universityTemplateVersion unit256 representing the bytecode version of the compiled UniversityTemplate contract code.
      */
-    function setUniversityTemplate(uint256 _universityTemplateVersion) external {
+    function setUniversityTemplate(address _universityTemplateContainerAddress, uint256 _universityTemplateVersion) external {
         // Check owner call
         onlyOwner();
         // Require valid version number
-        require(_universityTemplateVersion > 0, "Invalid version.");
+        require(_universityTemplateVersion > 0
+                &&
+                _universityTemplateContainerAddress != address(0), "Invalid version.");
 
         // Set state variables
-        //universityTemplateAddress  = _universityTemplateAddress;
+        universityTemplateContainer  = UniversityTemplate_Container(_universityTemplateContainerAddress);
         universityTemplateVersion   = _universityTemplateVersion;
     }
 
@@ -84,7 +91,8 @@ contract UniversityBuilder {
         address newContractAddress;
         
         // Encode the university template bytecode along with the constructor parameters
-        bytes memory UniversityTemplateByteCode = type(UniversityTemplate).creationCode;
+        //bytes memory UniversityTemplateByteCode = type(UniversityTemplate).creationCode;
+        bytes memory UniversityTemplateByteCode = universityTemplateContainer.getUniversityTemplateBytecode();
         bytes memory newContractBytecode = abi.encodePacked(UniversityTemplateByteCode, abi.encode(_universityCollege, _universityManager));
         
         // --------------------------------------------------
