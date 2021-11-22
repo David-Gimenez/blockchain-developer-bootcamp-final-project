@@ -206,7 +206,8 @@ import "./University/UniversityTemplate_State.sol";
     // -- Modifiers as private function to reduce size
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     function onlyUniversityManager() private view {
-        require(msg.sender == authorities[StructDegree.AuthorityPosition.Manager].accountAddress, "Not authorized");
+        
+        require(msg.sender == authorities[StructDegree.AuthorityPosition.Manager].accountAddress, "Not authorized 111");
     }
 
     function onlyUniversitySigner() private view {       // onlyAuthortyPerson

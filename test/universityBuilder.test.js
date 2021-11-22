@@ -1,7 +1,7 @@
 // Contract usage
 const universityBuilder_Contract            = artifacts.require("UniversityBuilder");
 const universityTemplateContainer_contract  = artifacts.require("universityTemplate_Container");
-const universityTemplateContainer           = artifacts.require("universityTemplate");
+const universityTemplate_Contract           = artifacts.require("universityTemplate");
 const transferOnDestroy_Contract            = artifacts.require("TransferOnDestroy");
 let universityBuilder_Instance;
 let universityTemplateContainer_Instance;
@@ -80,7 +80,7 @@ contract("University Builder contract test", async accounts => {
             }
 
             const newAuthorityPerson = {
-                name:           "David",
+                name:           "Manager",
                 accountAddress: accounts[0]
             }
 
@@ -90,14 +90,15 @@ contract("University Builder contract test", async accounts => {
             
             // Get new contract created
             const newContract                   = await universityBuilder_Instance.universities(1);
-            const universityTemplate_Instance   = await universityTemplateContainer.at(newContract.contractAddress);
+            const universityTemplate_Instance   = await universityTemplate_Contract.at(newContract.contractAddress);
             
             // Load values from new contract
             const universityTemplateVersion = (await universityTemplate_Instance.VERSION()).words[0];
             const universityTemplateInfo    = (await universityTemplate_Instance.universityInfo());
             const universityTemplateManager = (await universityTemplate_Instance.authorities(0));
-            const universityTemplateIndex   = (await universityTemplate_Instance.degreePendingIndex()).words[0];;
-            const universityTemplateNumber  = (await universityTemplate_Instance.degreePendingNumber()).words[0];;
+            const universityTemplateIndex   = (await universityTemplate_Instance.degreePendingIndex()).words[0];
+            const universityTemplateNumber  = (await universityTemplate_Instance.degreePendingNumber()).words[0];
+            const universityTemplateIssue   = (await universityTemplate_Instance.degreeIssuedIndex()).words[0];
                         
             // Check vsersion
             expect(universityTemplateVersion).to.be.equals(100);
@@ -116,6 +117,7 @@ contract("University Builder contract test", async accounts => {
             // Check Degree index and number
             expect(universityTemplateIndex).to.be.equals(0);
             expect(universityTemplateNumber).to.be.equals(0);
+            expect(universityTemplateIssue).to.be.equals(0);
         });
         //-----------------------------------------------------------
         it("Method: extractEthers", async () => {
