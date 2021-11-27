@@ -153,6 +153,6 @@ contract UniversityBuilder {
     // -- Modifiers as private function to reduce size
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     function onlyOwner() private view {
-        require(msg.sender == owner, "Not authorized.");
+        require(msg.sender == owner, "Not authorized");
     }
 }

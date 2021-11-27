@@ -13,7 +13,6 @@ module.exports = async function (deployer, network, accounts) {
     // Deploy UniversityBuilder Contract
     await deployer.link(StructUniversity_library, universityBuilder_contract);
     const universityBuilderInstance = await deployer.deploy(universityBuilder_contract, {gas: 8500000000});
-    //await web3.eth.wait_for_transaction_receipt(universityBuilderInstance.hash);
     
     // Deploy UniversityTemplate_Container contract
     // Need to know UnivrsityBuilder contract address to check messagge call

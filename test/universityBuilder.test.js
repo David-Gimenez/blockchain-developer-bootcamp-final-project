@@ -3,24 +3,26 @@ const universityBuilder_Contract            = artifacts.require("UniversityBuild
 const universityTemplateContainer_contract  = artifacts.require("universityTemplate_Container");
 const universityTemplate_Contract           = artifacts.require("universityTemplate");
 const transferOnDestroy_Contract            = artifacts.require("TransferOnDestroy");
+
 let universityBuilder_Instance;
 let universityTemplateContainer_Instance;
 let transferOnDestroy_Instance;
 
 // Libraries required
-const { expect }    = require("chai");
-const fs            = require('fs');
-const path          = require('path');
+const { expect }        = require("chai");
+const fs                = require('fs');
+const path              = require('path');
+const {expectRevert}    = require('@openzeppelin/test-helpers');
 
 contract("University Builder contract test", async accounts => {
 
-    before("", async () => {
+    before("", async () => {        
         universityBuilder_Instance              = await universityBuilder_Contract.deployed();
         transferOnDestroy_Instance              = await transferOnDestroy_Contract.deployed();
         universityTemplateContainer_Instance    = await universityTemplateContainer_contract.deployed();
     });
 
-    describe("Check contract deploy and state set", async () => {
+    describe("Check contract deploy and state test", async () => {
         it("It should deploy correcty", async () => {
             expect(universityBuilder_Instance, "Contract instance should be constructed.").to.be.ok;
         });
@@ -45,25 +47,14 @@ contract("University Builder contract test", async accounts => {
     
     describe("Set state test", async () => {
         it("Method: setUniversityTemplateVersion", async () => {
-            //const universityTemplate_Contract_object_path   = path.resolve("./build/contracts/UniversityTemplate.json");
-            //const universityTemplate_Contract_object        = JSON.parse(fs.readFileSync(universityTemplate_Contract_object_path, "UTF-8")); 
-            const universityTemplateVersion                 = 100;
-
-            // Set University Template bytecode
-            //console.log(universityTemplateContainer_Instance.address);
-            //return;
+            // Set University Template bytecode and version
+            const universityTemplateVersion = 100;            
             const tx = await universityBuilder_Instance.setUniversityTemplate(universityTemplateContainer_Instance.address, universityTemplateVersion);
-            //console.log(tx);
-
+            
             // Get current university template information
             const actualUniversityTemplateContractAddress   = await universityBuilder_Instance.universityTemplateContainer();
             const actualUniversityTemplateContractVersion   = (await universityBuilder_Instance.universityTemplateVersion()).words[0];;
-            //console.log("new address ", actualUniversityTemplateContractAddress);
-            //console.log(await web3.eth.getCode(actualUniversityTemplateAddress));
-            // Information hashing
-            //const expectedUniversityTemplatehash    = web3.utils.keccak256(universityBuilder_Contract_object.bytecode);
-            //const actualUniversityTempateHash       = web3.utils.keccak256(actualUniversityTemplate);
-            
+                        
             // Assignation check
             expect(actualUniversityTemplateContractAddress).to.be.equal(universityTemplateContainer_Instance.address);
             expect(actualUniversityTemplateContractVersion).to.be.equal(universityTemplateVersion);
@@ -154,21 +145,24 @@ contract("University Builder contract test", async accounts => {
         });
         //-----------------------------------------------------------
     });
-/*
-    describe("Not the owner test", async () => {
-        it("Try to set the state with an account different of the owner", async () => {
-            // Should return "Not authorized.""
+
+    describe("Negative Test", async () => {
+        it("Not the owner test: Try to set the state with an account different of the owner", async () => {
+            // Set University Template bytecode and version
+            const universityTemplateVersion = 100;
+            await expectRevert(
+                // accounts[1] is not authorized
+                universityBuilder_Instance.setUniversityTemplate(universityTemplateContainer_Instance.address, universityTemplateVersion, { from: accounts[1] }),
+                "Not authorized"
+            );
+        });
+        //-----------------------------------------------------------
+        it("Value transfer test: Value transfer to the contract should fail", async () => {
+            const tx = {
+                from:   accounts[0],
+                value:  web3.utils.toWei("10","ether")
+            };
+            await expectRevert.unspecified(universityBuilder_Instance.sendTransaction(tx)); // No message is set for this error
         });
     });
-
-    describe("Value transfer test", async () => {
-        it("Value transfer to the contract should fail", async () => {
-            const tx = {
-                from:   accounts[0].address,
-                value:  web3.toWei(10,"ether")
-            };
-
-            await expect(await universityBuilder_Instance.sendTransaction(tx)).to.be.revertedWith(""); // No message is set for this error
-        });
-    }); */
 });

@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/David-Gimenez/blockchain-developer-bootcamp-final-project#readme",
   "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.15",
     "chai": "^4.3.4",
     "truffle": "^5.4.15"
   },

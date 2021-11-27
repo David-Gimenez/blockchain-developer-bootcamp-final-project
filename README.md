@@ -9,3 +9,6 @@ The degree could be consulted electronically in the blockchain by third parties,
 The project will consist in the creation of a set of Smart Contracts and a web application that allows the validation of academic degrees in a safe, transparent and efficient way.
 
 Using a distributed database system based on Blockchain technology, asymmetric cryptography and hash functions, thus allowing unequivocally identifying the intervening parties, as well as storing information safely to be consulted by third parties.
+
+
+npm install --save-dev @openzeppelin/test-helpers
