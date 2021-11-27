@@ -10,19 +10,22 @@ const SignatureVerification_Library         = artifacts.require("SignatureVerifi
 
 module.exports = async function (deployer, network, accounts) {
     
-    await deployer.deploy(StructUniversity_library);
+    // Deploy UniversityBuilder Contract
     await deployer.link(StructUniversity_library, universityBuilder_contract);
     const universityBuilderInstance = await deployer.deploy(universityBuilder_contract, {gas: 8500000000});
+    //await web3.eth.wait_for_transaction_receipt(universityBuilderInstance.hash);
     
+    // Deploy UniversityTemplate_Container contract
+    // Need to know UnivrsityBuilder contract address to check messagge call
     await deployer.deploy(universityTemplateContainer_contract, universityBuilderInstance.address);
 
-    // Deploy University Templates Logic contract and library
+    // Deploy UniversityTemplate_Governance contract
+    await deployer.deploy(universityTemplateGovernance_Contract, accounts[0], {gas: 8500000000});
+
+    // Deploy SignatureVerification library and UniversityTemplates_Logic contract
     await deployer.deploy(SignatureVerification_Library);
     await deployer.link(SignatureVerification_Library, UniversityTemplate_Logic_Contract);
     await deployer.deploy(UniversityTemplate_Logic_Contract, accounts[0], {gas: 8500000000});
-
-    // Deploy University Templates Governance contract
-    await deployer.deploy(universityTemplateGovernance_Contract, accounts[0], {gas: 8500000000});
   
     if (network === 'develop') {
         await deployer.deploy(transferOnDestroy_Contract);

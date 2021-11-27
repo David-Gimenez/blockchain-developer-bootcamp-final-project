@@ -7,7 +7,7 @@ pragma solidity 0.8.4;
 import "./UniversityTemplate.sol";
 
 /**
- * @title   UniversityTemplate
+ * @title   UniversityTemplate_Container
  * @author  David Gimenez Gutierrez
  *
  * This contract has the responsibility of return the creation code of the University Template contract.
