@@ -25,16 +25,16 @@ import "../../libraries/SignatureVerification.sol";
     // -- Proxy contract variables
     // ----------------------------------------------------------------------------------------------------------------------------------------------
 
-    address public universityContractAddress;
+    address public universityManagerAddress;
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constructor
     // ----------------------------------------------------------------------------------------------------------------------------------------------
-    constructor(address _universityContractAddress) {
-        require(_universityContractAddress != address(0), "Invalid address");
+    constructor(address _universityManagerAddress) {
+        require(_universityManagerAddress != address(0), "Invalid address");
         
         // Set state
-        universityContractAddress = _universityContractAddress;
+        universityManagerAddress = _universityManagerAddress;
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ import "../../libraries/SignatureVerification.sol";
 
     function addPendingDegree(StructDegree.Degree calldata _degree, StructDegree.Owner calldata _owner) external {
         // Validate caller
-        onlyUniversityBuilder();
+        onlyUniversityManager();
         
         // Create new DegreeObject and add new Degree object to pending to process list
         degreePendingIndex++;
@@ -75,7 +75,7 @@ import "../../libraries/SignatureVerification.sol";
 
     function addSignatureToPendingDegree(uint256 _degreeIndex, bytes memory _signature) external {
         // Validate caller
-        onlyUniversityBuilder();
+        onlyUniversityManager();
 
         // ----------------------------------------------------------------------------------
         // -- Signature validation
@@ -108,7 +108,7 @@ import "../../libraries/SignatureVerification.sol";
 
     function publishDegree(uint256 _degreeIndex) external {
         // Validate caller
-        onlyUniversityBuilder();
+        onlyUniversityManager();
         
         // Check issue date information
         require(degreePending[_degreeIndex].information.degree.issueDate <= block.timestamp, "Invalid issue date");
@@ -334,7 +334,7 @@ import "../../libraries/SignatureVerification.sol";
     // -- Modifiers as private function to reduce size
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     
-    function onlyUniversityBuilder() private view {
-        require(msg.sender == universityContractAddress, "Not authorized.");
+    function onlyUniversityManager() private view {
+        require(msg.sender == universityManagerAddress, "Not authorized.");
     }
  }

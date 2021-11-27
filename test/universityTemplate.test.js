@@ -63,19 +63,19 @@ contract("University Template contract test", async accounts => {
 
         // Deploy University Templates Governance contract
         await deployer.deploy(universityTemplateGovernance_Contract, universityTemplate_Instance.address, {gas: 8500000000});
+        */
         
         // Get UniverityTemplate Governance and Logic contract instance
         universityTemplateGovernancce_Instance    = await universityTemplateGovernance_Contract.deployed();
         universityTemplateLogic_Instance          = await universityTemplateLogic_Contract.deployed();
-        */
 
-        // Get current university contract address
-        const universityContractAddressInGovernance = await universityTemplateGovernancce_Instance.universityContractAddress();
-        const universityContractAddressInLogic      = await universityTemplateLogic_Instance.universityContractAddress();
+        // Get current Manager address
+        const managerAddressInGovernance = await universityTemplateGovernancce_Instance.universityManagerAddress();
+        const managerAddressInLogic      = await universityTemplateLogic_Instance.universityManagerAddress();
 
         // Check university conttact address
-        expect(universityContractAddressInGovernance).to.be.equals(universityTemplate_Instance.address);
-        expect(universityContractAddressInLogic).to.be.equals(universityTemplate_Instance.address);
+        expect(managerAddressInGovernance).to.be.equals(accounts[0]);
+        expect(managerAddressInLogic).to.be.equals(accounts[0]);
     });
 
     describe("Set external contracts", async () => {
@@ -111,8 +111,12 @@ contract("University Template contract test", async accounts => {
                 accountAddress: accounts[1] // Address 0 => Manager
             }
 
+            const managerAddressInGovernance = await universityTemplateGovernancce_Instance.universityManagerAddress();
+            console.log(accounts[0]);
+            console.log(managerAddressInGovernance);
+            
             // Set rector of the university, index 1
-            await universityTemplate_Instance.setAuthorityPerson(1, newAuthorityPerson, { from: accounts[0] });
+            await universityTemplate_Instance.setAuthorityPerson(1, newAuthorityPerson).sendTransaction({ from: accounts[0] });
             
             // Get the rector loaded
             const universityTemplateRector = (await universityTemplate_Instance.authorities(1));   // 0 is the manager
