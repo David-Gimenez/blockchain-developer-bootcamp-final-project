@@ -28,6 +28,12 @@ import "./University/UniversityTemplate_State.sol";
     address public logicContractAddress;
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -- Events
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // The external ID allows you to track a request from the frontEnd
+    event NewPendingDegree(uint256 indexed _degreePendingIndex, uint256 indexed _externalID, uint256 indexed _graduatedNumber, string _degreeName);
+
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constructor
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     constructor(StructUniversity.UniversityCollege memory _universityInfo, StructUniversity.AuthorityPerson memory _universityManager) {
@@ -107,12 +113,15 @@ import "./University/UniversityTemplate_State.sol";
     // -- Logic Contract Functions - Degree process
     // ----------------------------------------------------------------------------------------------------------------------------------------------
 
-    function addPendingDegree(StructDegree.Degree calldata _degree, StructDegree.Owner calldata _owner) external {
+    function addPendingDegree(StructDegree.Degree calldata _degree, StructDegree.Owner calldata _owner, uint256 _externalID) external {
         // Validation check
         isUniversityActive();
         onlyUniversityManager();
 
         callExternalContract(logicContractAddress);
+
+        // Emite the event for the new pending Degree
+        emit NewPendingDegree(degreePendingIndex, _externalID, _owner.graduateNumber, _degree.name);
     }
 
     function addSignatureToPendingDegree(uint256 _degreeIndex, bytes memory _signature) external {
@@ -140,38 +149,32 @@ import "./University/UniversityTemplate_State.sol";
     // -- External Functions - Degree process
     // ----------------------------------------------------------------------------------------------------------------------------------------------
 
-    function removePendingDegreeByIndex(uint256 _degreeIndex) external {
-        // Validation check
-        isUniversityActive();
-        onlyUniversityAuthority();
-        isValidPendingDegreeIndex(_degreeIndex);
-
-        // Delete pending degree object
-        delete degreePending[_degreeIndex];
-    }
-
-    function getPendingDegreeObjectByIndex(uint256 _degreeIndex) external view returns(StructDegree.DegreeInformation memory) {
-        // Validation check
-        isUniversityActive(); 
-        onlyUniversityAuthority(); 
-        isValidPendingDegreeIndex(_degreeIndex);
-        isValidPendingDegree(_degreeIndex);
-
-        // Return de pending degree information
-        return degreePending[_degreeIndex].information;
-    }
-
-    function getPendingDegreeHashToSign(uint256 _degreeIndex) external view returns(bytes32) {
+    function getPendingDegreeSignature(uint256 _degreeIndex, StructDegree.AuthorityPosition _authorityPosition) external view returns(StructDegree.Signature memory) {
         // Validation check
         isUniversityActive();
         onlyUniversitySigner();
         isValidPendingDegreeIndex(_degreeIndex);
         isValidPendingDegree(_degreeIndex);
 
-        // Return the hash, unique identifier of the information of the degree to be issued, which must be signed
-        return degreePending[_degreeIndex].information.hash_EIP712_ForSigning;
+        // Return the signature object for the pendingDegreeIndex and AuthorityPosition
+        return degreePending[_degreeIndex].signature[_authorityPosition];
     }
+    
+    function removePendingDegreeByIndex(uint256 _degreeIndex) external {
+        // Validation check
+        isUniversityActive();
+        onlyUniversityAuthority();
+        isValidPendingDegreeIndex(_degreeIndex);
 
+        // Delete pending degree object elements
+        delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Manager];
+        delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector];
+        delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean];
+        delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director];
+
+        delete degreePending[_degreeIndex].information;
+        delete degreePending[_degreeIndex];
+    }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Private functions
@@ -196,9 +199,9 @@ import "./University/UniversityTemplate_State.sol";
             returndatacopy(ptr, 0, size)
 
             // (4) forward return data back to caller
-            switch result
-            case 0 { revert(ptr, size) }
-            default { return(ptr, size) }
+            //switch result
+            //case 0 { revert(ptr, size) }
+            //default { return(ptr, size) }
         }
     }
 
@@ -206,7 +209,7 @@ import "./University/UniversityTemplate_State.sol";
     // -- Modifiers as private function to reduce size
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     function onlyUniversityManager() private view {
-        require(msg.sender == authorities[StructDegree.AuthorityPosition.Manager].accountAddress, "Not authorized 111");
+        require(msg.sender == authorities[StructDegree.AuthorityPosition.Manager].accountAddress, "Not authorized");
     }
 
     function onlyUniversitySigner() private view {       // onlyAuthortyPerson

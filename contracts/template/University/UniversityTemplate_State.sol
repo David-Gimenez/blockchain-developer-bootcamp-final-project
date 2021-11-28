@@ -40,5 +40,4 @@ import "../../libraries/StructDegree.sol";
     uint256 public degreeIssuedIndex;                       // Number of University Degree issued
     mapping(uint256 => StructDegree.DegreeObject) public degreeIssued;   // UniversityDegreeNumber   => DegreeInformation
     mapping(uint256 => StructDegree.DegreeObject) public degreePending;  // degreePendingNumber      => DegreeInformation
-
  }

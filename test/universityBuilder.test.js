@@ -16,6 +16,10 @@ const {expectRevert}    = require('@openzeppelin/test-helpers');
 
 contract("University Builder contract test", async accounts => {
 
+    console.log("---------------------------------------------------------------------------------------------");
+    console.log("-- This script test the UniversityBuilder contract and UniversityTemplate_Container contract ");
+    console.log("---------------------------------------------------------------------------------------------");
+
     before("", async () => {        
         universityBuilder_Instance              = await universityBuilder_Contract.deployed();
         transferOnDestroy_Instance              = await transferOnDestroy_Contract.deployed();

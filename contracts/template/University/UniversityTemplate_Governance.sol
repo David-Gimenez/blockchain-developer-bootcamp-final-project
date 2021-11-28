@@ -13,45 +13,15 @@ import "./UniversityTemplate_State.sol";
 contract UniversityTemplate_Governance is UniversityTemplate_State {
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // -- Proxy contract variables
+    // -- Constant
     // ----------------------------------------------------------------------------------------------------------------------------------------------
-
-    address public universityManagerAddress;
-
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // -- Modifiers
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    
-    modifier onlyUniversityManager() {
-        require(msg.sender == universityManagerAddress, "Not authorized Gov");
-        _;
-    }
-
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // -- Constructor
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    constructor(address _universityManagerAddress) {
-        // CHeck address
-        require(_universityManagerAddress != address(0), "Invalid address");
-
-        // Set state
-        universityManagerAddress = _universityManagerAddress;
-
-        // --------------------------------------------------
-        // -- State verification
-        // --------------------------------------------------
-
-        // Check University information
-        require(universityManagerAddress == _universityManagerAddress, "Assignation mismatch");
-    }
+    uint256 public constant VERSION = 100;   // Version of the contract
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Exernal functions - Governance
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     
-    function setAuthorityPerson(StructDegree.AuthorityPosition _authorityPosition, StructUniversity.AuthorityPerson calldata _authorityPerson) external
-        onlyUniversityManager()
-    {
+    function setAuthorityPerson(StructDegree.AuthorityPosition _authorityPosition, StructUniversity.AuthorityPerson calldata _authorityPerson) external {
         // Check the name of the new Authroty Person
         require(bytes(_authorityPerson.name).length > 0, "Invalid name");
 
@@ -63,7 +33,7 @@ contract UniversityTemplate_Governance is UniversityTemplate_State {
                 && authorities[_authorityPosition].accountAddress       == _authorityPerson.accountAddress, "Assignation mismatch");
     }
 
-    function transferAuthorityPosition(StructUniversity.AuthorityPerson calldata _authorityPerson) external onlyUniversityManager() {
+    function transferAuthorityPosition(StructUniversity.AuthorityPerson calldata _authorityPerson) external {
         // Get the AuthrityPosition of the msg sender account
         StructDegree.AuthorityPosition authorityPosition = _getAuthorityPersonPosition();
 
@@ -75,7 +45,7 @@ contract UniversityTemplate_Governance is UniversityTemplate_State {
                 && authorities[authorityPosition].accountAddress       == _authorityPerson.accountAddress, "Assignation mismatch");
     }
 
-    function changeUniversityManager(StructUniversity.AuthorityPerson calldata _newUniversityManager) external onlyUniversityManager() {
+    function changeUniversityManager(StructUniversity.AuthorityPerson calldata _newUniversityManager) external {
         // Set University manager
         authorities[StructDegree.AuthorityPosition.Manager] = _newUniversityManager;
 
@@ -84,7 +54,7 @@ contract UniversityTemplate_Governance is UniversityTemplate_State {
                 && authorities[StructDegree.AuthorityPosition.Manager].accountAddress       == _newUniversityManager.accountAddress, "Assignation mismatch");
     }
 
-    function setDegreeTemplate(bytes calldata _degreeTemplateBytecode, uint256 _degreeTemplateVersion) external onlyUniversityManager() {
+    function setDegreeTemplate(bytes calldata _degreeTemplateBytecode, uint256 _degreeTemplateVersion) external {
         // Require valid version number
         require(_degreeTemplateVersion > 0
                 &&
@@ -102,7 +72,7 @@ contract UniversityTemplate_Governance is UniversityTemplate_State {
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Private functions
     // ----------------------------------------------------------------------------------------------------------------------------------------------
-    function _getAuthorityPersonPosition() private view onlyUniversityManager() returns(StructDegree.AuthorityPosition resutl) {
+    function _getAuthorityPersonPosition() private view returns(StructDegree.AuthorityPosition resutl) {
         if(msg.sender == authorities[StructDegree.AuthorityPosition.Manager].accountAddress)
             return StructDegree.AuthorityPosition.Manager;
         

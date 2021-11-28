@@ -20,30 +20,12 @@ import "../../libraries/SignatureVerification.sol";
     // -- Constant
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     uint256 public constant VERSION = 100;   // Version of the contract
-    
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // -- Proxy contract variables
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-
-    address public universityManagerAddress;
-
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // -- Constructor
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    constructor(address _universityManagerAddress) {
-        require(_universityManagerAddress != address(0), "Invalid address");
-        
-        // Set state
-        universityManagerAddress = _universityManagerAddress;
-    }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- External Functions - Degree process
     // ----------------------------------------------------------------------------------------------------------------------------------------------  
 
-    function addPendingDegree(StructDegree.Degree calldata _degree, StructDegree.Owner calldata _owner) external {
-        // Validate caller
-        onlyUniversityManager();
+    function addPendingDegree(StructDegree.Degree calldata _degree, StructDegree.Owner calldata _owner, uint256 _externalID) external {
         
         // Create new DegreeObject and add new Degree object to pending to process list
         degreePendingIndex++;
@@ -74,8 +56,6 @@ import "../../libraries/SignatureVerification.sol";
     }
 
     function addSignatureToPendingDegree(uint256 _degreeIndex, bytes memory _signature) external {
-        // Validate caller
-        onlyUniversityManager();
 
         // ----------------------------------------------------------------------------------
         // -- Signature validation
@@ -107,8 +87,6 @@ import "../../libraries/SignatureVerification.sol";
     }
 
     function publishDegree(uint256 _degreeIndex) external {
-        // Validate caller
-        onlyUniversityManager();
         
         // Check issue date information
         require(degreePending[_degreeIndex].information.degree.issueDate <= block.timestamp, "Invalid issue date");
@@ -274,8 +252,8 @@ import "../../libraries/SignatureVerification.sol";
     function _predictDegreeContractAddress(uint256 _degreeIndex) private view returns(address) {
         
         // This hash will not contain the address of the new Degree Contract, instead it will contain the address of zero, but it does contain all the other information.
-        // which makes a suitable uinque identifier for the generation of the address of the future degree contract.
-        require(degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt.length == 0, "Salt not set");
+        // which makes a suitable unique identifier for the generation of the address of the future degree contract.
+        require(degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt.length > 0, "Salt not set");
 
         // Return the future address of the new Degree contract with the saltHash calulated 
         return address(uint160(uint(keccak256(abi.encodePacked(
@@ -328,13 +306,5 @@ import "../../libraries/SignatureVerification.sol";
         degreeIssued[degreeIssuedIndex].signature[StructDegree.AuthorityPosition.Rector]     = degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector];
         degreeIssued[degreeIssuedIndex].signature[StructDegree.AuthorityPosition.Dean]       = degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean];
         degreeIssued[degreeIssuedIndex].signature[StructDegree.AuthorityPosition.Director]   = degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director];
-    }
-
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // -- Modifiers as private function to reduce size
-    // ----------------------------------------------------------------------------------------------------------------------------------------------
-    
-    function onlyUniversityManager() private view {
-        require(msg.sender == universityManagerAddress, "Not authorized.");
     }
  }

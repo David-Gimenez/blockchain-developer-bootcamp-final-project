@@ -9,13 +9,13 @@ import "../libraries/StructDegree.sol";
 //import "../utils/Hash_EIP712_CalculationFormula.sol";
 
 /**
- * @title   UniversityDegree
+ * @title   UniversityDegreeTemplate
  * @author  David Gimenez Gutierrez
  *
  * Contract logic representing a University Degree issued by a University. 
  * This contract is part of my new Degree Certification Protocole.
  */
-contract UniversityDegree {
+contract UniversityDegreeTemplate {
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constant
