@@ -54,21 +54,6 @@ contract UniversityTemplate_Governance is UniversityTemplate_State {
                 && authorities[StructDegree.AuthorityPosition.Manager].accountAddress       == _newUniversityManager.accountAddress, "Assignation mismatch");
     }
 
-    function setDegreeTemplate(bytes calldata _degreeTemplateBytecode, uint256 _degreeTemplateVersion) external {
-        // Require valid version number
-        require(_degreeTemplateVersion > 0
-                &&
-                _degreeTemplateBytecode.length > 0, "Invalid parameters");
-
-        // Set state variables
-        degreeTemplateBytecode  = _degreeTemplateBytecode;
-        degreeTemplateVersion   = _degreeTemplateVersion;
-
-        // State verification
-        require(keccak256(degreeTemplateBytecode)   == keccak256(_degreeTemplateBytecode)
-                && degreeTemplateVersion            == _degreeTemplateVersion, "Assignation mismatch");
-    }
-
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Private functions
     // ----------------------------------------------------------------------------------------------------------------------------------------------

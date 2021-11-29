@@ -1,15 +1,22 @@
 // Contract usage
-const universityBuilder_Contract            = artifacts.require("UniversityBuilder");
-const universityTemplateContainer_contract  = artifacts.require("universityTemplate_Container");
-const universityTemplate_Contract           = artifacts.require("universityTemplate");
+const universityBuilder_Contract                    = artifacts.require("UniversityBuilder");
+const universityTemplateContainer_contract          = artifacts.require("universityTemplate_Container");
+const universityTemplate_Contract                   = artifacts.require("universityTemplate");
 
-const universityTemplateGovernance_Contract = artifacts.require("universityTemplate_Governance");
-const universityTemplateLogic_Contract      = artifacts.require("universityTemplate_Logic");
-const SignatureVerification_Library         = artifacts.require("SignatureVerification");
+const universityTemplateGovernance_Contract         = artifacts.require("universityTemplate_Governance");
+const universityTemplateLogic_Contract              = artifacts.require("universityTemplate_Logic");
+
+const universityTemplateDegreeContainer_contract    = artifacts.require("UniversityDegreeTemplate_Container");
+
 
 let universityTemplate_Instance;
 let universityTemplateGovernancce_Instance;
 let universityTemplateLogic_Instance;
+let universityDegreeTemplate_Container_Instance;
+
+// Variables to test Degree process
+let newUniversityDegree;
+let newDegreeOwner;
 
 // Libraries required
 const { expect }    = require("chai");
@@ -19,8 +26,10 @@ const path          = require('path');
 contract("University Template contract test", async accounts => {
 
     before("Get deploing contracts", async () => {
-        const universityBuilder_Instance              = await universityBuilder_Contract.deployed();
-        const universityTemplateContainer_Instance    = await universityTemplateContainer_contract.deployed();
+        const universityBuilder_Instance                = await universityBuilder_Contract.deployed();
+        const universityTemplateContainer_Instance      = await universityTemplateContainer_contract.deployed();
+
+        universityDegreeTemplate_Container_Instance     = await universityTemplateDegreeContainer_contract.deployed();
 
         // Set UniversityTemplate address and version
         const universityTemplateVersion = 100;
@@ -186,26 +195,19 @@ contract("University Template contract test", async accounts => {
             expect(universityTemplateRector.accountAddress).to.be.equals(newAuthorityPerson.accountAddress);
         });
         //-----------------------------------------------------------
-        it("Set University Degree template version and bytecode", async () => {
-            // Load University Degree template version and bytecode
-            const universityDegreeTemplateVersion   = 101;
+        it("Get University Degree template version and bytecode", async () => {
+            // Expected University Degree template version and bytecode
+            const expectedDegreeTemplateVersion     = 100;
             const universityDegreeTemplateABIPath   = path.resolve(process.cwd(), "./build/contracts/UniversityDegreeTemplate.json");
             const universityDegreeTemplateArtifact  = JSON.parse(fs.readFileSync(universityDegreeTemplateABIPath, 'utf8'));
             
-            // Set University Degree Template
-            await universityTemplate_Instance.setDegreeTemplate.sendTransaction(
-                universityDegreeTemplateArtifact.bytecode, 
-                universityDegreeTemplateVersion, 
-                { from: accounts[5], gas: 8500000000 }  // 5 is the new manager
-            );
-            
-            // Get the information loaded
-            const resultVersion     = await universityTemplate_Instance.degreeTemplateVersion();
-            const resultBytecode    = await universityTemplate_Instance.degreeTemplateBytecode();
+            // Get University Degree template version and bytecode
+            const universityDegreeTemplateVersion   = await universityDegreeTemplate_Container_Instance.VERSION();
+            const universityDegreeTemplateBytecode  = await universityDegreeTemplate_Container_Instance.getUniversityDegreeTemplateBytecode();         
 
-            // Check authority person Rector
-            expect(parseInt(resultVersion)).to.be.equals(universityDegreeTemplateVersion);
-            expect(resultBytecode).to.be.equals(universityDegreeTemplateArtifact.bytecode);
+            // Check results
+            expect(parseInt(universityDegreeTemplateVersion)).to.be.equals(expectedDegreeTemplateVersion);
+            expect(universityDegreeTemplateBytecode).to.be.equals(universityDegreeTemplateArtifact.bytecode);
         });
     });
     
@@ -219,7 +221,7 @@ contract("University Template contract test", async accounts => {
             const degreeName        = "Bachelor of Systems";
             
             // Create the struct required
-            const newUniversityDegree = {
+            newUniversityDegree = {
                 name:           degreeName,
                 description:    "Has met the requirements of current regulations",
                 legalStatement: "Ministry of Education registered this Degree with the number 123456",
@@ -227,7 +229,7 @@ contract("University Template contract test", async accounts => {
                 emissionDate:   0
             }
 
-            const newDegreeOwner = {
+            newDegreeOwner = {
                 name:           "David Gimenez Gutierrez",
                 graduateNumber: graduatedNumber,
                 accountAddress: accounts[7]    // I take the index 7 to represent the graduate student
@@ -301,7 +303,7 @@ contract("University Template contract test", async accounts => {
             expect(pendingDegreeObject.hash_EIP712_ForSigning).not.to.be.null;
             expect(pendingDegreeObject.hash_EIP712_ForSigning).not.to.be.undefined;
         });
-
+        //-----------------------------------------------------------
         it("Add signature to pending Degree test", async () => {
             // Get degree object information
             const degreePendingIndex        = 1;   // Requiere the previos test to work
@@ -313,7 +315,7 @@ contract("University Template contract test", async accounts => {
             expect(pendingDegreeObject.hash_EIP712_ForSigning).not.to.be.null;
             expect(pendingDegreeObject.hash_EIP712_ForSigning).not.to.be.undefined;
 
-            // Sign hash by Rector accounts index 4. We user signTypedData beacuase the message to be signed is the hash of a struct
+            // Sign hash by Rector accounts index 4.
             const rectorSignature = await web3.eth.sign(pendingDegreeObject.hash_EIP712_ForSigning, universityTemplateRector.accountAddress);
             
             // Check generated signature no to be null empty or undefined
@@ -357,6 +359,131 @@ contract("University Template contract test", async accounts => {
             expect(pendingDegreeObjectSignature.signer.name).to.be.equals("Rector");
             expect(pendingDegreeObjectSignature.signer.accountAddress).to.be.equals(universityTemplateRector.accountAddress);
             expect(pendingDegreeObjectSignature.signature).to.be.equals(rectorSignature);
+        });
+        //-----------------------------------------------------------
+        it("Publish Degree test", async () => {
+            // Get degree object information
+            const degreePendingIndex        = 1;   // Requiere the previos test to work
+            const degreePendingNumber       = await universityTemplate_Instance.degreePendingNumber();  // In the test must be 1
+            const universityTemplateManager = await universityTemplate_Instance.authorities(0);         // 0 is the Manager
+            const pendingDegreeObject       = await universityTemplate_Instance.degreePending(degreePendingIndex);
+
+            // Get authority people of the University
+            const universityTemplateRector      = await universityTemplate_Instance.authorities(1); // 1 is the Rector
+            const universityTemplateDean        = await universityTemplate_Instance.authorities(2); // 2 is the Dean
+            const universityTemplateDirector    = await universityTemplate_Instance.authorities(3); // 3 is the Director
+
+            // Add Dean and Director signatures
+            const deanSignature     = await web3.eth.sign(pendingDegreeObject.hash_EIP712_ForSigning, universityTemplateDean.accountAddress);
+            const directorSignature = await web3.eth.sign(pendingDegreeObject.hash_EIP712_ForSigning, universityTemplateDirector.accountAddress);
+
+            // Add signature to pending degree. It must be sent by the same account that signed the hash
+            await universityTemplate_Instance.addSignatureToPendingDegree(degreePendingIndex, deanSignature, { from: universityTemplateDean.accountAddress, gas: 8500000000 });
+            await universityTemplate_Instance.addSignatureToPendingDegree(degreePendingIndex, directorSignature, { from: universityTemplateDirector.accountAddress, gas: 8500000000 });
+
+            // Check that all signatures has been loaded to the new Degree object
+            const rectorPosition    = 1;
+            const deanPosition      = 2;
+            const directorPosition  = 3;
+
+            // Rector signature
+            const rectorSignature_Loaded = await universityTemplate_Instance.getPendingDegreeSignature(
+                degreePendingIndex, rectorPosition, { from: universityTemplateManager.accountAddress }
+            );
+
+            // Dean signature
+            const deanSignature_Loaded = await universityTemplate_Instance.getPendingDegreeSignature(
+                degreePendingIndex, deanPosition, { from: universityTemplateManager.accountAddress }
+            );
+
+            // Director signature
+            const directorSignature_Loaded = await universityTemplate_Instance.getPendingDegreeSignature(
+                degreePendingIndex, directorPosition, { from: universityTemplateManager.accountAddress }
+            );
+            
+            // Rector
+            // Check signature information
+            expect(rectorSignature_Loaded.signer.name).to.be.equals("Rector");
+            expect(rectorSignature_Loaded.signer.accountAddress).to.be.equals(universityTemplateRector.accountAddress);
+            expect(rectorSignature_Loaded.signature.length).to.be.greaterThan(0);
+
+            // Check signature verification
+            const addressInRectorSignature = await web3.eth.accounts.recover(newDegreeIssuedObject.hash_EIP712_ForSigning, rectorSignature_Loaded.signature);
+            expect(addressInRectorSignature, "Rector signature account address mismatch").to.be.equals(universityTemplateRector.accountAddress);
+
+            // Dean
+            // Check signature information
+            expect(deanSignature_Loaded.signer.name).to.be.equals("Dean");
+            expect(deanSignature_Loaded.signer.accountAddress).to.be.equals(universityTemplateDean.accountAddress);
+            expect(deanSignature_Loaded.signature.length).to.be.greaterThan(0);
+
+            // Check signature verification
+            const addressInDeanSignature = await web3.eth.accounts.recover(newDegreeIssuedObject.hash_EIP712_ForSigning, deanSignature_Loaded.signature);
+            expect(addressInDeanSignature, "Dean signature account address mismatch").to.be.equals(universityTemplateDean.accountAddress);
+
+            // Director
+            // Check signature information
+            expect(directorSignature_Loaded.signer.name).to.be.equals("Director");
+            expect(directorSignature_Loaded.signer.accountAddress).to.be.equals(universityTemplateDirector.accountAddress);
+            expect(directorSignature_Loaded.signature.length).to.be.greaterThan(0);
+
+            // Check signature verification
+            const addressInDirectorSignature = await web3.eth.accounts.recover(newDegreeIssuedObject.hash_EIP712_ForSigning, directorSignature_Loaded.signature);
+            expect(addressInDirectorSignature, "Dean signature account address mismatch").to.be.equals(universityTemplateDirector.accountAddress);
+
+            // ------------------------
+            // Publish new Degree Title
+            // ------------------------
+            await universityTemplate_Instance.publishDegree(degreePendingIndex, { from: universityTemplateManager.accountAddress, gas: 8500000000 });
+
+            // Get new object results
+            const degreeIssuedIndex     = await universityTemplate_Instance.degreeIssuedIndex();
+            const newDegreeIssuedObject = await universityTemplate_Instance.degreeIssued(degreeIssuedIndex);
+            const universityInformation = await universityTemplate_Instance.universityInfo();
+
+            console.log(newDegreeIssuedObject);
+
+            // Check Pending Degree Object information
+
+            // Check degreePendingNumber
+            expect(parseInt(degreePendingNumber)).to.be.equals(parseInt(degreePendingNumber)-1);
+            
+            // Check Degree information
+            expect(newDegreeIssuedObject.degree.name).to.be.equals(newUniversityDegree.name);
+            expect(newDegreeIssuedObject.degree.description).to.be.equals(newUniversityDegree.description);
+            expect(newDegreeIssuedObject.degree.legalStatement).to.be.equals(newUniversityDegree.legalStatement);
+            expect(newDegreeIssuedObject.degree.issueDate).to.be.equals(newUniversityDegree.issueDate.toString());
+            expect(newDegreeIssuedObject.degree.emissionDate).to.be.equals(newUniversityDegree.emissionDate.toString());
+            
+            // Check Owner information
+            expect(newDegreeIssuedObject.owner.name).to.be.equals(newDegreeOwner.name);
+            expect(newDegreeIssuedObject.owner.graduateNumber).to.be.equals(newDegreeOwner.graduateNumber.toString());
+            expect(newDegreeIssuedObject.owner.accountAddress).to.be.equals(newDegreeOwner.accountAddress);
+            
+            // Check University information
+            expect(newDegreeIssuedObject.university.name).to.be.equals(universityInformation.name);
+            expect(newDegreeIssuedObject.university.fullName).to.be.equals(universityInformation.fullName);
+            expect(newDegreeIssuedObject.university.country).to.be.equals(universityInformation.country);
+            expect(newDegreeIssuedObject.university.state).to.be.equals(universityInformation.state);
+            expect(newDegreeIssuedObject.university.contractAddress).to.be.equals(universityInformation.contractAddress);
+
+            // Check event information
+
+            // Subscribe to an event NewDegree
+            const filter = {
+                _degreeIssuedIndex: degreeIssuedIndex,
+                _graduatedNumber:   newDegreeIssuedObject.owner.graduateNumber,
+                _degreeName:        newDegreeIssuedObject.degree.name
+            };
+
+            // Get the event
+            const eventResult = await universityTemplate_Instance.getPastEvents("NewDegree", { filter, fromBlock: 0 });
+
+            // Check event information
+            expect(eventResult[0].returnValues._degreeIssuedIndex).to.be.equals(degreeIssuedIndex.toString());
+            expect(eventResult[0].returnValues._graduatedNumber).to.be.equals(newDegreeIssuedObject.owner.graduateNumber.toString());
+            expect(eventResult[0].returnValues._graduatedName).to.be.equals(newDegreeIssuedObject.owner.name);
+            expect(eventResult[0].returnValues._degreeName).to.be.equals(newDegreeIssuedObject.degree.name);
         });
     });
 });

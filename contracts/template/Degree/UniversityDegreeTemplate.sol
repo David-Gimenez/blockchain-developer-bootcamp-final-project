@@ -4,8 +4,8 @@ pragma solidity 0.8.4;
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 // -- State variables
 // ----------------------------------------------------------------------------------------------------------------------------------------------
-import "../libraries/StructUniversity.sol";
-import "../libraries/StructDegree.sol";
+import "../../libraries/StructUniversity.sol";
+import "../../libraries/StructDegree.sol";
 //import "../utils/Hash_EIP712_CalculationFormula.sol";
 
 /**
@@ -127,7 +127,7 @@ contract UniversityDegreeTemplate {
      * This function allows to the Degree owner to extract ethers that may have fallen into the contract by mistake by self Destruct
      */
     function extractEthers() external {
-        require(msg.sender == ownerInformation.accountAddress   ,"Not authorized.");
+        require(msg.sender == ownerInformation.accountAddress   ,"Not authorized");
         require(address(this).balance > 0                       ,"No funds to extract");
         
         uint256 ownerBalanceBeforeTransfer  = ownerInformation.accountAddress.balance;

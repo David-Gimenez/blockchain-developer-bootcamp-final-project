@@ -80,23 +80,11 @@ import "./UniversityTemplate_State.sol";
         // Check issue date information
         require(degreePending[_degreeIndex].information.degree.issueDate <= block.timestamp, "Invalid issue date");
 
-        // Load parameters for new DegreeTemplate contract in the address generated before
-        bytes memory bytecode   = abi.encodePacked(
-                                                degreeTemplateBytecode, 
-                                                abi.encode(degreePending[_degreeIndex].information),
-                                                abi.encode(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector]),
-                                                abi.encode(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean]),
-                                                abi.encode(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director])
-                                                );
-        
-        bytes32 salt            = degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt;
+        // Expected address calculated before
         address expectedAddress = degreePending[_degreeIndex].information.contractAddress;
         
         // Emit new Degree Title by creating new DegreeTemplate contract in the address generated before
-        address newDegreeContractAddress = _createContractInPrecompileAddress(bytecode, salt);
-
-        // Set emissionDate after contract creation to not alter the address with this information
-        degreePending[_degreeIndex].information.degree.emissionDate = block.timestamp;
+        address newDegreeContractAddress = _createContractInPrecompileAddress(_degreeIndex);
 
         // Check that the contract has been created in the expected address
         // It is also controled in the constructor of the new Degree contract
@@ -104,6 +92,9 @@ import "./UniversityTemplate_State.sol";
         
         // Check code exists in new contract by calling the VERSION method
         require(_getDegreeTemplateVersion(newDegreeContractAddress) >= 100, "Invalid Degree version");
+
+        // Set emissionDate after contract creation to not alter the address with this information
+        degreePending[_degreeIndex].information.degree.emissionDate = block.timestamp;
 
         // Add the DegreeInformation object to the degreeIssued mapping
         _copyDegreePendingToDegreeIssued(_degreeIndex);
@@ -116,6 +107,18 @@ import "./UniversityTemplate_State.sol";
                 ,"Degree Issued mismatch");
 
         // Delete the DegreeInformation element from the degreePending mapping
+        removePendingDegreeByIndex(_degreeIndex);
+    }
+
+    // Delete pending degree object elements
+    function removePendingDegreeByIndex(uint256 _degreeIndex) public {
+        // Delete sub struct first
+        delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Manager];
+        delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector];
+        delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean];
+        delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director];
+
+        delete degreePending[_degreeIndex].information;
         delete degreePending[_degreeIndex];
 
         // Decrease the number of pending degrees to process. This is not the index of the degreePending mapping. It is the number of the degree count pending issuance. 
@@ -242,25 +245,26 @@ import "./UniversityTemplate_State.sol";
      * The salt number used is the hash of the degreeInformation object, this way it is guaranteed that all addresses will be unique for each Degree.
      * This code is based in Solidity documentation: https://docs.soliditylang.org/en/v0.8.9/control-structures.html?highlight=create2#salted-contract-creations-create2
      */
-    function _predictDegreeContractAddress(uint256 _degreeIndex) private view returns(address) {
+    function _predictDegreeContractAddress(uint256 _degreeIndex) private view returns(address _expectedDegreeContractAddress) {
         
         // This hash will not contain the address of the new Degree Contract, instead it will contain the address of zero, but it does contain all the other information.
         // which makes a suitable unique identifier for the generation of the address of the future degree contract.
         require(degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt.length > 0, "Salt not set");
 
-        // Return the future address of the new Degree contract with the saltHash calulated 
-        return address(uint160(uint(keccak256(abi.encodePacked(
-            bytes1(0xff),
-            address(this),
-            degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt,
-            keccak256(abi.encodePacked(
-                                        degreeTemplateBytecode,
-                                        abi.encode(degreePending[_degreeIndex].information),
-                                        abi.encode(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector]),
-                                        abi.encode(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean]),
-                                        abi.encode(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director])
-            ))
-        )))));
+        // Call external contract
+        string memory methodToCallName  = "predictDegreeContractAddress(StructDegree.DegreeInformation,StructDegree.Signature,StructDegree.Signature,StructDegree.Signature,address,bytes32)";
+        bytes memory methodToCall       = abi.encodeWithSignature(methodToCallName);
+        (bool _success, bytes memory _returnData) = universityDegreeTemplate_ContainerAddress.staticcall(methodToCall);
+        if(!_success){
+            revert();
+        }
+
+        // Bytes to address
+        assembly {
+            _expectedDegreeContractAddress := mload(add(_returnData, 32))
+        } 
+        
+        // Implicit return
     }
 
     /**
@@ -271,23 +275,31 @@ import "./UniversityTemplate_State.sol";
      * Where new address = first 20 bytes of keccak256(0xff + address(this) + s + keccak256(mem[p…(p+n))) and s = big-endian 256-bit value
      * This code is based in the example provided by https://solidity-by-example.org/app/create2/
      */
-    function _createContractInPrecompileAddress(bytes memory _bytecode, bytes32 _salt) private returns(address _newDegreeContractAddress) {
+    function _createContractInPrecompileAddress(uint256 _degreeIndex) private returns(address _newDegreeContractAddress) {
         
-        // Create new Degree contract with Create2 opCode
-        assembly {
-            _newDegreeContractAddress := create2 (
-                0,                      // 0 wei sent with current call
-                add(_bytecode, 0x20),   // Actual code starts after skipping the first 32 bytes
-                mload(_bytecode),       // Load the size of code contained in the first 32 bytes
-                _salt                   // Salt from function arguments
-            )
-
-            if iszero(extcodesize(_newDegreeContractAddress)) {
-                revert(0, 0)
-            }
+        // Create new Degree contract with UniversityDegreeTemplate_Container
+        string memory methodToCallName = "CreateNewUniversityDegree(StructDegree.DegreeInformation,StructDegree.Signature,StructDegree.Signature,StructDegree.Signature,bytes32)";
+        bytes memory methodToCall = abi.encodeWithSignature(
+                                                            methodToCallName,
+                                                            degreePending[_degreeIndex].information,
+                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector],
+                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean],
+                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director],
+                                                            degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt
+                                                            );
+        
+        // Call the contract
+        (bool _success, bytes memory _returnData) = universityDegreeTemplate_ContainerAddress.call(methodToCall);
+        if(!_success){
+            revert();
         }
 
-        return _newDegreeContractAddress;
+        // Bytes to address
+        assembly {
+            _newDegreeContractAddress := mload(add(_returnData, 32))
+        } 
+        
+        // Implicit return
     }
 
     /**

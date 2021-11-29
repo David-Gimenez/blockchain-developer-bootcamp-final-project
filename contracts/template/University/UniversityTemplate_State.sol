@@ -22,10 +22,9 @@ import "../../libraries/StructDegree.sol";
     // University information variables
     StructUniversity.UniversityCollege public universityInfo;   // Issuer university information
 
-    // Degree template information
-    bytes   public degreeTemplateBytecode;
-    uint256 public degreeTemplateVersion; 
-    
+    // University Degree Template Container address
+    address public universityDegreeTemplate_ContainerAddress;
+        
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Contract mapping
     // ----------------------------------------------------------------------------------------------------------------------------------------------

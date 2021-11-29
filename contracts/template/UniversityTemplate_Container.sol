@@ -31,7 +31,7 @@ contract UniversityTemplate_Container {
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     constructor(address _universityBuilderContractAddress) {
         // Check
-        require(_universityBuilderContractAddress != address(0));
+        require(_universityBuilderContractAddress != address(0), "Invalid address");
 
         // Set new value
         universityBuilderContractAddress = _universityBuilderContractAddress;

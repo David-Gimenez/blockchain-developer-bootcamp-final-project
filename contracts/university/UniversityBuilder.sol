@@ -61,7 +61,7 @@ contract UniversityBuilder {
         // Require valid version number
         require(_universityTemplateVersion > 0
                 &&
-                _universityTemplateContainerAddress != address(0), "Invalid version.");
+                _universityTemplateContainerAddress != address(0), "Invalid version");
 
         // Set state variables
         universityTemplateContainer  = UniversityTemplate_Container(_universityTemplateContainerAddress);
@@ -91,7 +91,6 @@ contract UniversityBuilder {
         address newContractAddress;
         
         // Encode the university template bytecode along with the constructor parameters
-        //bytes memory UniversityTemplateByteCode = type(UniversityTemplate).creationCode;
         bytes memory UniversityTemplateByteCode = universityTemplateContainer.getUniversityTemplateBytecode();
         bytes memory newContractBytecode = abi.encodePacked(UniversityTemplateByteCode, abi.encode(_universityCollege, _universityManager));
         
