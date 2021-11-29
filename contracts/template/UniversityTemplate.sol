@@ -32,6 +32,7 @@ import "./University/UniversityTemplate_State.sol";
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // The external ID allows you to track a request from the frontEnd
     event NewPendingDegree(uint256 indexed _degreePendingIndex, uint256 indexed _externalID, uint256 indexed _graduatedNumber, string _degreeName);
+    event NewPendingDegreeSignature(uint256 indexed _degreePendingIndex, address indexed _signatureAddress);
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constructor
@@ -118,10 +119,12 @@ import "./University/UniversityTemplate_State.sol";
         isUniversityActive();
         onlyUniversityManager();
 
-        callExternalContract(logicContractAddress);
-
         // Emite the event for the new pending Degree
-        emit NewPendingDegree(degreePendingIndex, _externalID, _owner.graduateNumber, _degree.name);
+        uint256 newDegreePendingIndex = degreePendingIndex + 1;
+        emit NewPendingDegree(newDegreePendingIndex, _externalID, _owner.graduateNumber, _degree.name);
+
+        // Call logical contract
+        callExternalContract(logicContractAddress);
     }
 
     function addSignatureToPendingDegree(uint256 _degreeIndex, bytes memory _signature) external {
@@ -130,7 +133,12 @@ import "./University/UniversityTemplate_State.sol";
         onlyUniversitySigner();
         isValidPendingDegreeIndex(_degreeIndex);
         isValidPendingDegree(_degreeIndex);
-
+        isValidSignature(_degreeIndex, _signature);
+        
+        // Emite the event for the new pending Degree
+        emit NewPendingDegreeSignature(_degreeIndex, msg.sender);
+        
+        // Call logical contract
         callExternalContract(logicContractAddress);
     }
 
@@ -148,6 +156,17 @@ import "./University/UniversityTemplate_State.sol";
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- External Functions - Degree process
     // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+    function getEthSignedMessageHash(uint256 _degreeIndex) external view returns(bytes32) {
+        // Validation check
+        isUniversityActive();
+        onlyUniversitySigner();
+        isValidPendingDegreeIndex(_degreeIndex);
+        isValidPendingDegree(_degreeIndex);
+
+        // Return the EthSignedMessageHash to validate signatures
+        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", degreePending[_degreeIndex].information.hash_EIP712_ForSigning));
+    }
 
     function getPendingDegreeSignature(uint256 _degreeIndex, StructDegree.AuthorityPosition _authorityPosition) external view returns(StructDegree.Signature memory) {
         // Validation check
@@ -199,9 +218,9 @@ import "./University/UniversityTemplate_State.sol";
             returndatacopy(ptr, 0, size)
 
             // (4) forward return data back to caller
-            //switch result
-            //case 0 { revert(ptr, size) }
-            //default { return(ptr, size) }
+            switch result
+            case 0 { revert(ptr, size) }
+            default { return(ptr, size) }
         }
     }
 
@@ -259,4 +278,42 @@ import "./University/UniversityTemplate_State.sol";
         require(degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director].signature.length > 0, "Director's signature is missing");
     }
     
+    /**
+   * @dev isValidSignature: Recover signer address from a message by using his signature
+   * @param _degreeIndex to get the hash bytes32 message, the hash is the signed message. What is recovered is the signer address.
+   * @param _signature bytes signature, the signature is generated using web3.eth.sign()
+   */
+    function isValidSignature(uint256 _degreeIndex, bytes memory _signature) private view {
+        // Check signature length
+        require(_signature.length == 65, "Invalid signature length");
+
+        // Variables to retrieve the signature information
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+
+        // Divide the signature in r, s and v variables
+        assembly {
+            r := mload(add(_signature, 32))
+            s := mload(add(_signature, 64))
+            v := byte(0, mload(add(_signature, 96)))
+        }
+
+        // Version of signature should be 27 or 28, but 0 and 1 are also possible versions
+        if (v < 27) {
+            v += 27;
+        }
+
+        // CHeck version
+        require(v == 27 || v == 28, "Incorrect version of the signature");
+
+        // web3.eth.sign when signing a hash adds the Ethereum prefix. This prefix must be added at the time of validation
+        bytes32 signedHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", degreePending[_degreeIndex].information.hash_EIP712_ForSigning));
+
+        // Retrieve the address of the signer of the signature
+        address retrievedSigner = ecrecover(signedHash, v, r, s);
+
+        // Validate signer. The signer must be the message sender
+        require(msg.sender == retrievedSigner, "Invalid signer of the signature");
+    }
  }

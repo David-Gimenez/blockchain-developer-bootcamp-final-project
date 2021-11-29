@@ -5,7 +5,6 @@ pragma solidity 0.8.4;
 // -- Import contracts
 // ----------------------------------------------------------------------------------------------------------------------------------------------
 import "./UniversityTemplate_State.sol";
-import "../../libraries/SignatureVerification.sol";
 
 /**
  * @title   UniversityTemplate_Logic
@@ -55,20 +54,10 @@ import "../../libraries/SignatureVerification.sol";
                 && newDegreeObject.information.hash_EIP712_ForSigning.length        > 0, "Assignation mismatch");
     }
 
+    // ----------------------------------------------------------------------------------
+    // -- Add Signature
+    // ----------------------------------------------------------------------------------
     function addSignatureToPendingDegree(uint256 _degreeIndex, bytes memory _signature) external {
-
-        // ----------------------------------------------------------------------------------
-        // -- Signature validation
-        // ----------------------------------------------------------------------------------
-        // Check signature length
-        require(_signature.length == 65, "Invalid sig. length");
-
-        // Verify signature
-        require(SignatureVerification.verifySignature(degreePending[_degreeIndex].information.hash_EIP712_ForSigning, _signature), "Invalid signature");
-        
-        // ----------------------------------------------------------------------------------
-        // -- Add Signature
-        // ----------------------------------------------------------------------------------
         // Get the AuthrityPosition of the msg sender account
         StructDegree.AuthorityPosition authorityPosition = _getAuthorityPersonPosition();
 
@@ -185,7 +174,7 @@ import "../../libraries/SignatureVerification.sol";
         StructDegree.Owner                  storage _owner      = degreePending[_degreeIndex].information.owner;
         StructUniversity.UniversityCollege  storage _university = degreePending[_degreeIndex].information.university;
 
-        bytes32 domainSeparatorHash = keccak256(abi.encode(
+        bytes32 domainSeparatorHash = keccak256(abi.encodePacked(
                                                 StructDegree.DOMAIN_SEPARATOR_HASH,
                                                 keccak256(bytes("DegreeCertificationProtocole")),
                                                 keccak256(abi.encode(VERSION)),
@@ -195,7 +184,7 @@ import "../../libraries/SignatureVerification.sol";
                                                 )
                                         );
         
-        bytes32 degreeTypeHash = keccak256(abi.encode(
+        bytes32 degreeTypeHash = keccak256(abi.encodePacked(
                                                 StructDegree.DEGREE_TYPE_HASH,
                                                 keccak256(bytes(_degree.name)),
                                                 keccak256(bytes(_degree.description)),
@@ -204,7 +193,7 @@ import "../../libraries/SignatureVerification.sol";
                                                 )
                                         );
         
-        bytes32 ownerTypeHash = keccak256(abi.encode(
+        bytes32 ownerTypeHash = keccak256(abi.encodePacked(
                                                 StructDegree.OWNER_TYPE_HASH,
                                                 keccak256(bytes(_owner.name)),
                                                 _owner.graduateNumber,
@@ -212,7 +201,7 @@ import "../../libraries/SignatureVerification.sol";
                                                 )
                                         );
         
-        bytes32 universityCollegeTypeHash = keccak256(abi.encode(
+        bytes32 universityCollegeTypeHash = keccak256(abi.encodePacked(
                                                 StructDegree.UNIVERSITY_COLLEGE_TYPE_HASH,
                                                 keccak256(bytes(_university.name)),
                                                 keccak256(bytes(_university.fullName)),
@@ -223,7 +212,7 @@ import "../../libraries/SignatureVerification.sol";
                                         );
 
         // DegreeInformation object complete hash
-        bytes32 degreeInformationTypeHash = keccak256(abi.encode(
+        bytes32 degreeInformationTypeHash = keccak256(abi.encodePacked(
                                                 StructDegree.DEGREE_INFORMATION_TYPE_HASH,
                                                 degreeTypeHash,
                                                 ownerTypeHash,
@@ -231,14 +220,18 @@ import "../../libraries/SignatureVerification.sol";
                                                 degreePending[_degreeIndex].information.contractAddress
                                                 )
                                             );
+
+
+        
         
         // Final hash: "\x19\x01" ‖ domainSeparator ‖ hashStruct(message)
         // EIP-712 requires that the signature be produced by signing a keccak256 hash with the following prefix: 
+        // At validation time:
         // For string message hash => "\x19Ethereum Signed Message\n" + len(msg) + msg (example: "\x19Ethereum Signed Message:\n32")
         // For struct message hash => "\x19\x01" + domainSeparatorHash + hashStruct(message)
         // Source: https://eips.ethereum.org/EIPS/eip-712
         // Note: We need to use `encodePacked` here instead of `encode`.
-        bytes32 degreeInformationTypeHash_EIP712 = keccak256(abi.encodePacked("\x19\x01", domainSeparatorHash,  degreeInformationTypeHash));
+        bytes32 degreeInformationTypeHash_EIP712 = keccak256(abi.encodePacked(domainSeparatorHash,  degreeInformationTypeHash));
         
         // Return the keccak256 hash of DegreeInformation struct type object with EIP-712 codification 
         return degreeInformationTypeHash_EIP712;

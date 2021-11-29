@@ -233,10 +233,14 @@ contract("University Template contract test", async accounts => {
                 accountAddress: accounts[7]    // I take the index 7 to represent the graduate student
             }
  
+            // Get Manager account, corresponde to the accounts[5] address
+            const managerAccount = await universityTemplate_Instance.authorities(0); // 0 It is the Manager Authority Position index
+            expect(managerAccount.accountAddress).to.be.equals(accounts[5]);
+            
             // Create new pending degree object
             await universityTemplate_Instance.addPendingDegree.sendTransaction(
                 newUniversityDegree, newDegreeOwner, externalID, 
-                { from: accounts[5], gas: 8500000000 }  // 5 is the new manager
+                { from: managerAccount.accountAddress, gas: 8500000000 }  // 5 is the new manager
             );
             
             // Subscribe to an event NewPendingDegree
@@ -246,13 +250,15 @@ contract("University Template contract test", async accounts => {
             };
 
             // Get the event
+            const currentPendingDegreeIndex = await universityTemplate_Instance.degreePendingIndex();
             const eventResult = await universityTemplate_Instance.getPastEvents("NewPendingDegree", { filter, fromBlock: 0 });
 
             // Check event information
+            expect(eventResult[0].returnValues._degreePendingIndex).to.be.equals(currentPendingDegreeIndex.toString());
             expect(eventResult[0].returnValues._externalID).to.be.equals(externalID.toString());
             expect(eventResult[0].returnValues._graduatedNumber).to.be.equals(graduatedNumber.toString());
             expect(eventResult[0].returnValues._degreeName).to.be.equals(degreeName);
-
+            
             // Get Pending Degree object
             const degreePendingIndex    = eventResult[0].returnValues._degreePendingIndex;
             const pendingDegreeObject   = await universityTemplate_Instance.degreePending(degreePendingIndex);
@@ -298,32 +304,59 @@ contract("University Template contract test", async accounts => {
 
         it("Add signature to pending Degree test", async () => {
             // Get degree object information
-            const degreePendingIndex    = 1;   // Requiere the previos test to work
-            const pendingDegreeObject   = await universityTemplate_Instance.degreePending(degreePendingIndex);
-
+            const degreePendingIndex        = 1;   // Requiere the previos test to work
+            const pendingDegreeObject       = await universityTemplate_Instance.degreePending(degreePendingIndex);
+            const universityTemplateRector  = await universityTemplate_Instance.authorities(1); // 1 It is the Rector position index
+            
             // Check not empty null or undefined
             expect(pendingDegreeObject.hash_EIP712_ForSigning).not.to.be.empty;
             expect(pendingDegreeObject.hash_EIP712_ForSigning).not.to.be.null;
             expect(pendingDegreeObject.hash_EIP712_ForSigning).not.to.be.undefined;
 
-            // Sign hash by Rector index 4
-            const rectorSignature = await web3.eth.sign(pendingDegreeObject.hash_EIP712_ForSigning, accounts[4]);
-
-            // Check not empty null or undefined
+            // Sign hash by Rector accounts index 4. We user signTypedData beacuase the message to be signed is the hash of a struct
+            const rectorSignature = await web3.eth.sign(pendingDegreeObject.hash_EIP712_ForSigning, universityTemplateRector.accountAddress);
+            
+            // Check generated signature no to be null empty or undefined
             expect(rectorSignature).not.to.be.empty;
             expect(rectorSignature).not.to.be.null;
             expect(rectorSignature).not.to.be.undefined;
-            
+
+            // Check account signer of generated signature 
+            const accountVerification = await web3.eth.accounts.recover(pendingDegreeObject.hash_EIP712_ForSigning, rectorSignature);
+            expect(accountVerification, "Signature account address mismatch").to.be.equals(universityTemplateRector.accountAddress);
+
+            // To check the signature off chain together with the rectorSignature
+            //const messageHashToValidate = await universityTemplate_Instance.getEthSignedMessageHash(degreePendingIndex, { from: universityTemplateRector.accountAddress });
+                        
             // Add signature to pending degree. It must be sent by the same account that signed the hash
-            const universityTemplateRector = await universityTemplate_Instance.authorities(1);
-            console.log(universityTemplateRector, accounts[4]);
-            await universityTemplate_Instance.addSignatureToPendingDegree.sendTransaction(degreePendingIndex, rectorSignature, { from: accounts[4] });
+            await universityTemplate_Instance.addSignatureToPendingDegree(
+                degreePendingIndex, rectorSignature, 
+                { from: universityTemplateRector.accountAddress, gas: 8500000000 }
+            );
+            
+            // Subscribe to an event NewPendingDegree
+            const filter = {
+                _degreePendingIndex:    degreePendingIndex,
+                _signatureAddress:      universityTemplateRector.accountAddress
+            };
+
+            // Get the event
+            const eventResult = await universityTemplate_Instance.getPastEvents("NewPendingDegreeSignature", { filter, fromBlock: 0 });
+
+            // Check event information
+            expect(eventResult[0].returnValues._degreePendingIndex).to.be.equals(degreePendingIndex.toString());
+            expect(eventResult[0].returnValues._signatureAddress).to.be.equals(universityTemplateRector.accountAddress);
             
             // Check that the signature has been added to the pending degree object
-            const authorityPosition = 1; // 1 It is the Rector signature
-            const pendingDegreeObjectSignature = await universityTemplate_Instance.getPendingDegreeSignature(degreePendingIndex, authorityPosition, { from: accounts[4] });
-            console.log(pendingDegreeObjectSignature); 
-            expect(pendingDegreeObjectSignature).to.be.equals(rectorSignature);
+            const authorityPosition = 1; // 1 It is the Rector Position
+            const pendingDegreeObjectSignature = await universityTemplate_Instance.getPendingDegreeSignature(
+                degreePendingIndex, authorityPosition, { from: universityTemplateRector.accountAddress }
+            );
+            
+            //console.log(pendingDegreeObjectSignature); 
+            expect(pendingDegreeObjectSignature.signer.name).to.be.equals("Rector");
+            expect(pendingDegreeObjectSignature.signer.accountAddress).to.be.equals(universityTemplateRector.accountAddress);
+            expect(pendingDegreeObjectSignature.signature).to.be.equals(rectorSignature);
         });
     });
 });

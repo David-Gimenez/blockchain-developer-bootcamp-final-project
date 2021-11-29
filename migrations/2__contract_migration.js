@@ -6,9 +6,8 @@ const transferOnDestroy_Contract            = artifacts.require("TransferOnDestr
 
 const universityTemplateGovernance_Contract = artifacts.require("UniversityTemplate_Governance");
 const UniversityTemplate_Logic_Contract     = artifacts.require("UniversityTemplate_Logic");
-const SignatureVerification_Library         = artifacts.require("SignatureVerification");
 
-module.exports = async function (deployer, network, accounts) {
+module.exports = async function (deployer, network) {
     
     // Deploy UniversityBuilder Contract
     await deployer.link(StructUniversity_library, universityBuilder_contract);
@@ -19,13 +18,9 @@ module.exports = async function (deployer, network, accounts) {
     await deployer.deploy(universityTemplateContainer_contract, universityBuilderInstance.address);
 
     // Deploy UniversityTemplate_Governance contract
-    //await deployer.deploy(universityTemplateGovernance_Contract, accounts[0], {gas: 8500000000});
     await deployer.deploy(universityTemplateGovernance_Contract, {gas: 8500000000});
 
     // Deploy SignatureVerification library and UniversityTemplates_Logic contract
-    await deployer.deploy(SignatureVerification_Library);
-    await deployer.link(SignatureVerification_Library, UniversityTemplate_Logic_Contract);
-    //await deployer.deploy(UniversityTemplate_Logic_Contract, accounts[0], {gas: 8500000000});
     await deployer.deploy(UniversityTemplate_Logic_Contract, {gas: 8500000000});
   
     if (network === 'develop') {
