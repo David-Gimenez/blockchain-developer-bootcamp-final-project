@@ -31,6 +31,8 @@
                 
                 <div id="createUniversityDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'createUniversityContentDiv')">Create University Contract</div>
 
+                <div id="queryUniversityDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'queryUniversityContentDiv')">Query University Contract</div>
+
                 <div id="extractEthersDiv" class="menuOptionDivClass"onclick="selectMenuOption(this, 'extractEthersContentDiv')">Extract ethers from contract</div>
             </div>
             
@@ -57,14 +59,14 @@
                     <div id="OwnerAccountValue" class="divValue">...</div>
                 </div>
                 
-                <div id="NumberOfUniversitiesDiv" class="divInformation">
-                    <div class="divTitle">UNIVERSITIES CREATED BY THE CONTRACT:</div>
-                    <div id="numberOfUniversitiesValue" class="divValue">...</div>
-                </div>
-                
                 <div id="UniversityTemplateAddressDiv" class="divInformation">
                     <div class="divTitle">UNIVERSITY TEMPLATE ADDRESS:</div>
                     <div id="UniversityTemplateAddressValue" class="divValue">...</div>
+                </div>
+
+                <div id="NumberOfUniversitiesDiv" class="divInformation">
+                    <div class="divTitle">UNIVERSITIES CREATED BY THE CONTRACT:</div>
+                    <div id="numberOfUniversitiesValue" class="divValue">...</div>
                 </div>
             </div>
 
@@ -107,13 +109,65 @@
                     <input id="managerNameInput" type="text" class="inputBox">
                 </div>
 
-                <div id="contractAddressDiv" class="divInformation">
-                    <div class="divInputBox">New contract address:</div>
-                    <div id="contractAddressValue" class="divValue">...</div>
+                <div id="managerAddressDiv" class="divInformation">
+                    <div class="divInputBox">Manager address:</div>
+                    <input id="managerAddressInput" type="text" class="inputBox">
+                </div>
+
+                <div id="newContractInformationDiv" class="divInformation">
+                    <div class="divInputBox">New contract Information:</div>
+                    <textarea id="newContractInformationValue" type="text" class="textAreaBox"></textarea>
                 </div>
 
                 <div id="saveButtonDiv" class="divInformation">
                     <button id="createButton" class="saveButton">Create</button>
+                </div>
+            </div>
+
+            <div id="queryUniversityContentDiv" class="">
+
+                <div id="createdUniversitiesDiv" class="divInformation">
+                    <div class="divInputBox">Authority Position:</div>
+                    <select id="createdUniversitiesSelect"></select>
+                </div>
+
+                <div id="queryButtonDiv" class="divInformation">
+                    <button id="queryButton" class="saveButton">Query</button>
+                </div>
+                
+                <div id="universityContractAddressDiv" class="divInformation">
+                    <div class="divInputBox">University Contract Address:</div>
+                    <div id="universityContractAddressValue" class="divValue">...</div>
+                </div>
+                
+                <div id="universityNameDiv" class="divInformation">
+                    <div class="divInputBox">University Name:</div>
+                    <div id="universityNameValue" class="divValue">...</div>
+                </div>
+                
+                <div id="universityFullNameDiv" class="divInformation">
+                    <div class="divInputBox">Full name:</div>
+                    <div id="universityFullNameValue" class="divValue">...</div>
+                </div>
+                
+                <div id="universityCountryDiv" class="divInformation">
+                    <div class="divInputBox">Country:</div>
+                    <div id="universityCountryValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityStateDiv" class="divInformation">
+                    <div class="divInputBox">State:</div>
+                    <div id="universityStateValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityManagerNameDiv" class="divInformation">
+                    <div class="divInputBox">Manager name:</div>
+                    <div id="universityManagerNameValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityManagerAddressDiv" class="divInformation">
+                    <div class="divInputBox">Manager address:</div>
+                    <div id="universityManagerAddressValue" class="divValue">...</div>
                 </div>
             </div>
 

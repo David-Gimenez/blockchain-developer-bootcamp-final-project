@@ -13,8 +13,13 @@
 
     <body class="bodyClass">
 
+        <!-- Header Section ------------------------------------------------------------------------------ -->
+        <section id="headerSection" class="headerClass">
+            <div id="homeDiv" class="homeLink" onclick="location.href='index.html';">Home</div>
+            <div id="metaMaskDiv" class="connect">Connet MetaMask</div>
+        </section>
+
         <!-- Main Section ------------------------------------------------------------------------------ -->
-        
         <section id="mainSection" class="mainSectionClass">
             <div id="menuDiv" class="menuDivClass">
                 <p class="menuTitleClass">System Control Panel</p>
@@ -22,23 +27,77 @@
                 <!-- Menu options ---------------------------------------------------------------------- -->
                 <div id="statusDiv" class="menuOptionDivClass menuOptionDivClassActive" onclick="selectMenuOption(this, 'statusContentDiv')">Status</div>
 
+                <div id="administrationDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'administrationContentDiv')">Administration</div>
+
+                <div id="authorityPersonDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'authorityPersonContentDiv')">Add Authority Person</div>
+
                 <div id="addPendingDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'addPendingDegreeContentDiv')">Add Degree to process</div>
                 
                 <div id="signPendingDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'signPendingDegreeContentDiv')">Sign Pending Degree</div>
 
                 <div id="publishDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'publishDegreeContentDiv')">Publish Degree</div>
-                
-                <div id="administrationDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'administrationContentDiv')">Administration</div>
 
-                <div id="authorityPersonDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'authorityPersonContentDiv')">Add Authority Person</div>
-
-                <div id="homeDiv" class="menuOptionDivClass" onclick="location.href='index.html';">Home</div>
             </div>
             
             <!-- Menu Content ---------------------------------------------------------------------- -->
             <div id="contentDiv" class="contentDivClass"></div>
 
             <div id="statusContentDiv" class="contentOptionDivAnimationClass">
+
+                <div id="universityContractAddressDiv" class="divInformation">
+                    <div class="divTitle">UNIVERSITY CONTRACT ADDRESS:</div>
+                    <div id="universityContractAddressValue" class="divValue">...</div>
+                </div>
+
+                <div id="currentVersionDiv" class="divInformation">
+                    <div class="divTitle">CONTRACT VERSION:</div>
+                    <div id="currentVersionValue" class="divValue">...</div>
+                </div>
+                
+                <div id="universityNameDiv" class="divInformation">
+                    <div class="divTitle">UNIVERSITY NAME:</div>
+                    <div id="universityNameValue" class="divValue">...</div>
+                </div>
+                
+                <div id="universityFullNameDiv" class="divInformation">
+                    <div class="divTitle">UNIVERSITY FULL NAME:</div>
+                    <div id="universityFullNameValue" class="divValue">...</div>
+                </div>
+                
+                <div id="universityCountryDiv" class="divInformation">
+                    <div class="divTitle">UNIVERSITY COUNTRY:</div>
+                    <div id="universityCountryValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityStateDiv" class="divInformation">
+                    <div class="divTitle">UNIVERSITY STATE:</div>
+                    <div id="universityStateValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityGovernanceContractDiv" class="divInformation">
+                    <div class="divTitle">GOVERNANCE CONTRACT ADDRESS:</div>
+                    <div id="universityGovernanceContractValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityLogicContractDiv" class="divInformation">
+                    <div class="divTitle">LOGIC CONTRACT ADDRESS:</div>
+                    <div id="universityLogicContractValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityDegreeContractDiv" class="divInformation">
+                    <div class="divTitle">UNIVERSITY DEGREE CONTRACT ADDRESS:</div>
+                    <div id="universityDegreeContractValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityManagerNameDiv" class="divInformation">
+                    <div class="divTitle">MANAGER NAME:</div>
+                    <div id="universityManagerNameValue" class="divValue">...</div>
+                </div>
+
+                <div id="universityManagerAddressDiv" class="divInformation">
+                    <div class="divTitle">MANAGER ADDRESS:</div>
+                    <div id="universityManagerAddressValue" class="divValue">...</div>
+                </div>
                 
                 <div id="numberDegreeIssuedDiv" class="divInformation">
                     <div class="divTitle">NUMBER OF DEGREES ISSUED:</div>
@@ -48,6 +107,54 @@
                 <div id="numberDegreesRequestedDiv" class="divInformation">
                     <div class="divTitle">NUMBER OF DEGREES REQUESTED:</div>
                     <div id="numberdegreesrequestedValue" class="divValue">...</div>
+                </div>
+            </div>
+
+            <div id="administrationContentDiv" class="">
+                
+                <div id="governanceContractAddressDiv" class="divInformation">
+                    <div class="divInputBox">Governance Contract Address:</div>
+                    <input id="governanceContractAddressInput" type="text" class="inputBox">
+                    <button id="setGovernanceContractAddressButton" class="saveButton">Save</button>
+                </div>
+                
+                <div id="logicContractAddressDiv" class="divInformation">
+                    <div class="divInputBox">Logic Contract Address:</div>
+                    <input id="logicContractAddressInput" type="text" class="inputBox">
+                    <button id="setLogicContractAddressButton" class="saveButton">Save</button>
+                </div>
+
+                <div id="degreeTemplateBycodeDiv" class="divInformation">
+                    <div class="divTitleBox">Degree Template Contract Bytecode:</div>
+                    <textarea id="degreeTemplateBycodeInput" type="text" class="textAreaBox"></textarea>
+                    <button id="setDegreeTemplateBycodeButton" class="saveButton">Save</button>
+                </div>
+            </div>
+
+            <div id="authorityPersonContentDiv" class="">
+                
+                <div id="authorityPositionDiv" class="divInformation">
+                    <div class="divInputBox">Authority Position:</div>
+                    <select id="authorityPositionSelect">
+                        <option value="Manager" selected>Manager</option>
+                        <option value="Rector">Rector</option>
+                        <option value="Dean">Dean</option>
+                        <option value="Director">Director</option>
+                        </select>
+                </div>
+                
+                <div id="authorityPersonNameDiv" class="divInformation">
+                    <div class="divInputBox">Authority Person Name:</div>
+                    <input id="authorityPersonNameInput" type="text" class="inputBox">
+                </div>
+
+                <div id="authorityPersonAddressDiv" class="divInformation">
+                    <div class="divInputBox">Authority Person Address:</div>
+                    <input id="authorityPersonAddressInput" type="text" class="inputBox">
+                </div>
+
+                <div id="addButtonDiv" class="divInformation">
+                    <button id="addButton" class="saveButton">Add Authority Person</button>
                 </div>
             </div>
 
@@ -171,55 +278,6 @@
                     <button id="publishButton" class="saveButton">Publish Contract</button>
                 </div>
             </div>
-
-            <div id="administrationContentDiv" class="">
-                
-                <div id="governanceContractAddressDiv" class="divInformation">
-                    <div class="divInputBox">Governance Contract Address:</div>
-                    <input id="governanceContractAddressInput" type="text" class="inputBox">
-                    <button id="setGovernanceContractAddressButton" class="saveButton">Save</button>
-                </div>
-                
-                <div id="logicContractAddressDiv" class="divInformation">
-                    <div class="divInputBox">Logic Contract Address:</div>
-                    <input id="logicContractAddressInput" type="text" class="inputBox">
-                    <button id="setLogicContractAddressButton" class="saveButton">Save</button>
-                </div>
-
-                <div id="degreeTemplateBycodeDiv" class="divInformation">
-                    <div class="divTitleBox">Degree Template Contract Bytecode:</div>
-                    <textarea id="degreeTemplateBycodeInput" type="text" class="textAreaBox"></textarea>
-                    <button id="setDegreeTemplateBycodeButton" class="saveButton">Save</button>
-                </div>
-            </div>
-
-            <div id="authorityPersonContentDiv" class="">
-                
-                <div id="authorityPositionDiv" class="divInformation">
-                    <div class="divInputBox">Authority Position:</div>
-                    <select id="authorityPositionSelect">
-                        <option value="Manager" selected>Manager</option>
-                        <option value="Rector">Rector</option>
-                        <option value="Dean">Dean</option>
-                        <option value="Director">Director</option>
-                        </select>                    
-                </div>
-                
-                <div id="authorityPersonNameDiv" class="divInformation">
-                    <div class="divInputBox">Authority Person Name:</div>
-                    <input id="authorityPersonNameInput" type="text" class="inputBox">
-                </div>
-
-                <div id="authorityPersonAddressDiv" class="divInformation">
-                    <div class="divInputBox">Authority Person Address:</div>
-                    <input id="authorityPersonAddressInput" type="text" class="inputBox">
-                </div>
-
-                <div id="addButtonDiv" class="divInformation">
-                    <button id="addButton" class="saveButton">Add Authority Person</button>
-                </div>
-            </div>
-
         </section>
 
         <!-- Footer Section ------------------------------------------------------------------------------ -->
@@ -231,5 +289,7 @@
 
         <!-- Script Section ------------------------------------------------------------------------------ -->
         <script class="u-script" type="text/javascript" src="./js/menu.js" defer=""></script>
+        <script class="u-script" type="text/javascript" src="./js/university.js" defer=""></script>
+        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
     </body>
 </html>

@@ -77,11 +77,13 @@ contract UniversityBuilder {
         
         // Require valid university manager address
         require(//universityTemplateAddress                   != address(0)
-            bytes(_universityCollege.name).length          > 0 
-            && bytes(_universityCollege.fullName).length   > 0 
-            && bytes(_universityCollege.country).length    > 0 
-            && bytes(_universityCollege.state).length      > 0
-            && _universityManager.accountAddress           != address(0), "Empty bytecode, parameters or invalid address for manager.");
+            bytes(_universityCollege.name).length           > 0 
+            && bytes(_universityCollege.fullName).length    > 0 
+            && bytes(_universityCollege.country).length     > 0 
+            && bytes(_universityCollege.state).length       > 0
+            
+            && bytes(_universityManager.name).length        > 0
+            && _universityManager.accountAddress            != address(0), "Empty bytecode, parameters or invalid address for manager.");
         
         // Create new University contract
         address newContractAddress;
@@ -114,7 +116,6 @@ contract UniversityBuilder {
         onlyOwner();
         require(address(this).balance > 0,"No funds to extract");
         
-        //uint256 ownerBalanceBeforeTransfer  = owner.balance;
         uint256 contractBalanceToTransfer   = address(this).balance;
         
         payable(owner).transfer(contractBalanceToTransfer);
