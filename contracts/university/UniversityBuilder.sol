@@ -23,10 +23,9 @@ contract UniversityBuilder {
     uint256 public constant VERSION = 100;   // Version of the contract
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
-    // -- State variables
+    // -- Contract owner variable
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     address public owner;
-    uint256 public universityTemplateVersion;
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Contracts variables
@@ -53,19 +52,16 @@ contract UniversityBuilder {
 
     /**
      * Set the bytecode of the university contract template.
-     * @param _universityTemplateVersion unit256 representing the bytecode version of the compiled UniversityTemplate contract code.
+     * @param _universityTemplateContainerAddress address of the UniversityTemplate contract with the bytecode version to be compiled.
      */
-    function setUniversityTemplate(address _universityTemplateContainerAddress, uint256 _universityTemplateVersion) external {
+    function setUniversityTemplate(address _universityTemplateContainerAddress) external {
         // Check owner call
         onlyOwner();
         // Require valid version number
-        require(_universityTemplateVersion > 0
-                &&
-                _universityTemplateContainerAddress != address(0), "Invalid version");
+        require(_universityTemplateContainerAddress != address(0), "Invalid version");
 
         // Set state variables
         universityTemplateContainer  = UniversityTemplate_Container(_universityTemplateContainerAddress);
-        universityTemplateVersion   = _universityTemplateVersion;
     }
 
     /**

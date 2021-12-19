@@ -93,7 +93,7 @@ body:not(.loaded) #slider img {
     left: 25%;
     height: 75%;
     width: 70%;
-    margin-top: 3%;
+    margin-top: 5%;
     margin-bottom: 3%;
     margin-right: 3%;
     z-index: 2;
@@ -108,7 +108,7 @@ body:not(.loaded) #slider img {
     display: flex;
     flex-direction:column;
     vertical-align: middle;
-    padding-top: 5%;
+    padding-top: 10%;
     padding-left: 5%;
 }
 

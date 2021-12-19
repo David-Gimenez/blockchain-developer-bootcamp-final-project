@@ -51,17 +51,14 @@ contract("University Builder contract test", async accounts => {
     
     describe("Set state test", async () => {
         it("Method: setUniversityTemplateVersion", async () => {
-            // Set University Template bytecode and version
-            const universityTemplateVersion = 100;            
-            const tx = await universityBuilder_Instance.setUniversityTemplate(universityTemplateContainer_Instance.address, universityTemplateVersion);
+            // Set University Template containr contract with bytecode
+            const tx = await universityBuilder_Instance.setUniversityTemplate(universityTemplateContainer_Instance.address);
             
             // Get current university template information
             const actualUniversityTemplateContractAddress   = await universityBuilder_Instance.universityTemplateContainer();
-            const actualUniversityTemplateContractVersion   = (await universityBuilder_Instance.universityTemplateVersion()).words[0];;
                         
             // Assignation check
             expect(actualUniversityTemplateContractAddress).to.be.equal(universityTemplateContainer_Instance.address);
-            expect(actualUniversityTemplateContractVersion).to.be.equal(universityTemplateVersion);
         });
         //-----------------------------------------------------------
         it("Method: createUniversity", async () => {

@@ -1,0 +1,20 @@
+{
+  "develop": {
+    "deployDate": "2021-12-19T02:53:41.893Z",
+    "deployer_accountAddress": "0x65F979F898d54977eb3717181dC805EC7B23F647",
+    "universityBuilder_contractAddress": "0x6dec23f85302FF8B35ef66C8a35c78cd344B489C",
+    "universityTemplateContainer_contractAddress": "0x5BEA3a9df82d3571702459EB5B3cC55203C0Cf39",
+    "universityTemplateGovernance_Contract": "0xc50De62e1A23bE08B5d7f734eC0A2c023bC404e5",
+    "UniversityTemplate_Logic_Contract": "0xD12aCB9BC30851eE929e61A4cd43112C8109659b",
+    "universityTemplateDegreeContainer_contract": "0x4be10E5eaFbA13f839440F6772683e69903BFcFb"
+  },
+  "rinkeby": {
+    "deployDate": "",
+    "deployer_accountAddress": "",
+    "universityBuilder_contractAddress": "",
+    "universityTemplateContainer_contractAddress": "",
+    "universityTemplateGovernance_Contract": "",
+    "UniversityTemplate_Logic_Contract": "",
+    "universityTemplateDegreeContainer_contract": ""
+  }
+}

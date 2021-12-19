@@ -4,16 +4,22 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
+        <link rel="stylesheet" href="./css/header.css" media="screen">
         <link rel="stylesheet" href="./css/system.css" media="screen"> 
         <link rel="stylesheet" href="./css/footer.css" media="screen"> 
 
         <title>System Control Panel</title>
     </head>
 
-    <body class="bodyClass" onload="document.document.body.className += ' load'">
+    <body class="bodyClass" onload="document.body.className += ' load'">
+
+        <!-- Header Section ------------------------------------------------------------------------------ -->
+        <section id="headerSection" class="headerClass">
+            <div id="homeDiv" class="homeLink" onclick="location.href='index.html';">Home</div>
+            <div id="metaMaskDiv" class="connect">Connet MetaMask</div>
+        </section>
 
         <!-- Main Section ------------------------------------------------------------------------------ -->
-
         <section id="mainSection" class="mainSectionClass">
             <div id="menuDiv" class="menuDivClass">
                 <p class="menuTitleClass">System Control Panel</p>
@@ -21,13 +27,11 @@
                 <!-- Menu options ---------------------------------------------------------------------- -->
                 <div id="statusDiv" class="menuOptionDivClass menuOptionDivClassActive" onclick="selectMenuOption(this, 'statusContentDiv')">Status</div>
 
-                <div id="setUniversityBytecodeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'setUniversityBytecodeContentDiv')">Set University Template Bytecode</div>
+                <div id="setUniversityBytecodeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'setUniversityBytecodeContentDiv')">Set University Template Contract</div>
                 
                 <div id="createUniversityDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'createUniversityContentDiv')">Create University Contract</div>
 
                 <div id="extractEthersDiv" class="menuOptionDivClass"onclick="selectMenuOption(this, 'extractEthersContentDiv')">Extract ethers from contract</div>
-
-                <div id="homeDiv" class="menuOptionDivClass" onclick="location.href='index.html';">Home</div>
             </div>
             
             <!-- Menu Content ---------------------------------------------------------------------- -->
@@ -35,42 +39,40 @@
 
             <div id="statusContentDiv" class="contentOptionDivAnimationClass">
                 
+                <div id="UniversityBuilderDiv" class="divInformation">UNIVERSITY BUILDER CONTRACT INFORMATION</div>
+                <div id="UniversityBuilderDiv" class="divInformation">-----------------------------------------------------------------------</div>
+                
+                <div id="contractAddressDiv" class="divInformation">
+                    <div class="divTitle">CONTRACT ADDRESS:</div>
+                    <div id="contractAddressValue" class="divValue">...</div>
+                </div>
+
                 <div id="currentVersionDiv" class="divInformation">
-                    <div class="divTitle">CURRENT VERSION:</div>
+                    <div class="divTitle">CONTRACT VERSION:</div>
                     <div id="currentVersionValue" class="divValue">...</div>
                 </div>
                 
+                <div id="OwnerAccountDiv" class="divInformation">
+                    <div class="divTitle">CONTRACT OWNER:</div>
+                    <div id="OwnerAccountValue" class="divValue">...</div>
+                </div>
+                
                 <div id="NumberOfUniversitiesDiv" class="divInformation">
-                    <div class="divTitle">NUMBER OF UNIVERSITIES:</div>
+                    <div class="divTitle">UNIVERSITIES CREATED BY THE CONTRACT:</div>
                     <div id="numberOfUniversitiesValue" class="divValue">...</div>
                 </div>
                 
-                <div id="ConnectedAccountDiv" class="divInformation">
-                    <div class="divTitle">CONNECTED ACCOUNT:</div>
-                    <div id="connectedAccountValue" class="divValue">...</div>
+                <div id="UniversityTemplateAddressDiv" class="divInformation">
+                    <div class="divTitle">UNIVERSITY TEMPLATE ADDRESS:</div>
+                    <div id="UniversityTemplateAddressValue" class="divValue">...</div>
                 </div>
             </div>
 
             <div id="setUniversityBytecodeContentDiv" class="">
                 
-                <div id="proxyByteCodeDiv" class="divInformation">
-                    <div class="divTitleBox">University Template Proxy Contract Bytecode:</div>
-                    <textarea id="proxyByteCodeInput" type="text" class="textAreaBox"></textarea>
-                </div>
-                
-                <div id="governanceByeCodeDiv" class="divInformation">
-                    <div class="divTitleBox">University Governance Template Contract Bytecode:</div>
-                    <textarea id="governanceByeCodeInput" type="text" class="textAreaBox"></textarea>
-                </div>
-                
-                <div id="logicbyteCodeDiv" class="divInformation">
-                    <div class="divTitleBox">University Logic Template Contract Bytecode:</div>
-                    <textarea id="logicbyteCodeInput" type="text" class="textAreaBox"></textarea>
-                </div>
-
-                <div id="loadedFromDiv" class="divInformation">
-                    <div class="divTitleBox">Loaded from:</div>
-                    <div id="loadedFromValue" class="divValue">...</div>
+                <div id="UniversityTemplateContainerAddressDiv" class="divInformation">
+                    <div class="divTitleBox">University Template Contract Address:</div>
+                    <textarea id="UniversityTemplateContainerAddressInput" type="text" class="textAreaBox"></textarea>
                 </div>
 
                 <div id="saveButtonDiv" class="divInformation">
@@ -116,9 +118,14 @@
             </div>
 
             <div id="extractEthersContentDiv" class="">
-                <div id="extractEthersDiv" class="divInformation">
-                    <div class="divTitle">Current balance in contract:</div>
-                    <div id="currentBalanceValue" class="divValue">...</div>
+                <div id="contractBalanceDiv" class="divInformation">
+                    <div class="divTitle">University Builder contract balance:</div>
+                    <div id="contractBalanceValue" class="divValue">...</div>
+                </div>
+
+                <div id="currentAccountBalanceDiv" class="divInformation">
+                    <div class="divTitle">Connected account balance:</div>
+                    <div id="currentAccountBalanceValue" class="divValue">...</div>
                 </div>
 
                 <div id="extractButtonDiv" class="divInformation">
@@ -135,6 +142,8 @@
             <a href="mailto:drgimenez@gmail.com?subject=ConsenSys Academy Boot camp final project">drgimenez@gmail.com</a>
         </section>
 
-        <script class="u-script" type="text/javascript" src="./js/university.js" defer=""></script>
+        <script class="u-script" type="text/javascript" src="./js/menu.js" defer=""></script>
+        <script class="u-script" type="text/javascript" src="./js/system.js" defer=""></script>
+        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
     </body>
 </html>

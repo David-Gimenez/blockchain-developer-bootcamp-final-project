@@ -82,8 +82,16 @@
     left: 16px;
     color: rgb(255, 255, 255);
     font-size: 14pt;
+    padding: 10px;
 }
 
 .homeLink:hover {
+    background-color: rgb(255, 255, 255);
+    opacity: 60%;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-align: left;
+    border-radius: 15px;
+    padding: 10px;
     cursor: pointer;
 }

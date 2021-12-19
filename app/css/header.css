@@ -1,0 +1,88 @@
+.headerClass {
+    background-color: black;
+    height: 4rem;
+    width: 100%;
+    text-align: right;
+    position: fixed;
+    top: 0%;
+    z-index: 4;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.headerTextClass {
+    color: white;
+    font-size:  14pt;
+    font-weight: normal;
+    text-align: right;
+    margin-top: 1rem;
+    margin-right: 2%;
+}
+
+.homeLink {
+    position: absolute;
+    left: 16px;
+    color: rgb(255, 255, 255);
+    font-size: 14pt;
+    
+    text-align: left;
+    height: 2rem;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0px 30px 30px 0px;
+}
+
+.homeLink:hover {
+    background-color: rgb(255, 255, 255);
+    opacity: 90%;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+    padding-top: 0.5rem;
+    padding-right: 1rem;
+
+    height: 2rem;    
+    font-size: 14pt;
+}
+
+.connect {
+    position: relative;
+    left: 16px;
+    color: rgb(255, 255, 255);
+    font-size: 14pt;
+    
+    text-align: left;
+    height: 2rem;
+
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 2rem;
+    border-radius: 30px 0px 0px 30px;
+}
+
+.connect:hover {
+    background-color: rgb(255, 255, 255);
+    opacity: 90%;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-align: left;
+    cursor: pointer;
+
+    margin-top: 0.5em;
+    margin-left: 1rem;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+
+    height: 2rem;    
+    font-size: 14pt;
+}
