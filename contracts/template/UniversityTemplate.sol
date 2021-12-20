@@ -190,7 +190,7 @@ import "./University/UniversityTemplate_State.sol";
         return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", degreePending[_degreeIndex].information.hash_EIP712_ForSigning));
     }
 
-    // Return the hash to be signed by the authority people of the University
+    // Return the signature object for the pendingDegreeIndex and AuthorityPosition
     function getPendingDegreeSignature(uint256 _degreeIndex, StructDegree.AuthorityPosition _authorityPosition) external view returns(StructDegree.Signature memory) {
         // Validation check
         isUniversityActive();

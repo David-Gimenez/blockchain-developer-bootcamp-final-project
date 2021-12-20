@@ -13,11 +13,10 @@
 
     <body class="bodyClass">
 
-        <!-- Headder Section ------------------------------------------------------------------------------ -->
+        <!-- Header Section ------------------------------------------------------------------------------ -->
         <section id="headerSection" class="headerClass">
             <div id="homeDiv" class="homeLink" onclick="location.href='index.html';">Home</div>
-            <p class="headerTextClass">Account Address: </p>
-            <p class="headerTextClass">connect</p>
+            <div id="metaMaskDiv" class="connect">Connet MetaMask</div>
         </section>
 
         <!-- Main Section ------------------------------------------------------------------------------ -->
@@ -25,9 +24,9 @@
             <div id="mainDivBlur" class="mainClassBlur"></div>
             <div id="mainDiv" class="mainClass">
                 <img class="mainImage"/>
-                <div class="graduatedName">Graduated Name</div>
-                <div class="universityName">University Name</div>
-                <div class="degreeDate">Date</div>
+                <div id="graduateNameValue" class="graduatedName">Graduated Name</div>
+                <div id="universityNameValue" class="universityName">University Name</div>
+                <div id="degreeIssueDateValue" class="degreeDate">Date</div>
             </div>
         </section>
 
@@ -39,5 +38,7 @@
         </section>
 
         <script class="u-script" type="text/javascript" src="./js/menu.js" defer=""></script>
+        <script class="u-script" type="text/javascript" src="./js/graduate.js" defer=""></script>
+        <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
     </body>
 </html>

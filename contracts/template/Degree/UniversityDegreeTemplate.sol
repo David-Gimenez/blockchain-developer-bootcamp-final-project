@@ -39,7 +39,7 @@ contract UniversityDegreeTemplate {
     // Audit information
     bytes32 public hash_EIP712_ContractAddressSalt; // It is the hash of all DegreeInformation object without the contract address. 
                                                     // It is used as an identifier to generate the address of the contract;
-    bytes32 public signed_EIP712_Hash;              // Correspond to the hash_EIP712_ForSigning in UNiversity contract
+    bytes32 public signed_EIP712_Hash;              // Correspond to the hash_EIP712_ForSigning in University contract
                                                     // keccak256 hash of all information contained in a DegreeInformation Object following EIP-712 format, 
                                                     // It is the hash that the authorities sign to authenticate the Degree Title.
                                                     // Not include emissionDate of the degree object because authorities do not 
