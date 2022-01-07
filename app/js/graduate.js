@@ -1,5 +1,5 @@
 // Load deploy information files
-const universityDegree_contractAddress = "0xd07148AEb9B4d7601D0B33481905237EeeA59e76";
+const universityDegree_contractAddress = "0x3B54F2f539eB628000b933A778353a8B0cc5E160";
 const universityDegreeTemplate_ABI_JSON        = `[
     {
       "inputs": [
@@ -110,108 +110,6 @@ const universityDegreeTemplate_ABI_JSON        = `[
           "internalType": "struct StructDegree.DegreeInformation",
           "name": "_degreeInformation",
           "type": "tuple"
-        },
-        {
-          "components": [
-            {
-              "components": [
-                {
-                  "internalType": "string",
-                  "name": "name",
-                  "type": "string"
-                },
-                {
-                  "internalType": "address",
-                  "name": "accountAddress",
-                  "type": "address"
-                }
-              ],
-              "internalType": "struct StructUniversity.AuthorityPerson",
-              "name": "signer",
-              "type": "tuple"
-            },
-            {
-              "internalType": "uint256",
-              "name": "signatureDate",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes",
-              "name": "signature",
-              "type": "bytes"
-            }
-          ],
-          "internalType": "struct StructDegree.Signature",
-          "name": "_rectorSignature",
-          "type": "tuple"
-        },
-        {
-          "components": [
-            {
-              "components": [
-                {
-                  "internalType": "string",
-                  "name": "name",
-                  "type": "string"
-                },
-                {
-                  "internalType": "address",
-                  "name": "accountAddress",
-                  "type": "address"
-                }
-              ],
-              "internalType": "struct StructUniversity.AuthorityPerson",
-              "name": "signer",
-              "type": "tuple"
-            },
-            {
-              "internalType": "uint256",
-              "name": "signatureDate",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes",
-              "name": "signature",
-              "type": "bytes"
-            }
-          ],
-          "internalType": "struct StructDegree.Signature",
-          "name": "_deanSignature",
-          "type": "tuple"
-        },
-        {
-          "components": [
-            {
-              "components": [
-                {
-                  "internalType": "string",
-                  "name": "name",
-                  "type": "string"
-                },
-                {
-                  "internalType": "address",
-                  "name": "accountAddress",
-                  "type": "address"
-                }
-              ],
-              "internalType": "struct StructUniversity.AuthorityPerson",
-              "name": "signer",
-              "type": "tuple"
-            },
-            {
-              "internalType": "uint256",
-              "name": "signatureDate",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes",
-              "name": "signature",
-              "type": "bytes"
-            }
-          ],
-          "internalType": "struct StructDegree.Signature",
-          "name": "_directorSignature",
-          "type": "tuple"
         }
       ],
       "stateMutability": "nonpayable",
@@ -249,6 +147,24 @@ const universityDegreeTemplate_ABI_JSON        = `[
           "internalType": "string",
           "name": "_degreeName",
           "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_contractAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_contractSalt",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_remittent",
+          "type": "address"
         }
       ],
       "name": "DegreeCreation",
@@ -505,6 +421,116 @@ const universityDegreeTemplate_ABI_JSON        = `[
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "accountAddress",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct StructUniversity.AuthorityPerson",
+              "name": "signer",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "signatureDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct StructDegree.Signature",
+          "name": "_rectorSignature",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "accountAddress",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct StructUniversity.AuthorityPerson",
+              "name": "signer",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "signatureDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct StructDegree.Signature",
+          "name": "_deanSignature",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "accountAddress",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct StructUniversity.AuthorityPerson",
+              "name": "signer",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "signatureDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct StructDegree.Signature",
+          "name": "_directorSignature",
+          "type": "tuple"
+        }
+      ],
+      "name": "_setSignatures",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     }
   ]`;

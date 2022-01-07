@@ -34,6 +34,8 @@
                 <div id="authorityPersonDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'authorityPersonContentDiv')">Add Authority Person</div>
 
                 <div id="addPendingDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'addPendingDegreeContentDiv')">Add Degree to process</div>
+
+                <div id="processPendingDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'processPendingDegreeContentDiv')">Process Degree to process</div>
                 
                 <div id="signPendingDegreeDiv" class="menuOptionDivClass" onclick="selectMenuOption(this, 'signPendingDegreeContentDiv')">Sign Pending Degree</div>
 
@@ -103,9 +105,9 @@
                     <div id="degreePendingNumberValue" class="divValue">...</div>
                 </div>
 
-                <div id="numberDegreeIssuedDiv" class="divInformation">
+                <div id="degreeIssuedIndexDiv" class="divInformation">
                     <div class="divTitle">NUMBER OF DEGREES ISSUED:</div>
-                    <div id="numberDegreesissuedValue" class="divValue">...</div>
+                    <div id="degreeIssuedIndexValue" class="divValue">...</div>
                 </div>
             </div>
 
@@ -187,10 +189,10 @@
                 <div id="authorityPositionDiv" class="divInformation">
                     <div class="divInputBox">Authority Position:</div>
                     <select id="authorityPositionSelect">
-                        <option value="Manager" selected>Manager</option>
-                        <option value="Rector">Rector</option>
-                        <option value="Dean">Dean</option>
-                        <option value="Director">Director</option>
+                        <option value="0" selected>Manager</option>
+                        <option value="1">Rector</option>
+                        <option value="2">Dean</option>
+                        <option value="3">Director</option>
                         </select>
                 </div>
                 
@@ -259,11 +261,27 @@
                 </div>
             </div>
 
+            <div id="processPendingDegreeContentDiv" class="">
+                <div id="addSaltButtonDiv" class="divInformation">
+                    <button id="addSaltButton" class="saveButton">Add Contract Address Salt To Pending Degree</button>
+                </div>
+
+                <div id="predictAddressButtonDiv" class="divInformation">
+                    <button id="predictAddressButton" class="saveButton">Predict Degree Contract Address</button>
+                </div>
+
+                <div id="generateEIP712HashButtonDiv" class="divInformation">
+                    <button id="generateEIP712HashButton" class="saveButton">Generate EIP712 Hash for signing</button>
+                </div>
+            </div>
+
             <div id="signPendingDegreeContentDiv" class="">
                 
                 <div id="getHashToSignDiv" class="divInformation">
                     <div class="divTitle">Select pending Degree number:</div>
-                    <select id="pendingDegreeSelect"></select>
+                    <select id="pendingDegreeSelect">
+                        <option value="1">a - a</option>
+                    </select>
                     <button id="getPendingDegreeToSignButton" class="saveButton">Get Degree Information</button>
                 </div>
 
@@ -322,7 +340,9 @@
 
                 <div id="getDegreeToPublishDiv" class="divInformation">
                     <div class="divTitle">Select Degree number to Pubish:</div>
-                    <select id="publishDegreeSelect"></select>
+                    <select id="publishDegreeSelect">
+                        <option value="1">a - a</option>
+                    </select>
                     <button id="getPendingDegreeToPublishButton" class="saveButton">Get Degree Information</button>
                 </div>
                 
@@ -337,12 +357,12 @@
 
                 <div id="publishOwnerNumberDiv" class="divInformation">
                     <div class="divInputBox">Graduate enrollment number:</div>
-                    <div id="publishDegree_ownerNameValue" class="divValue">...</div>
+                    <div id="publishDegree_ownerNumberValue" class="divValue">...</div>
                 </div>
 
                 <div id="publishOwnerAddressDiv" class="divInformation">
                     <div class="divInputBox">Ethereum Address:</div>
-                    <div id="publishDegree_ownerNumberValue" class="divValue">...</div>
+                    <div id="publishDegree_ownerAddressValue" class="divValue">...</div>
                 </div>
 
                 <div id="publishDegreeDiv" class="divInformation">
@@ -351,26 +371,29 @@
 
                 <div id="publishDegreeNameDiv" class="divInformation">
                     <div class="divInputBox">Name:</div>
-                    <div id="publishDegree_DegreeNameValue" class="divValue">...</div>
+                    <div id="publishDegree_degreeNameValue" class="divValue">...</div>
                 </div>
 
                 <div id="publishDegreeDescriptionDiv" class="divInformation">
                     <div class="divInputBox">Description:</div>
-                    <div id="publishDegree_DegreeDescriptionValue" class="divValue">...</div>
+                    <div id="publishDegree_degreeDescriptionValue" class="divValue">...</div>
                 </div>
 
                 <div id="publishDegreeLigalStatementDiv" class="divInformation">
                     <div class="divInputBox">Ligal Statement:</div>
-                    <div id="publishDegree_DegreeLegalStatementValue" class="divValue">...</div>
+                    <div id="publishDegree_degreeLegalStatementValue" class="divValue">...</div>
                 </div>
 
                 <div id="publishDegreeIssueDateDiv" class="divInformation">
                     <div class="divInputBox">Issue Date:</div>
-                    <div id="publishDegree_DegreeIssueDateValue" class="divValue">...</div>
+                    <div id="publishDegree_degreeIssueDateValue" class="divValue">...</div>
                 </div>
 
                 <div id="publishButtonDiv" class="divInformation">
                     <button id="publishButton" class="saveButton">Publish Contract</button>
+                </div>
+                
+                <div id="publishButtonDiv" class="divInformation">
                     <div class="divInputBox">New Published Degree Contract Address:</div>
                     <div id="publishedDegree_ContractAddress" class="divValue">...</div>
                 </div>
@@ -380,7 +403,9 @@
 
                 <div id="getPublishDegreeDiv" class="divInformation">
                     <div class="divTitle">Select Published Degree number:</div>
-                    <select id="publishedDegreeSelect"></select>
+                    <select id="publishedDegreeSelect">
+                        <option value="1">a - a</option>
+                    </select>
                     <button id="getPublishedDegreeButton" class="saveButton">Get Degree Information</button>
                 </div>
                 

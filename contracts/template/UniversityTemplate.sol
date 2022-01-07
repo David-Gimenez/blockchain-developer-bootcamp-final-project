@@ -49,6 +49,27 @@ import "./University/UniversityTemplate_State.sol";
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // -- Get functions
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+    // Pending Degree
+    function getPendingDegreeInformation(uint256 _degreePendingIndex) external view returns(StructDegree.Degree memory) {
+        return degreePending[_degreePendingIndex].information.degree;
+    }
+
+    function getPendingDegreeOwnerInformation(uint256 _degreePendingIndex) external view returns(StructDegree.Owner memory) {
+        return degreePending[_degreePendingIndex].information.owner;
+    }
+
+    // Issue Degree
+    function getDegreeInformation(uint256 _degreeIndex) external view returns(StructDegree.Degree memory) {
+        return degreeIssued[_degreeIndex].information.degree;
+    }
+
+    function getDegreeOwnerInformation(uint256 _degreeIndex) external view returns(StructDegree.Owner memory) {
+        return degreeIssued[_degreeIndex].information.owner;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Set external contract address
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     
@@ -66,6 +87,14 @@ import "./University/UniversityTemplate_State.sol";
         isValidAddress(_logicContractAddress);
 
         logicContractAddress = _logicContractAddress;
+    }
+
+    function setDegreeTemplateContainerContractAddress(address _degreeTemplateContainerContractAddress) external {
+        // Validation check
+        onlyUniversityManager();
+        isValidAddress(_degreeTemplateContainerContractAddress);
+
+        universityDegreeTemplate_ContainerAddress = _degreeTemplateContainerContractAddress;
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -99,18 +128,6 @@ import "./University/UniversityTemplate_State.sol";
         callExternalContract(governanceContractAddress);
     }
 
-    /**
-     * Set the bytecode of the university contract template.
-     * @param _degreeTemplateBytecode the bytecode of the compiled DegreeTemplate contract.
-     * @param _degreeTemplateVersion unit256 representing the bytecode version of the compiled DegreeTemplate contract code.
-     */
-    function setDegreeTemplate(bytes calldata _degreeTemplateBytecode, uint256 _degreeTemplateVersion) external {
-        // Validation check
-        onlyUniversityManager();
-
-        callExternalContract(governanceContractAddress);
-    }
-
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Logic Contract Functions - Degree process
     // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -123,6 +140,33 @@ import "./University/UniversityTemplate_State.sol";
         // Emite the event for the new pending Degree
         uint256 newDegreePendingIndex = degreePendingIndex + 1;
         emit NewPendingDegree(newDegreePendingIndex, _externalID, _owner.graduateNumber, _degree.name);
+
+        // Call logical contract
+        callExternalContract(logicContractAddress);
+    }
+
+    function addContractAddressSaltToPendingDegree(uint256 _degreePendingIndex) external {
+    // Validation check
+        isUniversityActive();
+        onlyUniversityManager();
+
+        // Call logical contract
+        callExternalContract(logicContractAddress);
+    }
+
+    function predictDegreeContractAddress(uint256 _degreePendingIndex) external {
+    // Validation check
+        isUniversityActive();
+        onlyUniversityManager();
+
+        // Call logical contract
+        callExternalContract(logicContractAddress);
+    }
+
+    function generateEIP712HashForSigning(uint256 _degreePendingIndex) external {
+    // Validation check
+        isUniversityActive();
+        onlyUniversityManager();
 
         // Call logical contract
         callExternalContract(logicContractAddress);
@@ -187,7 +231,8 @@ import "./University/UniversityTemplate_State.sol";
         isValidPendingDegree(_degreeIndex);
 
         // Return the EthSignedMessageHash to validate signatures
-        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", degreePending[_degreeIndex].information.hash_EIP712_ForSigning));
+        //return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", degreePending[_degreeIndex].information.hash_EIP712_ForSigning));
+        return degreePending[_degreeIndex].information.hash_EIP712_ForSigning;
     }
 
     // Return the signature object for the pendingDegreeIndex and AuthorityPosition

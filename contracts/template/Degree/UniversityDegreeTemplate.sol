@@ -52,26 +52,27 @@ contract UniversityDegreeTemplate {
                         string              _university_Name, 
                         address     indexed _owner_Address, 
                         string              _owner_Name,
-                        string      indexed _degreeName);
+                        string      indexed _degreeName,
+                        address             _contractAddress,
+                        bytes32             _contractSalt,
+                        address             _remittent);
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constructor
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     constructor(
-        StructDegree.DegreeInformation   memory _degreeInformation, 
-        StructDegree.Signature           memory _rectorSignature, 
-        StructDegree.Signature           memory _deanSignature, 
-        StructDegree.Signature           memory _directorSignature) 
+        StructDegree.DegreeInformation   memory _degreeInformation
+        //StructDegree.Signature           memory _rectorSignature, 
+        //StructDegree.Signature           memory _deanSignature, 
+        //StructDegree.Signature           memory _directorSignature
+        ) 
     {
-        // Check the correctnes of the information
-        require(_degreeInformation.contractAddress == address(this), "Degree contract: Incorrect address information");
-
         // --------------------------------------------------
         // -- Set Degree information
         // --------------------------------------------------
-        degreeInformation               = _degreeInformation.degree;
-        degreeInformation.emissionDate  = block.timestamp;
-
+        degreeInformation                   = _degreeInformation.degree;
+        degreeInformation.emissionDate      = block.timestamp;
+        
         // --------------------------------------------------
         // -- Set graduate owner information
         // --------------------------------------------------
@@ -85,9 +86,9 @@ contract UniversityDegreeTemplate {
         // --------------------------------------------------
         // -- set Authorities signatures
         // --------------------------------------------------
-        rectorSignature     = _rectorSignature;
-        deanSignature       = _deanSignature;
-        directorSignature   = _directorSignature;
+        //rectorSignature     = _rectorSignature;
+        //deanSignature       = _deanSignature;
+        //directorSignature   = _directorSignature;
 
         // --------------------------------------------------
         // -- set audit information
@@ -98,7 +99,7 @@ contract UniversityDegreeTemplate {
         // --------------------------------------------------
         // -- State verification
         // --------------------------------------------------
-
+        /*
         // Check Degree, Owner and University information
         require(keccak256(abi.encode(degreeInformation))        == keccak256(abi.encode(_degreeInformation.degree))
                 && keccak256(abi.encode(ownerInformation))      == keccak256(abi.encode(_degreeInformation.owner))
@@ -112,11 +113,18 @@ contract UniversityDegreeTemplate {
         require(signed_EIP712_Hash              == _degreeInformation.hash_EIP712_ForSigning
                 &&
                 hash_EIP712_ContractAddressSalt == _degreeInformation.hash_EIP712_ContractAddressSalt, "Audit hashes mismatch");
-
+        */
         // --------------------------------------------------
         // Emit event DegreeCreation
         // --------------------------------------------------
-        emit DegreeCreation(universityInformation.contractAddress, universityInformation.name, ownerInformation.accountAddress, ownerInformation.name, degreeInformation.name);
+        emit DegreeCreation(universityInformation.contractAddress, 
+                            universityInformation.name, 
+                            ownerInformation.accountAddress, 
+                            ownerInformation.name, 
+                            degreeInformation.name,
+                            address(this),
+                            hash_EIP712_ContractAddressSalt,
+                            msg.sender);
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -149,5 +157,20 @@ contract UniversityDegreeTemplate {
      */
     function getChainID() external view returns(uint256) {
         return block.chainid;
+    }
+
+    // --------------------------------------------------
+    // -- set Authorities signatures
+    // --------------------------------------------------
+    function _setSignatures(StructDegree.Signature memory _rectorSignature, 
+                            StructDegree.Signature memory _deanSignature, 
+                            StructDegree.Signature memory _directorSignature) external {
+        // Access control
+        require(msg.sender == universityInformation.contractAddress, "Not authorized");
+        require(rectorSignature.signature.length == 0, "Signatures already uploaded");
+                                
+        rectorSignature     = _rectorSignature;
+        deanSignature       = _deanSignature;
+        directorSignature   = _directorSignature;
     }
 }

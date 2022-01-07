@@ -149,11 +149,10 @@ contract("University Builder contract test", async accounts => {
 
     describe("Negative Test", async () => {
         it("Not the owner test: Try to set the state with an account different of the owner", async () => {
-            // Set University Template bytecode and version
-            const universityTemplateVersion = 100;
+            // Set University Template contract address
             await expectRevert(
                 // accounts[1] is not authorized
-                universityBuilder_Instance.setUniversityTemplate(universityTemplateContainer_Instance.address, universityTemplateVersion, { from: accounts[1] }),
+                universityBuilder_Instance.setUniversityTemplate(universityTemplateContainer_Instance.address, { from: accounts[1] }),
                 "Not authorized"
             );
         });

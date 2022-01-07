@@ -33,25 +33,39 @@ import "./UniversityTemplate_State.sol";
         newDegreeObject.information.owner                   = _owner;
         newDegreeObject.information.university              = universityInfo;
 
-        // This hash will not contain the address of the new Degree Contract, instead it will contain the address of zero, but it does contain all the other information.
-        // which makes a suitable uinque identifier for the generation of the address of the future degree contract.
-        newDegreeObject.information.hash_EIP712_ContractAddressSalt = _getKeccak256HashFromDegreeInformation(degreePendingIndex);
-        
-        // Predict the futur address of the Degree contract for this new Degree object 
-        newDegreeObject.information.contractAddress = _predictDegreeContractAddress(degreePendingIndex);
-        
-        // Generate the EIP-712 keccak256 hash of the Degree Information that will be signed by Authorities. This hash will contains the address of the future Degree contract. 
-        newDegreeObject.information.hash_EIP712_ForSigning = _getKeccak256HashFromDegreeInformation(degreePendingIndex);
-
         // Increase the number of pending to process degree object
         degreePendingNumber++;
+    }
 
-        // Check result
-        require(keccak256(abi.encode(newDegreeObject.information.degree))           == keccak256(abi.encode(_degree))
-                && keccak256(abi.encode(newDegreeObject.information.owner))         == keccak256(abi.encode(_owner))
-                && keccak256(abi.encode(newDegreeObject.information.university))    == keccak256(abi.encode(universityInfo))
-                && newDegreeObject.information.contractAddress                      != address(0)
-                && newDegreeObject.information.hash_EIP712_ForSigning.length        > 0, "Assignation mismatch");
+    function addContractAddressSaltToPendingDegree(uint256 _degreePendingIndex) external {
+
+        // Get peding degree object
+        StructDegree.DegreeObject storage degreeObject   = degreePending[_degreePendingIndex];
+
+        // This hash will not contain the address of the new Degree Contract, instead it will contain the address of zero, but it does contain all the other information.
+        // which makes a suitable uinque identifier for the generation of the address of the future degree contract.
+        degreeObject.information.hash_EIP712_ContractAddressSalt = _getKeccak256HashFromDegreeInformation(degreePendingIndex);
+    }
+
+    function predictDegreeContractAddress(uint256 _degreePendingIndex) external {
+
+        // Get peding degree object
+        StructDegree.DegreeObject storage degreeObject = degreePending[_degreePendingIndex];
+        
+        // Predict the futur address of the Degree contract for this new Degree object
+        degreeObject.information.contractAddress        = address(0);
+        degreeObject.information.hash_EIP712_ForSigning = 0;
+        degreeObject.information.contractAddress        = _predictDegreeContractAddress(degreePendingIndex);
+    }
+
+    function generateEIP712HashForSigning(uint256 _degreePendingIndex) external {
+
+        // Get peding degree object
+        StructDegree.DegreeObject storage degreeObject = degreePending[_degreePendingIndex];
+        
+        // Generate the EIP-712 keccak256 hash of the Degree Information that will be signed by Authorities. 
+        // This hash will contains the address of the future Degree contract. 
+        degreeObject.information.hash_EIP712_ForSigning = _getKeccak256HashFromDegreeInformation(degreePendingIndex);
     }
 
     // ----------------------------------------------------------------------------------
@@ -80,9 +94,14 @@ import "./UniversityTemplate_State.sol";
         // Check issue date information
         require(degreePending[_degreeIndex].information.degree.issueDate <= block.timestamp, "Invalid issue date");
 
-        // Expected address calculated before
+        // Expected address calculated before and EIP712 Hash
         address expectedAddress = degreePending[_degreeIndex].information.contractAddress;
+        bytes32 EIP712Hash      = degreePending[_degreeIndex].information.hash_EIP712_ForSigning;
         
+        // Set to default values to generate the same contract address
+        degreePending[_degreeIndex].information.contractAddress         = address(0);
+        degreePending[_degreeIndex].information.hash_EIP712_ForSigning  = 0;
+
         // Emit new Degree Title by creating new DegreeTemplate contract in the address generated before
         address newDegreeContractAddress = _createContractInPrecompileAddress(_degreeIndex);
 
@@ -95,6 +114,10 @@ import "./UniversityTemplate_State.sol";
 
         // Set emissionDate after contract creation to not alter the address with this information
         degreePending[_degreeIndex].information.degree.emissionDate = block.timestamp;
+
+        // Restore original values of contract address and EIP712 hash
+        degreePending[_degreeIndex].information.contractAddress         = expectedAddress;
+        degreePending[_degreeIndex].information.hash_EIP712_ForSigning  = EIP712Hash;
 
         // Add the DegreeInformation object to the degreeIssued mapping
         _copyDegreePendingToDegreeIssued(_degreeIndex);
@@ -251,12 +274,25 @@ import "./UniversityTemplate_State.sol";
         // which makes a suitable unique identifier for the generation of the address of the future degree contract.
         require(degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt.length > 0, "Salt not set");
 
+        // Get peding degree object
+        StructDegree.DegreeObject storage degreeObject = degreePending[_degreeIndex];
+        
         // Call external contract
-        string memory methodToCallName  = "predictDegreeContractAddress(StructDegree.DegreeInformation,StructDegree.Signature,StructDegree.Signature,StructDegree.Signature,address,bytes32)";
-        bytes memory methodToCall       = abi.encodeWithSignature(methodToCallName);
+        //string memory methodToCallName  = "predictDegreeContractAddress(StructDegree.DegreeInformation,StructDegree.Signature,StructDegree.Signature,StructDegree.Signature,address,bytes32)";
+        //string memory methodToCallName = "predictDegreeContractAddress(((string,string,string,uint256,uint256),(string,uint256,address),(string,string,string,string,address),address,bytes32,bytes32),((string,address),uint256,bytes),((string,address),uint256,bytes),((string,address),uint256,bytes),address,bytes32)";
+        string memory methodToCallName = "predictDegreeContractAddress(((string,string,string,uint256,uint256),(string,uint256,address),(string,string,string,string,address),address,bytes32,bytes32),address,bytes32)";
+        //string memory methodToCallName  = "predictDegreeContractAddress(address,bytes32)";
+        bytes memory methodToCall       = abi.encodeWithSignature(methodToCallName,
+                                            degreeObject.information,
+        //                                    degreeObject.signature[StructDegree.AuthorityPosition.Rector],
+        //                                    degreeObject.signature[StructDegree.AuthorityPosition.Dean],
+        //                                    degreeObject.signature[StructDegree.AuthorityPosition.Director],
+                                            universityDegreeTemplate_ContainerAddress, //degreeObject.information.university.contractAddress,
+                                            degreeObject.information.hash_EIP712_ContractAddressSalt
+                                            );
         (bool _success, bytes memory _returnData) = universityDegreeTemplate_ContainerAddress.staticcall(methodToCall);
         if(!_success){
-            revert();
+            revert("Error in predictDegreeContractAddress call");
         }
 
         // Bytes to address
@@ -278,27 +314,29 @@ import "./UniversityTemplate_State.sol";
     function _createContractInPrecompileAddress(uint256 _degreeIndex) private returns(address _newDegreeContractAddress) {
         
         // Create new Degree contract with UniversityDegreeTemplate_Container
-        string memory methodToCallName = "CreateNewUniversityDegree(StructDegree.DegreeInformation,StructDegree.Signature,StructDegree.Signature,StructDegree.Signature,bytes32)";
+        // For this codification I use this reference
+        //string memory methodToCallName = "createNewUniversityDegree(((string,string,string,uint256,uint256),(string,uint256,address),(string,string,string,string,address),address,bytes32,bytes32),((string,address),uint256,bytes),((string,address),uint256,bytes),((string,address),uint256,bytes),bytes32)";
+        string memory methodToCallName = "createNewUniversityDegree(((string,string,string,uint256,uint256),(string,uint256,address),(string,string,string,string,address),address,bytes32,bytes32),bytes32)";
         bytes memory methodToCall = abi.encodeWithSignature(
                                                             methodToCallName,
                                                             degreePending[_degreeIndex].information,
-                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector],
-                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean],
-                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director],
+        //                                                    degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector],
+        //                                                    degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean],
+        //                                                    degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director],
                                                             degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt
                                                             );
         
         // Call the contract
         (bool _success, bytes memory _returnData) = universityDegreeTemplate_ContainerAddress.call(methodToCall);
         if(!_success){
-            revert();
+            revert("Error on createNewUniversityDegree call");
         }
 
         // Bytes to address
         assembly {
             _newDegreeContractAddress := mload(add(_returnData, 32))
         } 
-        
+
         // Implicit return
     }
 

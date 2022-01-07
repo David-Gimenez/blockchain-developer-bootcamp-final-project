@@ -43,10 +43,10 @@ contract UniversityDegreeTemplate_Container {
     
     function createNewUniversityDegree(
         StructDegree.DegreeInformation   memory _degreeInformation, 
-        StructDegree.Signature           memory _rectorSignature, 
-        StructDegree.Signature           memory _deanSignature, 
-        StructDegree.Signature           memory _directorSignature,
-        bytes32                                 salt
+        //StructDegree.Signature           memory _rectorSignature, 
+        //StructDegree.Signature           memory _deanSignature, 
+        //StructDegree.Signature           memory _directorSignature,
+        bytes32                                 _salt
     ) 
     external returns(address) 
     {       
@@ -59,14 +59,15 @@ contract UniversityDegreeTemplate_Container {
         // ----------------------------------------------------------------------------------------------------
         bytes memory bytecode   = abi.encodePacked(
                                                 UniversityDegreeTemplateByteCode, 
-                                                abi.encode(_degreeInformation),
-                                                abi.encode(_rectorSignature),
-                                                abi.encode(_deanSignature),
-                                                abi.encode(_directorSignature)
+                                                abi.encode(_degreeInformation
+        //                                                    _rectorSignature,
+        //                                                    _deanSignature,
+        //                                                    _directorSignature
+                                                            )
                                                 );
         
         // Emit new Degree Title by creating new DegreeTemplate contract in the address generated before
-        address newDegreeContractAddress = _createContractInPrecompileAddress(bytecode, salt);
+        address newDegreeContractAddress = _createContractInPrecompileAddress(bytecode, _salt);
 
         return newDegreeContractAddress;
     }
@@ -78,9 +79,9 @@ contract UniversityDegreeTemplate_Container {
      */
     function predictDegreeContractAddress(
         StructDegree.DegreeInformation   memory _degreeInformation, 
-        StructDegree.Signature           memory _rectorSignature, 
-        StructDegree.Signature           memory _deanSignature, 
-        StructDegree.Signature           memory _directorSignature,
+    //    StructDegree.Signature           memory _rectorSignature, 
+    //    StructDegree.Signature           memory _deanSignature, 
+    //    StructDegree.Signature           memory _directorSignature,
         address                                 _universityContractAddress,
         bytes32                                 _hash_EIP712_ContractAddressSalt
     ) 
@@ -91,16 +92,18 @@ contract UniversityDegreeTemplate_Container {
         bytes memory degreeTemplateBytecode = type(UniversityDegreeTemplate).creationCode;
 
         // Return the future address of the new Degree contract with the saltHash calulated 
+        // This site was used as a reference: https://solidity-by-example.org/app/create2/
         return address(uint160(uint(keccak256(abi.encodePacked(
             bytes1(0xff),
             _universityContractAddress,
             _hash_EIP712_ContractAddressSalt,
             keccak256(abi.encodePacked(
                                         degreeTemplateBytecode,
-                                        abi.encode(_degreeInformation),
-                                        abi.encode(_rectorSignature),
-                                        abi.encode(_deanSignature),
-                                        abi.encode(_directorSignature)
+                                        abi.encode(_degreeInformation
+                                        //            _rectorSignature,
+                                        //            _deanSignature,
+                                        //            _directorSignature
+                                        )
             ))
         )))));
     }

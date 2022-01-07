@@ -33,10 +33,10 @@ import "../../libraries/StructDegree.sol";
     mapping (StructDegree.AuthorityPosition => StructUniversity.AuthorityPerson) public authorities;
     
     // University degreee information
-    uint256 public degreePendingIndex;                      // Total number of Degree that has been added to be issued
-    uint256 public degreePendingNumber;                     // Number of Degree to be issued that are pending processing
+    uint256 public degreePendingIndex;                                      // Total number of Degree that has been added to be issued
+    uint256 public degreePendingNumber;                                     // Number of Degree to be issued that are pending processing
 
-    uint256 public degreeIssuedIndex;                       // Number of University Degree issued
-    mapping(uint256 => StructDegree.DegreeObject) public degreeIssued;   // UniversityDegreeNumber   => DegreeInformation
-    mapping(uint256 => StructDegree.DegreeObject) public degreePending;  // degreePendingNumber      => DegreeInformation
+    uint256 public degreeIssuedIndex;                                       // Number of University Degree issued
+    mapping(uint256 => StructDegree.DegreeObject) public degreeIssued;      // UniversityDegreeNumber   => DegreeInformation
+    mapping(uint256 => StructDegree.DegreeObject) public degreePending;     // degreePendingNumber      => DegreeInformation
  }
