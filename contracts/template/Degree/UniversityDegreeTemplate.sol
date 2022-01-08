@@ -2,52 +2,77 @@
 pragma solidity 0.8.4;
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
-// -- State variables
+// -- Imports
 // ----------------------------------------------------------------------------------------------------------------------------------------------
-import "../../libraries/StructUniversity.sol";
+
+/// @custom:import This library use the 'StructUniversity' library.
+//import "../../libraries/StructUniversity.sol";
+/// @custom:import This library use the 'StructDegree' library.
 import "../../libraries/StructDegree.sol";
-//import "../utils/Hash_EIP712_CalculationFormula.sol";
 
 /**
  * @title   UniversityDegreeTemplate
  * @author  David Gimenez Gutierrez
- *
- * Contract logic representing a University Degree issued by a University. 
- * This contract is part of my new Degree Certification Protocole.
+ * @notice  This contract is part of my new Degree Certification Protocole
+ * @dev     This contract represents a University Degree issued by a University
  */
 contract UniversityDegreeTemplate {
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constant
     // ----------------------------------------------------------------------------------------------------------------------------------------------
-    uint256 public constant VERSION = 100;   // Version of the contract 1.0.0
+
+    /// @notice Version of the contract
+    uint256 public constant VERSION = 100;
     
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- State variables
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     
     // Degree Title information
-    StructDegree.Degree                 public degreeInformation;       // Contains the information of the Degree Title
-    StructDegree.Owner                  public ownerInformation;        // Contains the information of the Owner of the Degree Title
-    StructUniversity.UniversityCollege  public universityInformation;   // Contains the information of the University that issue the Degree Titule
+
+    /// @notice Contains the information of the Degree Title
+    StructDegree.Degree                 public degreeInformation;
+    /// @notice Contains the information of the Owner of the Degree Title
+    StructDegree.Owner                  public ownerInformation;
+    /// @notice Contains the information of the University that issue the Degree Titule
+    StructUniversity.UniversityCollege  public universityInformation;
 
     // Authority signatures
-    StructDegree.Signature   public rectorSignature;         // Contains de signatur information of the University Rector
-    StructDegree.Signature   public deanSignature;           // Contains de signatur information of the University Dean
-    StructDegree.Signature   public directorSignature;       // Contains de signatur information of the University Director
+
+    /// @notice Contains de signatur information of the University Rector
+    StructDegree.Signature   public rectorSignature;
+    /// @notice Contains de signatur information of the University Dean
+    StructDegree.Signature   public deanSignature;
+    /// @notice Contains de signatur information of the University Director
+    StructDegree.Signature   public directorSignature;
 
     // Audit information
-    bytes32 public hash_EIP712_ContractAddressSalt; // It is the hash of all DegreeInformation object without the contract address. 
-                                                    // It is used as an identifier to generate the address of the contract;
-    bytes32 public signed_EIP712_Hash;              // Correspond to the hash_EIP712_ForSigning in University contract
-                                                    // keccak256 hash of all information contained in a DegreeInformation Object following EIP-712 format, 
-                                                    // It is the hash that the authorities sign to authenticate the Degree Title.
-                                                    // Not include emissionDate of the degree object because authorities do not 
-                                                    // have that information at the time of signing, which they do before create the smart contract.
+
+    /// @notice It is the hash of all DegreeInformation object without the contract address
+    /// @dev It is used as an identifier to generate the address of the contract;
+    bytes32 public hash_EIP712_ContractAddressSalt;
+    
+    /// @notice Correspond to the hash_EIP712_ForSigning in University contract keccak256 hash of all information contained in a DegreeInformation Object
+    /// @dev The hash is generated following EIP-712 format
+    /// @dev It is the hash that the authorities sign to authenticate the Degree Title
+    /// @dev Not include emissionDate of the degree object because authorities do not have that information at the time of signing, which they do before create the smart contract
+    bytes32 public signed_EIP712_Hash;
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Events
     // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+    /// @notice Log when this Degree title contract is created
+    /// @dev This log is emitted in the constructor method
+    /// @param _university_ContractAddress [address indexed] The address of the University contract that issue the Degree title and create this Degree contract
+    /// @param _university_Name [string] The name of the University that issue the Degree title and create this Degree contract
+    /// @param _owner_Address [address indexed] The address of the external owned account of the graduated student that receive the Degree title. The owner of the Degree contract
+    /// @param _owner_Name [string] The Name of the graduated student that receive the University Degree title that has been issued
+    /// @param _degreeName [string indexed] The Name of the Degree title that has been issued
+    /// @param _contractAddress [address] The contract address of the Degree title that has been issued
+    /// @param _contractSalt [bytes32] The hash Salt of the Degree title that has been issued
+    /// @param _remittent [address] The address of the remittent of the Degree title that has been issued
     event DegreeCreation(address    indexed _university_ContractAddress, 
                         string              _university_Name, 
                         address     indexed _owner_Address, 
@@ -60,13 +85,10 @@ contract UniversityDegreeTemplate {
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constructor
     // ----------------------------------------------------------------------------------------------------------------------------------------------
-    constructor(
-        StructDegree.DegreeInformation   memory _degreeInformation
-        //StructDegree.Signature           memory _rectorSignature, 
-        //StructDegree.Signature           memory _deanSignature, 
-        //StructDegree.Signature           memory _directorSignature
-        ) 
-    {
+
+    /// @notice Set the Degree information object and state variables of the Degree contract
+    /// @param _degreeInformation [StructDegree.DegreeInformation] It is the DegreeInformation object that contains the information of the issued Degree
+    constructor(StructDegree.DegreeInformation   memory _degreeInformation) {
         // --------------------------------------------------
         // -- Set Degree information
         // --------------------------------------------------
@@ -84,36 +106,11 @@ contract UniversityDegreeTemplate {
         universityInformation = _degreeInformation.university;
 
         // --------------------------------------------------
-        // -- set Authorities signatures
-        // --------------------------------------------------
-        //rectorSignature     = _rectorSignature;
-        //deanSignature       = _deanSignature;
-        //directorSignature   = _directorSignature;
-
-        // --------------------------------------------------
         // -- set audit information
         // --------------------------------------------------
         signed_EIP712_Hash              = _degreeInformation.hash_EIP712_ForSigning;
         hash_EIP712_ContractAddressSalt = _degreeInformation.hash_EIP712_ContractAddressSalt;
 
-        // --------------------------------------------------
-        // -- State verification
-        // --------------------------------------------------
-        /*
-        // Check Degree, Owner and University information
-        require(keccak256(abi.encode(degreeInformation))        == keccak256(abi.encode(_degreeInformation.degree))
-                && keccak256(abi.encode(ownerInformation))      == keccak256(abi.encode(_degreeInformation.owner))
-                && keccak256(abi.encode(universityInformation)) == keccak256(abi.encode(_degreeInformation.university))
-
-                && keccak256(abi.encode(rectorSignature))       == keccak256(abi.encode(_rectorSignature))
-                && keccak256(abi.encode(deanSignature))         == keccak256(abi.encode(_deanSignature))
-                && keccak256(abi.encode(directorSignature))     == keccak256(abi.encode(_directorSignature)),"Degree information mismatch.");
-
-        // Check UniversityDegree contract hash
-        require(signed_EIP712_Hash              == _degreeInformation.hash_EIP712_ForSigning
-                &&
-                hash_EIP712_ContractAddressSalt == _degreeInformation.hash_EIP712_ContractAddressSalt, "Audit hashes mismatch");
-        */
         // --------------------------------------------------
         // Emit event DegreeCreation
         // --------------------------------------------------
@@ -131,9 +128,7 @@ contract UniversityDegreeTemplate {
     // -- External function
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     
-    /**
-     * This function allows to the Degree owner to extract ethers that may have fallen into the contract by mistake by self Destruct
-     */
+    /// @notice This method allows the owner to extract ethers that may have fallen into the contract by mistake by selfDestruct operation
     function extractEthers() external {
         require(msg.sender == ownerInformation.accountAddress   ,"Not authorized");
         require(address(this).balance > 0                       ,"No funds to extract");
@@ -151,10 +146,9 @@ contract UniversityDegreeTemplate {
                 address(this).balance == 0, "Transfer balance mismatch.");
     }
 
-    /**
-     * Return the Chain ID where the Degree contract is deployed.
-     * This information is needed for signature validation.
-     */
+    /// @notice Return the Chain ID where the Degree contract is deployed
+    /// @dev This information is needed for signature validation
+    /// @return [uint256] The Chain ID where the Degree contract is deployed
     function getChainID() external view returns(uint256) {
         return block.chainid;
     }
@@ -162,9 +156,12 @@ contract UniversityDegreeTemplate {
     // --------------------------------------------------
     // -- set Authorities signatures
     // --------------------------------------------------
-    function _setSignatures(StructDegree.Signature memory _rectorSignature, 
-                            StructDegree.Signature memory _deanSignature, 
-                            StructDegree.Signature memory _directorSignature) external {
+
+    /// @notice Set the signature information in the Degree Contract
+    /// @param _rectorSignature [StructDegree.Signature] The StructDegree.Signature object that contains the Rector signature information 
+    /// @param _deanSignature [StructDegree.Signature] The StructDegree.Signature object that contains the Dean signature information
+    /// @param _directorSignature [StructDegree.Signature] The StructDegree.Signature object that contains the Director signature information
+    function _setSignatures(StructDegree.Signature memory _rectorSignature, StructDegree.Signature memory _deanSignature, StructDegree.Signature memory _directorSignature) external {
         // Access control
         require(msg.sender == universityInformation.contractAddress, "Not authorized");
         require(rectorSignature.signature.length == 0, "Signatures already uploaded");

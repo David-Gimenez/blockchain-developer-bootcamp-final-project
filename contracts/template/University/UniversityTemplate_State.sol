@@ -2,16 +2,17 @@
 pragma solidity 0.8.4;
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
-// -- Import contracts
+// -- Imports
 // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+/// @custom:import This contract use 'StructDegree' library.
 import "../../libraries/StructDegree.sol";
 
 /**
  * @title   UniversityTemplate_State
  * @author  David Gimenez Gutierrez
- *
- * Contract logic representing an University. 
- * This contract is part of my new Degree Certification Protocole.
+ * @notice  This contract is part of my new Degree Certification Protocole
+ * @dev     Contract representing the University's state variables
  */
  contract UniversityTemplate_State {
  
@@ -19,24 +20,32 @@ import "../../libraries/StructDegree.sol";
     // -- State variables
     // ----------------------------------------------------------------------------------------------------------------------------------------------
 
-    // University information variables
-    StructUniversity.UniversityCollege public universityInfo;   // Issuer university information
+    /// @notice Total number of Degree that has been added to be issued
+    uint256 public degreePendingIndex;
+    /// @notice Number of Degree to be issued that are pending processing
+    uint256 public degreePendingNumber;
+    /// @notice Number of University Degree issued
+    uint256 public degreeIssuedIndex;
 
-    // University Degree Template Container address
+    /// @notice University Degree Template Container address
     address public universityDegreeTemplate_ContainerAddress;
-        
+
+    /// @notice Issuer university information
+    StructUniversity.UniversityCollege public universityInfo;
+
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Contract mapping
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     
-    // University authority people
+    /// @notice University authority people mapping
+    /// @dev Maps an StructDegree.AuthorityPosition value to an StructUniversity.AuthorityPerson object
     mapping (StructDegree.AuthorityPosition => StructUniversity.AuthorityPerson) public authorities;
-    
-    // University degreee information
-    uint256 public degreePendingIndex;                                      // Total number of Degree that has been added to be issued
-    uint256 public degreePendingNumber;                                     // Number of Degree to be issued that are pending processing
 
-    uint256 public degreeIssuedIndex;                                       // Number of University Degree issued
-    mapping(uint256 => StructDegree.DegreeObject) public degreeIssued;      // UniversityDegreeNumber   => DegreeInformation
-    mapping(uint256 => StructDegree.DegreeObject) public degreePending;     // degreePendingNumber      => DegreeInformation
+    /// @notice Degree objects that have been issued mapping
+    /// @dev Maps an uint256 value to an StructDegree.DegreeObject object. UniversityDegreeNumber => DegreeInformation
+    mapping(uint256 => StructDegree.DegreeObject) public degreeIssued;
+
+    /// @notice Degree objects that is pending process mapping
+    /// @dev Maps an uint256 value to an StructDegree.DegreeObject object. DegreePendingNumber => DegreeInformation
+    mapping(uint256 => StructDegree.DegreeObject) public degreePending;
  }

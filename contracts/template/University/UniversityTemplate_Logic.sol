@@ -2,28 +2,36 @@
 pragma solidity 0.8.4;
 
 // ----------------------------------------------------------------------------------------------------------------------------------------------
-// -- Import contracts
+// -- Imports
 // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+/// @custom:import This contract use the 'UniversityTemplate_State' contract.
 import "./UniversityTemplate_State.sol";
 
 /**
  * @title   UniversityTemplate_Logic
  * @author  David Gimenez Gutierrez
- *
- * Contract logic representing an University. 
- * This contract is part of my new Degree Certification Protocole.
+ * @notice  This contract is part of my new Degree Certification Protocole
+ * @dev     This contract has the logic for the processing of Degrees for the University contract
  */
  contract UniversityTemplate_Logic is UniversityTemplate_State {
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- Constant
     // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+    /// @notice Version of the contract
     uint256 public constant VERSION = 100;   // Version of the contract
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     // -- External Functions - Degree process
     // ----------------------------------------------------------------------------------------------------------------------------------------------  
 
+    /// @notice Add a new Degree title object to the list of pending Degree objects to process
+    /// @dev The new pending Degree title is added to 'degreePending' mapping defined in the UniversityTemplate_State contract 
+    /// @param _degree [StructDegree.Degree] Degree object to be process
+    /// @param _owner [StructDegree.Owner] Graduated information, owner of the Degree title to be process
+    /// @param _externalID [uint256 indexed] External number assigned by the University that identifies the Degree object that will be added to be processed
     function addPendingDegree(StructDegree.Degree calldata _degree, StructDegree.Owner calldata _owner, uint256 _externalID) external {
         
         // Create new DegreeObject and add new Degree object to pending to process list
@@ -37,6 +45,9 @@ import "./UniversityTemplate_State.sol";
         degreePendingNumber++;
     }
 
+    /// @notice Add the Salt for hash signing of the University Degree title information to a specific Degree pending object
+    /// @dev The Salt is base in the standard defined in the EIP-712: https://eips.ethereum.org/EIPS/eip-712
+    /// @param _degreePendingIndex [uint256] Index number that identifies a pending Degree object 
     function addContractAddressSaltToPendingDegree(uint256 _degreePendingIndex) external {
 
         // Get peding degree object
@@ -47,6 +58,9 @@ import "./UniversityTemplate_State.sol";
         degreeObject.information.hash_EIP712_ContractAddressSalt = _getKeccak256HashFromDegreeInformation(degreePendingIndex);
     }
 
+    /// @notice This method calculates the address of the new Degree title contract to be issued, before it is created
+    /// @dev This is necessary to be able to sign the Degree title information hash including the contract address before the Degree contract is created
+    /// @param _degreePendingIndex [uint256] Index number that identifies a pending Degree object 
     function predictDegreeContractAddress(uint256 _degreePendingIndex) external {
 
         // Get peding degree object
@@ -58,6 +72,9 @@ import "./UniversityTemplate_State.sol";
         degreeObject.information.contractAddress        = _predictDegreeContractAddress(degreePendingIndex);
     }
 
+    /// @notice This method calculates the hash of the information of the new degree title that will be used to be signed by the University authorities
+    /// @dev This hash includes the address of the Degree contract that will be created lated
+    /// @param _degreePendingIndex [uint256] Index number that identifies a pending Degree object 
     function generateEIP712HashForSigning(uint256 _degreePendingIndex) external {
 
         // Get peding degree object
@@ -71,6 +88,11 @@ import "./UniversityTemplate_State.sol";
     // ----------------------------------------------------------------------------------
     // -- Add Signature
     // ----------------------------------------------------------------------------------
+
+    /// @notice This method adds a new signature to a pending Degree object. The Signature must be created and submitted by an Authority Person from the University, a signer
+    /// @dev The signature is verified to ensure that the signer is an Authority Person  of the University who has not yet signed the Degree title object  
+    /// @param _degreeIndex [uint256] Index number that identifies a pending Degree object
+    /// @param _signature [bytes] It is a signature generated with the web3.eth.sign and web3.eth.personal.sign methods 
     function addSignatureToPendingDegree(uint256 _degreeIndex, bytes memory _signature) external {
         // Get the AuthrityPosition of the msg sender account
         StructDegree.AuthorityPosition authorityPosition = _getAuthorityPersonPosition();
@@ -89,6 +111,9 @@ import "./UniversityTemplate_State.sol";
         require(degreePending[_degreeIndex].signature[authorityPosition].signature.length > 0, "Assignation mismatch");
     }
 
+    /// @notice This method publish new Degree title object creating a new contract for it
+    /// @dev Each new University Degree title issued is represented by a new contract based in UniversityDegreeTemplate contract
+    /// @param _degreeIndex [uint256] Index number that identifies a pending Degree object
     function publishDegree(uint256 _degreeIndex) external {
         
         // Check issue date information
@@ -133,7 +158,9 @@ import "./UniversityTemplate_State.sol";
         removePendingDegreeByIndex(_degreeIndex);
     }
 
-    // Delete pending degree object elements
+    /// @notice This method remove a Degree title object from the list of pending Degree objects to process
+    /// @dev The method delete each sub object contained into the main Degree object to free up storage space
+    /// @param _degreeIndex [uint256] Index number that identifies a pending Degree object
     function removePendingDegreeByIndex(uint256 _degreeIndex) public {
         // Delete sub struct first
         delete degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Manager];
@@ -152,12 +179,10 @@ import "./UniversityTemplate_State.sol";
     // -- Private functions
     // ----------------------------------------------------------------------------------------------------------------------------------------------
     
-    /**
-     * Makes a static external call to the address of the contract received by parameters
-     * @param _degreeContractAddress the address of the Degree contract to call to check the contract version
-     * @dev This method use static call to make a read only operation over an external contract. Next use a assembly code to convert from bytes to uint256.
-     * @return _degreeTemplateVersion The uint256 value of the getVersion method of the contract called
-     */
+    /// @notice Return the version of the University Degree contract
+    /// @dev This method use static call to make external call over an address of a contract received by parameters. The static call ensure that the call ia a read only operation. Next use a assembly code to convert from bytes to uint256
+    /// @param _degreeContractAddress [address] The address of the university Degree contract to call to check the contract version
+    /// @return _degreeTemplateVersion [uint256] The value of the Version of the contract called.
     function _getDegreeTemplateVersion(address _degreeContractAddress) private view returns(uint256 _degreeTemplateVersion) {
         
         bytes memory methodToCall = abi.encodeWithSignature("VERSION()");
@@ -174,6 +199,9 @@ import "./UniversityTemplate_State.sol";
         return _degreeTemplateVersion;
     }
 
+    /// @notice Return the Authority Position of the msg.sender
+    /// @dev That the message.sender is an Authority Person of the University has been ensured in the method that calls this private method
+    /// @return resutl [StructDegree.AuthorityPosition] The Authority Position of the msg.sender
     function _getAuthorityPersonPosition() private view returns(StructDegree.AuthorityPosition resutl) {
         if(msg.sender == authorities[StructDegree.AuthorityPosition.Manager].accountAddress)
             return StructDegree.AuthorityPosition.Manager;
@@ -188,12 +216,10 @@ import "./UniversityTemplate_State.sol";
             return StructDegree.AuthorityPosition.Director;
     }
 
-    /**
-     * This method computes the hash of the DegreeInformation type structure following the guidelines of https://eips.ethereum.org/EIPS/eip-712
-     * @param _degreeIndex the index of the DegreeInformation element that contains de struct object type to be hashed.
-     * @dev This method computes the hash of the nested struct object following the recommendation and sequential order dictated by https://eips.ethereum.org/EIPS/eip-712
-     * @return A value of bytes32 that represents the keccak256 hash of the DegreeInformation structure object. 
-     */
+    /// @notice This method returns the hash of the DegreeInformation type structure following the guidelines of the EIPS-712
+    /// @dev This method computes the hash of the nested struct object following the recommendation and sequential order dictated by https://eips.ethereum.org/EIPS/eip-712
+    /// @param _degreeIndex [uint256] Index number that identifies a pending Degree object that contains the struct object type to be hashed
+    /// @return [bytes32] The bytes32 value that represents the keccak256 hash of the DegreeInformation structure object
     function _getKeccak256HashFromDegreeInformation(uint256 _degreeIndex) private view returns(bytes32) {
         // Create a pointer to storage for easy access
         StructDegree.Degree                 storage _degree     = degreePending[_degreeIndex].information.degree;
@@ -263,11 +289,11 @@ import "./UniversityTemplate_State.sol";
         return degreeInformationTypeHash_EIP712;
     }
 
-    /**
-     * This method calculates a new contract address based on its future bytecode, constructor parameters, the address of this contract, and a salt number
-     * The salt number used is the hash of the degreeInformation object, this way it is guaranteed that all addresses will be unique for each Degree.
-     * This code is based in Solidity documentation: https://docs.soliditylang.org/en/v0.8.9/control-structures.html?highlight=create2#salted-contract-creations-create2
-     */
+    /// @notice This method calculates a new contract address based on its future bytecode, constructor parameters, the address of this contract, and a salt number
+    /// @dev The salt number used is the hash of the degreeInformation object, this way it is guaranteed that all addresses will be unique for each Degree
+    /// @dev This code is based in this Solidity documentation: https://docs.soliditylang.org/en/v0.8.9/control-structures.html?highlight=create2#salted-contract-creations-create2
+    /// @param _degreeIndex [uint256] Index number that identifies a pending Degree object that contains the struct object type to be hashed
+    /// @return _expectedDegreeContractAddress [address] The new contract address calculated
     function _predictDegreeContractAddress(uint256 _degreeIndex) private view returns(address _expectedDegreeContractAddress) {
         
         // This hash will not contain the address of the new Degree Contract, instead it will contain the address of zero, but it does contain all the other information.
@@ -303,14 +329,12 @@ import "./UniversityTemplate_State.sol";
         // Implicit return
     }
 
-    /**
-     * Create a new DegreeTempleate contract on a previously compiled address based on the hash of the corresponding DegreeInformation object
-     * @dev This method use the opCode Create2 to create a new contract base in a salt parameter, which allows to determine the address of the new contract
-     * instead of using the nonce of the calling contract.
-     * With create2(v, p, n, s) create new contract with code at memory p to p + n and send v wei and return the new address
-     * Where new address = first 20 bytes of keccak256(0xff + address(this) + s + keccak256(mem[p…(p+n))) and s = big-endian 256-bit value
-     * This code is based in the example provided by https://solidity-by-example.org/app/create2/
-     */
+    /// @notice Create a new DegreeTempleate contract on a previously compiled address based on the hash of the corresponding DegreeInformation object
+    /// @dev This method use the opCode Create2 to create a new contract base in a salt parameter, which allows to determine the address of the new contract instead of using the nonce of the calling contract
+    /// @dev With create2(v, p, n, s) create new contract with code at memory p to p + n and send v wei and return the new address Where new address = first 20 bytes of keccak256(0xff + address(this) + s + keccak256(mem[p…(p+n))) and s = big-endian 256-bit value
+    /// @dev This code is based in the example provided by https://solidity-by-example.org/app/create2/
+    /// @param _degreeIndex [uint256] Index number that identifies a pending Degree object that contains the struct object type to be hashed
+    /// @return _newDegreeContractAddress [address] The address of the new contract created
     function _createContractInPrecompileAddress(uint256 _degreeIndex) private returns(address _newDegreeContractAddress) {
         
         // Create new Degree contract with UniversityDegreeTemplate_Container
@@ -340,9 +364,9 @@ import "./UniversityTemplate_State.sol";
         // Implicit return
     }
 
-    /**
-     * Copy the information from the DegreePending object to the DegreeIssued object. Since DegreePending is a nested structure with mapping, the subcomponents must be copied manually.
-     */
+    /// @notice Copy the information from the DegreePending object to the DegreeIssued object
+    /// @dev Since DegreePending is a nested structure with mapping, the subcomponents must be copied manually
+    /// @param _degreeIndex [uint256] Index number that identifies a pending Degree object to be copied
     function _copyDegreePendingToDegreeIssued(uint256 _degreeIndex) private {
         degreeIssuedIndex++;
         degreeIssued[degreeIssuedIndex].information                                          = degreePending[_degreeIndex].information;
