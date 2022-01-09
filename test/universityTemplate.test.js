@@ -509,7 +509,7 @@ contract("University Template contract test", async accounts => {
             */
 
             // Get new Degree contract created
-            console.log(newDegreeIssuedObject);
+            //console.log(newDegreeIssuedObject);
             UniversityDegreeTemplate_Instance = await UniversityDegreeTemplate_contract.at(newDegreeIssuedObject.contractAddress, accounts[0]);
             //console.log(UniversityDegreeTemplate_Instance);
         });

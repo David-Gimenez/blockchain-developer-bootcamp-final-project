@@ -4,12 +4,9 @@ pragma solidity 0.8.4;
 /**
  * @title   Hash_EIP712_CalculationFormula
  * @author  David Gimenez Gutierrez
- *
- * This contract contains the calculation formula to obtain the EIP format hash of the 
- * Degree contract information to be signed by University Authorities
- * This contract is part of my new Degree Certification Protocole.
+ * @notice  This contract contains the calculation formula to obtain the EIP format hash of the Degree contract information to be signed by University Authorities
+ * @dev     This library contains structs related to University definition to be used across multiple contracts
  */
-
  contract Hash_EIP712_CalculationFormula {
 
      string public hash_EIP712_CalculationFormula = 
