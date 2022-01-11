@@ -1269,7 +1269,7 @@ addAuthorityButton.onclick = async () => {
 // On-click method for add pending degree to preocess
 addPendingDegreeButton.onclick = async () => {
 
-    // Graduate information check
+    // MetaMask connected check
     if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
@@ -1351,45 +1351,69 @@ addPendingDegreeButton.onclick = async () => {
 // On-click method for add Salt to pending degree preocess
 addSaltButton.onclick = async () => {
 
-    // Set degreePendingIndex to process
-    const degreePendingIndex = 1;
-    
-    // Add contract addres salt
-    const tx = await contractInstance.methods.addContractAddressSaltToPendingDegree(degreePendingIndex).send({ from: window.ethereum.selectedAddress });
-    
-    // Update state content
-    if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
-        alert("Add contract address salt to pending degree successfully");
+    // MetaMask connected check
+    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+        alert("Please, first connect MetaMask.");
+    }
+    else {
+        // Set degreePendingIndex to process
+        const pendingDegreeToProcessSelect = document.getElementById("pendingDegreeSelect");
+        const degreePendingIndex = pendingDegreeToProcessSelect.value;
+        
+        // Add contract addres salt
+        const tx = await contractInstance.methods.addContractAddressSaltToPendingDegree(degreePendingIndex).send({ from: window.ethereum.selectedAddress });
+        
+        // Update state content
+        if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
+            const addSaltButtonResult       = document.getElementById('addSaltButtonResult');
+            addSaltButtonResult.innerHTML   = "Execution Successful";
+        }
     }
 }
 
 // On-click method for predict Degree Contract Address to pending degree preocess
 predictAddressButton.onclick = async () => {
 
-    // Set degreePendingIndex to process
-    const degreePendingIndex = 1;
-    
-    // Predict Degree contract address
-    const tx = await contractInstance.methods.predictDegreeContractAddress(degreePendingIndex).send({ from: window.ethereum.selectedAddress });
-    
-    // Update state content
-    if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
-        alert("Predict degree contract address successfully");
+    // MetaMask connected check
+    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+        alert("Please, first connect MetaMask.");
+    }
+    else {
+        // Set degreePendingIndex to process
+        const pendingDegreeToProcessSelect = document.getElementById("pendingDegreeSelect");
+        const degreePendingIndex = pendingDegreeToProcessSelect.value;
+        
+        // Predict Degree contract address
+        const tx = await contractInstance.methods.predictDegreeContractAddress(degreePendingIndex).send({ from: window.ethereum.selectedAddress });
+        
+        // Update state content
+        if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
+            const predictAddressButtonResult       = document.getElementById('predictAddressButtonResult');
+            predictAddressButtonResult.innerHTML   = "Execution Successful";
+        }
     }
 }
 
 // On-click method for generate EIP712 hash for pending degree
 generateEIP712HashButton.onclick = async () => {
 
-    // Set degreePendingIndex to process
-    const degreePendingIndex = 1;
-    
-    // Generate EIP712 Hash For Signing
-    const tx = await contractInstance.methods.generateEIP712HashForSigning(degreePendingIndex).send({ from: window.ethereum.selectedAddress });
-    
-    // Update state content
-    if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
-        alert("EIP712 hash generation successfully");
+    // MetaMask connected check
+    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+        alert("Please, first connect MetaMask.");
+    }
+    else {
+        // Set degreePendingIndex to process
+        const pendingDegreeToProcessSelect = document.getElementById("pendingDegreeSelect");
+        const degreePendingIndex = pendingDegreeToProcessSelect.value;
+        
+        // Generate EIP712 Hash For Signing
+        const tx = await contractInstance.methods.generateEIP712HashForSigning(degreePendingIndex).send({ from: window.ethereum.selectedAddress });
+        
+        // Update state content
+        if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
+            const generateEIP712HashButtonResult       = document.getElementById('generateEIP712HashButtonResult');
+            generateEIP712HashButtonResult.innerHTML   = "Execution Successful";
+        }
     }
 }
 

@@ -404,8 +404,6 @@ queryButton.onclick = async () => {
     let universityFullNameValue         = document.getElementById("universityFullNameValue");
     let universityCountryValue          = document.getElementById("universityCountryValue");
     let universityStateValue            = document.getElementById("universityStateValue");
-    //let universityManagerNameValue      = document.getElementById("universityManagerNameValue");
-    //let universityManagerAddressValue   = document.getElementById("universityManagerAddressValue");
             
     // Set University contract information
     universityContractAddressValue.innerHTML    = universityContract.contractAddress;
@@ -413,8 +411,6 @@ queryButton.onclick = async () => {
     universityFullNameValue.innerHTML           = universityContract.fullName;
     universityCountryValue.innerHTML            = universityContract.country;
     universityStateValue.innerHTML              = universityContract.state;
-    //universityManagerNameValue.innerHTML        = universityContract.name;
-    //universityManagerAddressValue.innerHTML     = universityContract.accountAddress;    
 }
 
 // On-click method for extract ethers

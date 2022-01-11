@@ -578,14 +578,23 @@ metaMaskDiv.onclick = async () => {
 
         // Load html objects
         let graduateNameValue       = document.getElementById('graduateNameValue');
+        let degreeNameValue         = document.getElementById('degreeNameValue');
         let universityNameValue     = document.getElementById('universityNameValue');
         let degreeIssueDateValue    = document.getElementById('degreeIssueDateValue');
 
+        let signatureRector         = document.getElementById('rectorSignature');
+        let signatureDean           = document.getElementById('deanSignature');
+        let signatureDirector       = document.getElementById('directorSignature');
+
         // Show inforamtion on screen
         graduateNameValue.innerHTML     = universityDegreeTemplate_ownerInformation.name;
+        degreeNameValue.innerHTML       = universityDegreeTemplate_degreeInformation.name;
         universityNameValue.innerHTML   = universityDegreeTemplate_universityInformation.name;
         degreeIssueDateValue.innerHTML  = universityDegreeTemplate_degreeInformation.issueDate;
 
-        //<<<<<<====== PENDING ADD ORE INFO ABOUT THE DEGREE AND SIGNATURES =====>>>>>>
+        // Show each signature
+        signatureRector.innerHTML   = universityDegreeTemplate_rectorSignature.signature;
+        signatureDean.innerHTML     = universityDegreeTemplate_deanSignature.signature;
+        signatureDirector.innerHTML = universityDegreeTemplate_directorSignature.signature;        
     }
 };

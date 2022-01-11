@@ -37,43 +37,10 @@
 }
 
 .mainImage {
-    content: url("../img/Masters_degree_certificate_templates2.jpg");
+    content: url("../img/Masters_degree_certificate_templates3.jpg");
     align-content: center;
     box-shadow: 10px 10px 20px 5px rgb(0, 0, 0);
     z-index: 3;
-}
-
-.graduatedName {
-    z-index: 4;
-    position: absolute;
-    top: 32%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: red;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.universityName {
-    z-index: 4;
-    position: absolute;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: red;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.degreeDate {
-    z-index: 4;
-    position: absolute;
-    top: 78%;
-    left: 63.5%;
-    transform: translate(-50%, -50%);
-    color: red;
-    font-size: 25px;
-    font-weight: bold;
 }
 
 .homeLink {
@@ -94,4 +61,136 @@
     border-radius: 15px;
     padding: 10px;
     cursor: pointer;
+}
+
+.graduatedName {
+    z-index: 4;
+    position: absolute;
+    top: 32%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.degreeName {
+    z-index: 4;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.universityName {
+    z-index: 4;
+    position: absolute;
+    top: 81%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(0, 0, 0);
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.signatureRector {
+    z-index: 4;
+    position: absolute;
+    top: 60%;
+    left: 35.5%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.signatureRectorTitle {
+    z-index: 4;
+    position: absolute;
+    top: 64%;
+    left: 35.5%;
+    transform: translate(-50%, -50%);
+    color: rgb(0, 0, 0);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.signatureDean {
+    z-index: 4;
+    position: absolute;
+    top: 68%;
+    left: 35.5%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.signatureDeanTitle {
+    z-index: 4;
+    position: absolute;
+    top: 72%;
+    left: 35.5%;
+    transform: translate(-50%, -50%);
+    color: rgb(0, 0, 0);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.signatureDirector {
+    z-index: 4;
+    position: absolute;
+    top: 76%;
+    left: 35.5%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.signatureDirectorTitle {
+    z-index: 4;
+    position: absolute;
+    top: 80%;
+    left: 35.5%;
+    transform: translate(-50%, -50%);
+    color: rgb(0, 0, 0);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.degreeDate {
+    z-index: 4;
+    position: absolute;
+    top: 78%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.degreeVersionTitle {
+    z-index: 4;
+    position: absolute;
+    top: 98%;
+    left: 69%;
+    transform: translate(-50%, -50%);
+    color: rgb(0, 0, 0);
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.degreeVersion {
+    z-index: 4;
+    position: absolute;
+    top: 98%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    color: rgb(0, 0, 0);
+    font-size: 10px;
+    font-weight: bold;
 }

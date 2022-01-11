@@ -104,7 +104,7 @@
     display: flex;
     flex-direction:column;
     vertical-align: middle;
-    padding-top: 5%;
+    padding-top: 3%;
     padding-left: 5%;
 }
 
@@ -114,13 +114,34 @@
 }
 
 .divInformation {
-    margin-bottom: 1rem;   
+    margin-bottom: 0.5rem;
+}
+
+.divInformationTitle {
+    margin-top: 0.5rem;
 }
 
 .divTitle {
     font-size: 0.75rem;
     font-weight: bold;
     color: rgb(0, 0, 65);
+    display: inline-block;
+    width: 17rem;
+}
+
+.divTitleBlue {
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(25, 25, 255);
+    display: inline-block;
+    width: 17rem;
+    margin-bottom: 1rem;
+}
+
+.divResult {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: rgb(255, 0, 0);
     display: inline-block;
     width: 17rem;
 }
@@ -166,6 +187,14 @@
     font-weight: bold;
     color: rgb(0, 0, 65);
     width: 20%;
+    display: inline-block;
+}
+
+.divInputBoxLarge {
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(0, 0, 65);
+    width: 40%;
     display: inline-block;
 }
 
