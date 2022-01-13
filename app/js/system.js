@@ -1,5 +1,6 @@
 // Load deploy information files
-const universityBuilder_contractAddress = "0x6dec23f85302FF8B35ef66C8a35c78cd344B489C";
+//const universityBuilder_contractAddress = "0x6dec23f85302FF8B35ef66C8a35c78cd344B489C";
+let universityBuilder_contractAddress;
 const universityBuilder_ABI_JSON        = `[
     {
       "inputs": [],
@@ -218,44 +219,55 @@ window.addEventListener('load', function(){
 
 // On-click method for MetaMask connection
 metaMaskDiv.onclick = async () => {
-    // Connect to the contract
-    web3 = new window.Web3(window.ethereum);
-    contractInstance = new web3.eth.Contract(universityBuilder_ABI, universityBuilder_contractAddress);
-
-    await window.ethereum.request({ method: 'eth_requestAccounts'});
-    metaMaskDiv.innerHTML = "Connected account: " + window.ethereum.selectedAddress;
-
-    // -----------------------------------------------------------------------------------------------------------------------------
-    // Load information for "statusContentDiv"
-    // -----------------------------------------------------------------------------------------------------------------------------
-    const universityBuilder_Version                     = await contractInstance.methods.VERSION().call();
-    const universityBuilder_OwnerAccountAddress         = await contractInstance.methods.owner().call();
-    const universityBuilder_UniversityTemplateAddress   = await contractInstance.methods.universityTemplateContainer().call();
-    const universityBuilder_universitiesNumber          = await contractInstance.methods.universitiesNumber().call();
+    // Set the contract address to interact with
+    universityBuilder_contractAddress = document.getElementById('contractAddressInput').value;
+    if (universityBuilder_contractAddress.length === 0){
+        alert("Please, set the contract address");
+    }
+    else if (universityBuilder_contractAddress.indexOf("0x") === -1 || universityBuilder_contractAddress === "0x0"){
+        alert("Invalid contract address.");
+    }
+    else {
     
-    let contractAddressValue                = document.getElementById('contractAddressValue');
-    let currentVersionValueDiv              = document.getElementById('currentVersionValue');
-    let OwnerAccountValueDiv                = document.getElementById('OwnerAccountValue');
-    let UniversityTemplateAddressValueDiv   = document.getElementById('UniversityTemplateAddressValue');
-    let numberOfUniversitiesValueDiv        = document.getElementById('numberOfUniversitiesValue');
-    
-    contractAddressValue.innerHTML              = universityBuilder_contractAddress;
-    currentVersionValueDiv.innerHTML            = universityBuilder_Version;
-    OwnerAccountValueDiv.innerHTML              = universityBuilder_OwnerAccountAddress;
-    UniversityTemplateAddressValueDiv.innerHTML = universityBuilder_UniversityTemplateAddress;
-    numberOfUniversitiesValueDiv.innerHTML      = universityBuilder_universitiesNumber;
-    
-    // -----------------------------------------------------------------------------------------------------------------------------
-    // Load information for "extractEthersContentDiv"
-    // -----------------------------------------------------------------------------------------------------------------------------
-    universityBuilder_ContractBalance         = web3.utils.fromWei(await web3.eth.getBalance(universityBuilder_contractAddress), 'ether');
-    universityBuilder_CurrentAccountBalance   = web3.utils.fromWei(await web3.eth.getBalance(universityBuilder_OwnerAccountAddress), 'ether');
+        // Connect to the contract
+        web3 = new window.Web3(window.ethereum);
+        contractInstance = new web3.eth.Contract(universityBuilder_ABI, universityBuilder_contractAddress);
 
-    let contractBalanceValueDiv         = document.getElementById('contractBalanceValue');
-    let currentAccountBalanceValueDiv   = document.getElementById('currentAccountBalanceValue');
+        await window.ethereum.request({ method: 'eth_requestAccounts'});
+        metaMaskDiv.innerHTML = "Connected account: " + window.ethereum.selectedAddress;
 
-    contractBalanceValueDiv.innerHTML       = universityBuilder_ContractBalance.toString() + " ETH";
-    currentAccountBalanceValueDiv.innerHTML = universityBuilder_CurrentAccountBalance.toString() + " ETH";
+        // -----------------------------------------------------------------------------------------------------------------------------
+        // Load information for "statusContentDiv"
+        // -----------------------------------------------------------------------------------------------------------------------------
+        const universityBuilder_Version                     = await contractInstance.methods.VERSION().call();
+        const universityBuilder_OwnerAccountAddress         = await contractInstance.methods.owner().call();
+        const universityBuilder_UniversityTemplateAddress   = await contractInstance.methods.universityTemplateContainer().call();
+        const universityBuilder_universitiesNumber          = await contractInstance.methods.universitiesNumber().call();
+        
+        let contractAddressValue                = document.getElementById('contractAddressValue');
+        let currentVersionValueDiv              = document.getElementById('currentVersionValue');
+        let OwnerAccountValueDiv                = document.getElementById('OwnerAccountValue');
+        let UniversityTemplateAddressValueDiv   = document.getElementById('UniversityTemplateAddressValue');
+        let numberOfUniversitiesValueDiv        = document.getElementById('numberOfUniversitiesValue');
+        
+        contractAddressValue.innerHTML              = universityBuilder_contractAddress;
+        currentVersionValueDiv.innerHTML            = universityBuilder_Version;
+        OwnerAccountValueDiv.innerHTML              = universityBuilder_OwnerAccountAddress;
+        UniversityTemplateAddressValueDiv.innerHTML = universityBuilder_UniversityTemplateAddress;
+        numberOfUniversitiesValueDiv.innerHTML      = universityBuilder_universitiesNumber;
+        
+        // -----------------------------------------------------------------------------------------------------------------------------
+        // Load information for "extractEthersContentDiv"
+        // -----------------------------------------------------------------------------------------------------------------------------
+        universityBuilder_ContractBalance         = web3.utils.fromWei(await web3.eth.getBalance(universityBuilder_contractAddress), 'ether');
+        universityBuilder_CurrentAccountBalance   = web3.utils.fromWei(await web3.eth.getBalance(universityBuilder_OwnerAccountAddress), 'ether');
+
+        let contractBalanceValueDiv         = document.getElementById('contractBalanceValue');
+        let currentAccountBalanceValueDiv   = document.getElementById('currentAccountBalanceValue');
+
+        contractBalanceValueDiv.innerHTML       = universityBuilder_ContractBalance.toString() + " ETH";
+        currentAccountBalanceValueDiv.innerHTML = universityBuilder_CurrentAccountBalance.toString() + " ETH";
+    }
 };
 
 // On-click method for save new University Template Contract address
@@ -338,37 +350,39 @@ createButton.onclick = async () => {
                 universityManager
             ).send({ 
                 from:   window.ethereum.selectedAddress
+            }).then(async () => {
+                
+                // Update university builder contract status
+                const universityBuilder_universitiesNumber  = await contractInstance.methods.universitiesNumber().call(); 
+                let numberOfUniversitiesValueDiv            = document.getElementById('numberOfUniversitiesValue');
+                numberOfUniversitiesValueDiv.innerHTML      = universityBuilder_universitiesNumber;
+
+                // Show address of the new university contract
+                const newUniversityContractAddress = await contractInstance.methods.universities(universityBuilder_universitiesNumber).call();
+                
+                const newUniversityContractObject = {
+                    contractAddress: newUniversityContractAddress.contractAddress,
+                    name: newUniversityContractAddress.name,
+                    fullName: newUniversityContractAddress.fullName,
+                    country: newUniversityContractAddress.country,
+                    state: newUniversityContractAddress.state
+                }
+                
+                newContractInformationValue.value = JSON.stringify(newUniversityContractObject, null, 2);
+
+                // Add university to list of universities created
+                let selectList = document.getElementById("createdUniversitiesSelect");
+
+                //Create and append the options
+                let option = document.createElement("option");
+                option.value = universityBuilder_universitiesNumber;
+                option.text = newUniversityContractAddress.name;
+                selectList.appendChild(option);
             });
         
         // Show results operation
-        if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
-            // Update university builder contract status
-            const universityBuilder_universitiesNumber  = await contractInstance.methods.universitiesNumber().call(); 
-            let numberOfUniversitiesValueDiv            = document.getElementById('numberOfUniversitiesValue');
-            numberOfUniversitiesValueDiv.innerHTML      = universityBuilder_universitiesNumber;
-
-            // Show address of the new university contract
-            const newUniversityContractAddress = await contractInstance.methods.universities(universityBuilder_universitiesNumber).call();
-            
-            const newUniversityContractObject = {
-                contractAddress: newUniversityContractAddress.contractAddress,
-                name: newUniversityContractAddress.name,
-                fullName: newUniversityContractAddress.fullName,
-                country: newUniversityContractAddress.country,
-                state: newUniversityContractAddress.state
-            }
-            
-            newContractInformationValue.value = JSON.stringify(newUniversityContractObject, null, 2);
-
-            // Add university to list of universities created
-            let selectList = document.getElementById("createdUniversitiesSelect");
-
-            //Create and append the options
-            let option = document.createElement("option");
-            option.value = universityBuilder_universitiesNumber;
-            option.text = newUniversityContractAddress.name;
-            selectList.appendChild(option);
-        }
+        //if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
+        //}
     }
 }
 

@@ -1,5 +1,6 @@
 // Load deploy information files
-const universityTemplate_contractAddress = "0x9cc653Fdbe89f7028dee5e3054998DD368d80a78";
+//const universityTemplate_contractAddress = "0x9cc653Fdbe89f7028dee5e3054998DD368d80a78";
+let universityTemplate_contractAddress;
 const universityTemplate_ABI_JSON        = `[
     {
       "inputs": [
@@ -1054,79 +1055,90 @@ window.addEventListener('load', function(){
 
 // On-click method for MetaMask connection
 metaMaskDiv.onclick = async () => {
-    // Connect to the contract
-    web3 = new window.Web3(window.ethereum);
-    contractInstance = new web3.eth.Contract(universityTemplate_ABI, universityTemplate_contractAddress);
+    // Set the contract address to interact with
+    universityTemplate_contractAddress = document.getElementById('contractAddressInput').value;
+    if (universityTemplate_contractAddress.length === 0){
+        alert("Please, set the contract address");
+    }
+    else if (universityTemplate_contractAddress.indexOf("0x") === -1 || universityTemplate_contractAddress === "0x0"){
+        alert("Invalid contract address.");
+    }
+    else {
 
-    await window.ethereum.request({ method: 'eth_requestAccounts'});
-    metaMaskDiv.innerHTML = "Connected account: " + window.ethereum.selectedAddress;
+        // Connect to the contract
+        web3 = new window.Web3(window.ethereum);
+        contractInstance = new web3.eth.Contract(universityTemplate_ABI, universityTemplate_contractAddress);
 
-    // -----------------------------------------------------------------------------------------------------------------------------
-    // Load information for "statusContentDiv"
-    // -----------------------------------------------------------------------------------------------------------------------------
-    // Load information from contract
-    const universityTemplate_Version                    = await contractInstance.methods.VERSION().call();
-    const universityTemplate_GovernanceContractAddress  = await contractInstance.methods.governanceContractAddress().call();
-    const universityTemplate_LogicContractAddress       = await contractInstance.methods.logicContractAddress().call();
-    const universityTemplate_universityInfo             = await contractInstance.methods.universityInfo().call();
-    const universityTemplate_universityDegreeTemplate   = await contractInstance.methods.universityDegreeTemplate_ContainerAddress().call();
-    const universityTemplate_DegreePendingIndex         = await contractInstance.methods.degreePendingIndex().call();
-    const universityTemplate_degreePendingNumber        = await contractInstance.methods.degreePendingNumber().call();
-    const universityTemplate_degreeIssuedIndex          = await contractInstance.methods.degreeIssuedIndex().call();
+        await window.ethereum.request({ method: 'eth_requestAccounts'});
+        metaMaskDiv.innerHTML = "Connected account: " + window.ethereum.selectedAddress;
 
-    // Get University Authroties information
-    const universityTemplate_RectorInformation          = await contractInstance.methods.authorities(1).call(); // 1 It is Rector
-    const universityTemplate_DeanInformation            = await contractInstance.methods.authorities(2).call(); // 2 It is Dean
-    const universityTemplate_DirectorInformation        = await contractInstance.methods.authorities(3).call(); // 3 It is Director
-    const universityTemplate_ManagerInformation         = await contractInstance.methods.authorities(0).call(); // 0 It is Manager
-    
-    // Load html objects
-    let universityContractAddressValue      = document.getElementById('universityContractAddressValue');
-    let currentVersionValue                 = document.getElementById('currentVersionValue');
-    let universityNameValue                 = document.getElementById('universityNameValue');
-    let universityFullNameValue             = document.getElementById('universityFullNameValue');
-    let universityCountryValue              = document.getElementById('universityCountryValue');
-    let universityStateValue                = document.getElementById('universityStateValue');
-    let universityGovernanceContractValue   = document.getElementById('universityGovernanceContractValue');
-    let universityLogicContractValue        = document.getElementById('universityLogicContractValue');
-    let universityDegreeContractValue       = document.getElementById('universityDegreeContractValue');
-    let degreePendingIndex                  = document.getElementById('degreePendingIndexValue');
-    let degreePendingNumber                 = document.getElementById('degreePendingNumberValue');
-    let degreeIssuedIndex                   = document.getElementById('degreeIssuedIndexValue');
+        // -----------------------------------------------------------------------------------------------------------------------------
+        // Load information for "statusContentDiv"
+        // -----------------------------------------------------------------------------------------------------------------------------
+        // Load information from contract
+        const universityTemplate_Version                    = await contractInstance.methods.VERSION().call();
+        const universityTemplate_GovernanceContractAddress  = await contractInstance.methods.governanceContractAddress().call();
+        const universityTemplate_LogicContractAddress       = await contractInstance.methods.logicContractAddress().call();
+        const universityTemplate_universityInfo             = await contractInstance.methods.universityInfo().call();
+        const universityTemplate_universityDegreeTemplate   = await contractInstance.methods.universityDegreeTemplate_ContainerAddress().call();
+        const universityTemplate_DegreePendingIndex         = await contractInstance.methods.degreePendingIndex().call();
+        const universityTemplate_degreePendingNumber        = await contractInstance.methods.degreePendingNumber().call();
+        const universityTemplate_degreeIssuedIndex          = await contractInstance.methods.degreeIssuedIndex().call();
 
-    // Load html object of university authorities
-    let universityRectorNameValue           = document.getElementById('universityRectorNameValue');
-    let universityRectorAddressValue        = document.getElementById('universityRectorAddressValue');
-    let universityDeanNameValue             = document.getElementById('universityDeanNameValue');
-    let universityDeanAddressValue          = document.getElementById('universityDeanAddressValue');
-    let universityDirectorNameValue         = document.getElementById('universityDirectorNameValue');
-    let universityDirectorAddressValue      = document.getElementById('universityDirectorAddressValue');
-    let universityManagerNameValue          = document.getElementById('universityManagerNameValue');
-    let universityManagerAddressValue       = document.getElementById('universityManagerAddressValue');
-    
-    // Show inforamtion on screen
-    universityContractAddressValue.innerHTML    = universityTemplate_contractAddress;
-    currentVersionValue.innerHTML               = universityTemplate_Version;
-    universityNameValue.innerHTML               = universityTemplate_universityInfo.name;
-    universityFullNameValue.innerHTML           = universityTemplate_universityInfo.fullName;
-    universityCountryValue.innerHTML            = universityTemplate_universityInfo.country;
-    universityStateValue.innerHTML              = universityTemplate_universityInfo.state;
-    universityGovernanceContractValue.innerHTML = universityTemplate_GovernanceContractAddress;
-    universityLogicContractValue.innerHTML      = universityTemplate_LogicContractAddress;
-    universityDegreeContractValue.innerHTML     = universityTemplate_universityDegreeTemplate;
-    degreePendingIndex.innerHTML                = universityTemplate_DegreePendingIndex;
-    degreePendingNumber.innerHTML               = universityTemplate_degreePendingNumber;
-    degreeIssuedIndex.innerHTML                 = universityTemplate_degreeIssuedIndex;
+        // Get University Authroties information
+        const universityTemplate_RectorInformation          = await contractInstance.methods.authorities(1).call(); // 1 It is Rector
+        const universityTemplate_DeanInformation            = await contractInstance.methods.authorities(2).call(); // 2 It is Dean
+        const universityTemplate_DirectorInformation        = await contractInstance.methods.authorities(3).call(); // 3 It is Director
+        const universityTemplate_ManagerInformation         = await contractInstance.methods.authorities(0).call(); // 0 It is Manager
+        
+        // Load html objects
+        let universityContractAddressValue      = document.getElementById('universityContractAddressValue');
+        let currentVersionValue                 = document.getElementById('currentVersionValue');
+        let universityNameValue                 = document.getElementById('universityNameValue');
+        let universityFullNameValue             = document.getElementById('universityFullNameValue');
+        let universityCountryValue              = document.getElementById('universityCountryValue');
+        let universityStateValue                = document.getElementById('universityStateValue');
+        let universityGovernanceContractValue   = document.getElementById('universityGovernanceContractValue');
+        let universityLogicContractValue        = document.getElementById('universityLogicContractValue');
+        let universityDegreeContractValue       = document.getElementById('universityDegreeContractValue');
+        let degreePendingIndex                  = document.getElementById('degreePendingIndexValue');
+        let degreePendingNumber                 = document.getElementById('degreePendingNumberValue');
+        let degreeIssuedIndex                   = document.getElementById('degreeIssuedIndexValue');
 
-    // Show university authorities information
-    universityRectorNameValue.innerHTML         = universityTemplate_RectorInformation.name;
-    universityRectorAddressValue.innerHTML      = universityTemplate_RectorInformation.accountAddress;
-    universityDeanNameValue.innerHTML           = universityTemplate_DeanInformation.name;
-    universityDeanAddressValue.innerHTML        = universityTemplate_DeanInformation.accountAddress;
-    universityDirectorNameValue.innerHTML       = universityTemplate_DirectorInformation.name;
-    universityDirectorAddressValue.innerHTML    = universityTemplate_DirectorInformation.accountAddress;
-    universityManagerNameValue.innerHTML        = universityTemplate_ManagerInformation.name;
-    universityManagerAddressValue.innerHTML     = universityTemplate_ManagerInformation.accountAddress;
+        // Load html object of university authorities
+        let universityRectorNameValue           = document.getElementById('universityRectorNameValue');
+        let universityRectorAddressValue        = document.getElementById('universityRectorAddressValue');
+        let universityDeanNameValue             = document.getElementById('universityDeanNameValue');
+        let universityDeanAddressValue          = document.getElementById('universityDeanAddressValue');
+        let universityDirectorNameValue         = document.getElementById('universityDirectorNameValue');
+        let universityDirectorAddressValue      = document.getElementById('universityDirectorAddressValue');
+        let universityManagerNameValue          = document.getElementById('universityManagerNameValue');
+        let universityManagerAddressValue       = document.getElementById('universityManagerAddressValue');
+        
+        // Show inforamtion on screen
+        universityContractAddressValue.innerHTML    = universityTemplate_contractAddress;
+        currentVersionValue.innerHTML               = universityTemplate_Version;
+        universityNameValue.innerHTML               = universityTemplate_universityInfo.name;
+        universityFullNameValue.innerHTML           = universityTemplate_universityInfo.fullName;
+        universityCountryValue.innerHTML            = universityTemplate_universityInfo.country;
+        universityStateValue.innerHTML              = universityTemplate_universityInfo.state;
+        universityGovernanceContractValue.innerHTML = universityTemplate_GovernanceContractAddress;
+        universityLogicContractValue.innerHTML      = universityTemplate_LogicContractAddress;
+        universityDegreeContractValue.innerHTML     = universityTemplate_universityDegreeTemplate;
+        degreePendingIndex.innerHTML                = universityTemplate_DegreePendingIndex;
+        degreePendingNumber.innerHTML               = universityTemplate_degreePendingNumber;
+        degreeIssuedIndex.innerHTML                 = universityTemplate_degreeIssuedIndex;
+
+        // Show university authorities information
+        universityRectorNameValue.innerHTML         = universityTemplate_RectorInformation.name;
+        universityRectorAddressValue.innerHTML      = universityTemplate_RectorInformation.accountAddress;
+        universityDeanNameValue.innerHTML           = universityTemplate_DeanInformation.name;
+        universityDeanAddressValue.innerHTML        = universityTemplate_DeanInformation.accountAddress;
+        universityDirectorNameValue.innerHTML       = universityTemplate_DirectorInformation.name;
+        universityDirectorAddressValue.innerHTML    = universityTemplate_DirectorInformation.accountAddress;
+        universityManagerNameValue.innerHTML        = universityTemplate_ManagerInformation.name;
+        universityManagerAddressValue.innerHTML     = universityTemplate_ManagerInformation.accountAddress;
+    }
 };
 
 // On-click method for save new University Template Contract address
@@ -1147,6 +1159,9 @@ setGovernanceContractAddressButton.onclick = async () => {
 
         // Update status content
         if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
+            const governanceContractAddressResult       = document.getElementById('governanceContractAddressResult');
+            governanceContractAddressResult.innerHTML   = "Execution Successful";
+
             const universityTemplate_GovernanceContractAddress  = await contractInstance.methods.governanceContractAddress().call();
             let universityGovernanceContractValue               = document.getElementById('universityGovernanceContractValue');
             universityGovernanceContractValue.innerHTML         = universityTemplate_GovernanceContractAddress;
@@ -1172,6 +1187,9 @@ setLogicContractAddressButton.onclick = async () => {
 
         // Update status content
         if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
+            const logicContractAddressResult       = document.getElementById('logicContractAddressResult');
+            logicContractAddressResult.innerHTML   = "Execution Successful";
+
             const universityTemplate_LogicContractAddress   = await contractInstance.methods.logicContractAddress().call();
             let universityLogicContractValue                = document.getElementById('universityLogicContractValue');
             universityLogicContractValue.innerHTML          = universityTemplate_LogicContractAddress;
@@ -1197,6 +1215,9 @@ setDegreeTemplateContractAddressButton.onclick = async () => {
 
         // Update status content
         if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
+            const degreeContractAddressResult       = document.getElementById('degreeContractAddressResult');
+            degreeContractAddressResult.innerHTML   = "Execution Successful";
+
             const universityTemplate_DegreeContractAddress  = await contractInstance.methods.universityDegreeTemplate_ContainerAddress().call();
             let universityDegreeContractValue               = document.getElementById('universityDegreeContractValue');
             universityDegreeContractValue.innerHTML         = universityTemplate_DegreeContractAddress;
@@ -1264,7 +1285,6 @@ addAuthorityButton.onclick = async () => {
         }
     }
 }
-
 
 // On-click method for add pending degree to preocess
 addPendingDegreeButton.onclick = async () => {
@@ -1518,7 +1538,7 @@ signButton.onclick = async () => {
                     const tx = await contractInstance.methods.addSignatureToPendingDegree(
                         pendingDegreeIndex,
                         authritySignature
-                        ).send({ from: currentAddress, gas: 8500000000 });
+                        ).send({ from: currentAddress });
                     
                     //const rectorSignature = await contractInstance.methods.getPendingDegreeSignature(pendingDegreeIndex, 1).call({ from: currentAddress });
                     //alert(rectorSignature);
@@ -1592,19 +1612,21 @@ publishButton.onclick = async () => {
         }
         else {
             // Publish Degree
-            const tx = await contractInstance.methods.publishDegree(pendingDegreeSelectList.value).send({ from: window.ethereum.selectedAddress });
-            
-            if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
-                // Get new Published Degree Contract Address
-                const publishDegreeIndex    = await contractInstance.methods.degreeIssuedIndex().call();
-                const publishDegreeContract = await contractInstance.methods.degreeIssued(publishDegreeIndex).call();
-                
+            const tx = await contractInstance.methods.publishDegree(pendingDegreeSelectList.value)
+                .send({ from: window.ethereum.selectedAddress }).then(async () => {
+                    // Get new Published Degree Contract Address
+                    const publishDegreeIndex    = await contractInstance.methods.degreeIssuedIndex().call();
+                    const publishDegreeContract = await contractInstance.methods.degreeIssued(publishDegreeIndex).call();
+                    
 
-                let publishedDegree_ContractAddress         = document.getElementById("publishedDegree_ContractAddress");
-                publishedDegree_ContractAddress.innerHTML   = publishDegreeContract.contractAddress;
-                
-                alert("Transaction to Publish Degree sent successfully. Please check the transaction confirmation in MetaMask.");
-            }
+                    let publishedDegree_ContractAddress         = document.getElementById("publishedDegree_ContractAddress");
+                    publishedDegree_ContractAddress.innerHTML   = publishDegreeContract.contractAddress;
+                    
+                    alert("Transaction to Publish Degree sent successfully. Please check the transaction confirmation in MetaMask.");
+                });
+            
+            //if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
+            //}
         }
     }
 }
@@ -1647,7 +1669,7 @@ getPublishedDegreeButton.onclick = async () => {
             publishedDegree_degreeNameValue.innerHTML             = publishDegreeInformation.name;
             publishedDegree_degreeDescriptionValue.innerHTML      = publishDegreeInformation.description;
             publishedDegree_degreeLigalStatementValue.innerHTML   = publishDegreeInformation.legalStatement;
-            publishedDegree_degreeIssueDateValue.innerHTML        = publishDegreeInformation.issueDate;
+            publishedDegree_degreeIssueDateValue.innerHTML        = new Date(publishDegreeInformation.issueDate * 1000);
             publishedDegree_ContractAddressValue.innerHTML        = publishDegreeContract.contractAddress;
         }
     }

@@ -16,6 +16,10 @@
         <!-- Header Section ------------------------------------------------------------------------------ -->
         <section id="headerSection" class="headerClass">
             <div id="homeDiv" class="homeLink" onclick="location.href='index.html';">Home</div>
+            <div id="contractAddressDiv" class="contractAddressDiv">
+                Contract Address:
+                <input id="contractAddressInput" type="text" class="contractAddressInputBox">
+            </div>
             <div id="metaMaskDiv" class="connect">Connet MetaMask</div>
         </section>
 
@@ -169,18 +173,21 @@
                     <div class="divInputBox">Governance Contract Address:</div>
                     <input id="governanceContractAddressInput" type="text" class="inputBox">
                     <button id="setGovernanceContractAddressButton" class="saveButton">Save</button>
+                    <div id="governanceContractAddressResult" class="divResult"></div>
                 </div>
                 
                 <div id="logicContractAddressDiv" class="divInformation">
                     <div class="divInputBox">Logic Contract Address:</div>
                     <input id="logicContractAddressInput" type="text" class="inputBox">
                     <button id="setLogicContractAddressButton" class="saveButton">Save</button>
+                    <div id="logicContractAddressResult" class="divResult"></div>
                 </div>
 
                 <div id="degreeTemplateContractAddressDiv" class="divInformation">
                     <div class="divInputBox">Degree Template Contract Address:</div>
                     <input id="degreeTemplateContractAddressInput" type="text" class="inputBox">
                     <button id="setDegreeTemplateContractAddressButton" class="saveButton">Save</button>
+                    <div id="degreeContractAddressResult" class="divResult"></div>
                 </div>
             </div>
 

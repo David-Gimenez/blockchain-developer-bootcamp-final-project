@@ -1,5 +1,6 @@
 // Load deploy information files
-const universityDegree_contractAddress = "0x3B54F2f539eB628000b933A778353a8B0cc5E160";
+//const universityDegree_contractAddress = "0x3B54F2f539eB628000b933A778353a8B0cc5E160";
+let universityDegree_contractAddress;
 const universityDegreeTemplate_ABI_JSON        = `[
     {
       "inputs": [
@@ -553,7 +554,15 @@ window.addEventListener('load', function(){
 
 // On-click method for MetaMask connection
 metaMaskDiv.onclick = async () => {
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    // Set the contract address to interact with
+    universityDegree_contractAddress = document.getElementById('contractAddressInput').value;
+    if (universityDegree_contractAddress.length === 0){
+        alert("Please, set the contract address");
+    }
+    else if (universityDegree_contractAddress.indexOf("0x") === -1 || universityDegree_contractAddress === "0x0"){
+        alert("Invalid contract address.");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
 
         // Connect to the contract
         web3 = new window.Web3(window.ethereum);
@@ -590,9 +599,10 @@ metaMaskDiv.onclick = async () => {
         graduateNameValue.innerHTML     = universityDegreeTemplate_ownerInformation.name;
         degreeNameValue.innerHTML       = universityDegreeTemplate_degreeInformation.name;
         universityNameValue.innerHTML   = universityDegreeTemplate_universityInformation.name;
-        degreeIssueDateValue.innerHTML  = universityDegreeTemplate_degreeInformation.issueDate;
+        degreeIssueDateValue.innerHTML  = new Date(universityDegreeTemplate_degreeInformation.issueDate * 1000).toLocaleDateString('en-US');
 
         // Show each signature
+        console.log(universityDegreeTemplate_rectorSignature);
         signatureRector.innerHTML   = universityDegreeTemplate_rectorSignature.signature;
         signatureDean.innerHTML     = universityDegreeTemplate_deanSignature.signature;
         signatureDirector.innerHTML = universityDegreeTemplate_directorSignature.signature;        

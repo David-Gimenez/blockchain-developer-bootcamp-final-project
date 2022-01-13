@@ -137,6 +137,9 @@ import "./UniversityTemplate_State.sol";
         // Check code exists in new contract by calling the VERSION method
         require(_getDegreeTemplateVersion(newDegreeContractAddress) >= 100, "Invalid Degree version");
 
+        // Set signatures in new contract
+        _setSignatures(_degreeIndex, newDegreeContractAddress);
+
         // Set emissionDate after contract creation to not alter the address with this information
         degreePending[_degreeIndex].information.degree.emissionDate = block.timestamp;
 
@@ -339,14 +342,10 @@ import "./UniversityTemplate_State.sol";
         
         // Create new Degree contract with UniversityDegreeTemplate_Container
         // For this codification I use this reference
-        //string memory methodToCallName = "createNewUniversityDegree(((string,string,string,uint256,uint256),(string,uint256,address),(string,string,string,string,address),address,bytes32,bytes32),((string,address),uint256,bytes),((string,address),uint256,bytes),((string,address),uint256,bytes),bytes32)";
         string memory methodToCallName = "createNewUniversityDegree(((string,string,string,uint256,uint256),(string,uint256,address),(string,string,string,string,address),address,bytes32,bytes32),bytes32)";
         bytes memory methodToCall = abi.encodeWithSignature(
                                                             methodToCallName,
                                                             degreePending[_degreeIndex].information,
-        //                                                    degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector],
-        //                                                    degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean],
-        //                                                    degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director],
                                                             degreePending[_degreeIndex].information.hash_EIP712_ContractAddressSalt
                                                             );
         
@@ -373,5 +372,24 @@ import "./UniversityTemplate_State.sol";
         degreeIssued[degreeIssuedIndex].signature[StructDegree.AuthorityPosition.Rector]     = degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector];
         degreeIssued[degreeIssuedIndex].signature[StructDegree.AuthorityPosition.Dean]       = degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean];
         degreeIssued[degreeIssuedIndex].signature[StructDegree.AuthorityPosition.Director]   = degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director];
+    }
+
+    /// @notice Set the signatures of the Authorities of the University in the new Degree contract created
+    /// @param _degreeIndex [uint256] Index number that identifies a pending Degree object to be copied
+    /// @param _newDegreeContractAddress [address] The address of the new Degree contract address created
+    function _setSignatures(uint256 _degreeIndex, address _newDegreeContractAddress) private {
+        string memory methodToCallName = "_setSignatures(((string,address),uint256,bytes),((string,address),uint256,bytes),((string,address),uint256,bytes))";
+        bytes memory methodToCall = abi.encodeWithSignature(
+                                                            methodToCallName,
+                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Rector],
+                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Dean],
+                                                            degreePending[_degreeIndex].signature[StructDegree.AuthorityPosition.Director]
+                                                            );
+        
+        // Call the contract
+        (bool _success, bytes memory _returnData) = _newDegreeContractAddress.call(methodToCall);
+        if(!_success){
+            revert("Error on _setSignatures call");
+        }
     }
  }

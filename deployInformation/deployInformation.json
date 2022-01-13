@@ -18,12 +18,12 @@
     "universityTemplateDegreeContainer_contract": "0x8F59EF8e95597A2B804e1491072936146E4b5138"
   },
   "rinkeby": {
-    "deployDate": "2022-01-13T00:51:46.931Z",
+    "deployDate": "2022-01-13T04:43:33.800Z",
     "deployer_accountAddress": "0x58722947B1CaE6A18CFBb7A73BDe5b2dA289325F",
-    "universityBuilder_contractAddress": "0x9880Ca85583EF56740Cf5CCDDDb08bf44bDC3863",
-    "universityTemplateContainer_contractAddress": "0xdF66f6fB4E494d31771B3D655e91960F9e7828E8",
-    "universityTemplateGovernance_Contract": "0xAD32653c20DEE88424ea178742c86C2C1665139D",
-    "UniversityTemplate_Logic_Contract": "0xaf427dDA168AF02AD8fF023fe501c7BD2B8b9664",
-    "universityTemplateDegreeContainer_contract": "0xc13fca3b75A132cd39408515BA1B77ad0E1b7384"
+    "universityBuilder_contractAddress": "0x553Caa0447374b29A53928666C6ec426c3eC9F4e",
+    "universityTemplateContainer_contractAddress": "0xa101CDB4B8D12AFd0556DfF4E109F8AC01e97a22",
+    "universityTemplateGovernance_Contract": "0x2da7Dc8B7cdC6f1066B16c8053F667B31CA489bc",
+    "UniversityTemplate_Logic_Contract": "0x570b440e86Eb0458e598fed7eb560848Be3B2371",
+    "universityTemplateDegreeContainer_contract": "0xfccC0F102C978BC463A0ce8AB1fDbb05b8f42803"
   }
 }

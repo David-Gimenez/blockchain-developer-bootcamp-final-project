@@ -164,7 +164,7 @@ contract UniversityDegreeTemplate {
     function _setSignatures(StructDegree.Signature memory _rectorSignature, StructDegree.Signature memory _deanSignature, StructDegree.Signature memory _directorSignature) external {
         // Access control
         require(msg.sender == universityInformation.contractAddress, "Not authorized");
-        require(rectorSignature.signature.length == 0, "Signatures already uploaded");
+        require(rectorSignature.signature.length == 0, "All signatures already uploaded");
                                 
         rectorSignature     = _rectorSignature;
         deanSignature       = _deanSignature;
