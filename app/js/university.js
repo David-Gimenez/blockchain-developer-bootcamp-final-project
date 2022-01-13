@@ -1514,7 +1514,6 @@ signButton.onclick = async () => {
                     alert("Signature account address mismatch");
                 }
                 else {
-                    alert("Correct signature account address");
                     // Add signature tu pending Degree
                     const tx = await contractInstance.methods.addSignatureToPendingDegree(
                         pendingDegreeIndex,
@@ -1596,13 +1595,15 @@ publishButton.onclick = async () => {
             const tx = await contractInstance.methods.publishDegree(pendingDegreeSelectList.value).send({ from: window.ethereum.selectedAddress });
             
             if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
-                alert("Transaction to Publish Degree sent successfully. Please check the transaction confirmation in MetaMask.");
-
                 // Get new Published Degree Contract Address
-                const publishDegreeIndex                    = await contractInstance.methods.degreeIssuedIndex().call();
-                const publishDegreeObject                   = await contractInstance.methods.degreeIssued(publishDegreeIndex).call();
+                const publishDegreeIndex    = await contractInstance.methods.degreeIssuedIndex().call();
+                const publishDegreeContract = await contractInstance.methods.degreeIssued(publishDegreeIndex).call();
+                
+
                 let publishedDegree_ContractAddress         = document.getElementById("publishedDegree_ContractAddress");
-                publishedDegree_ContractAddress.innerHTML   = publishDegreeObject.information.contractAddress;
+                publishedDegree_ContractAddress.innerHTML   = publishDegreeContract.contractAddress;
+                
+                alert("Transaction to Publish Degree sent successfully. Please check the transaction confirmation in MetaMask.");
             }
         }
     }
@@ -1630,15 +1631,14 @@ getPublishedDegreeButton.onclick = async () => {
             let publishedDegree_ownerAddressValue         = document.getElementById("publishedDegree_ownerAddressValue");
             let publishedDegree_degreeNameValue           = document.getElementById("publishedDegree_degreeNameValue");
             let publishedDegree_degreeDescriptionValue    = document.getElementById("publishedDegree_degreeDescriptionValue");
-            let publishedDegree_degreeLigalStatementValue = document.getElementById("publishedDegree_degreeLigalStatementValue");
+            let publishedDegree_degreeLigalStatementValue = document.getElementById("publishedDegree_degreeLegalStatementValue");
             let publishedDegree_degreeIssueDateValue      = document.getElementById("publishedDegree_degreeIssueDateValue");
-            let publishedDegree_ContractAddressValue      = document.getElementById("publishedDegree_ContractAddressValue");
+            let publishedDegree_ContractAddressValue      = document.getElementById("publishedDegree_contractAddressValue");
     
             // Get Pendning Degree information from contract
-            const publishDegreeInformation      = await contractInstance.methods.getPendingDegreeInformation(publishedDegreeSelectList.value).call();
-            const publishDegreeOwnerInformation = await contractInstance.methods.getPendingDegreeOwnerInformation(publishedDegreeSelectList.value).call();
-            const degree = await contractInstance.methods.degreeIssued(1).call();
-            console.log(degree);
+            const publishDegreeInformation      = await contractInstance.methods.getDegreeInformation(publishedDegreeSelectList.value).call();
+            const publishDegreeOwnerInformation = await contractInstance.methods.getDegreeOwnerInformation(publishedDegreeSelectList.value).call();
+            const publishDegreeContract         = await contractInstance.methods.degreeIssued(publishedDegreeSelectList.value).call();
     
             // Show Pendning Degree information
             publishedDegree_ownerNameValue.innerHTML              = publishDegreeOwnerInformation.name;
@@ -1648,7 +1648,7 @@ getPublishedDegreeButton.onclick = async () => {
             publishedDegree_degreeDescriptionValue.innerHTML      = publishDegreeInformation.description;
             publishedDegree_degreeLigalStatementValue.innerHTML   = publishDegreeInformation.legalStatement;
             publishedDegree_degreeIssueDateValue.innerHTML        = publishDegreeInformation.issueDate;
-            publishedDegree_ContractAddressValue.innerHTML        = publishDegreeInformation.contractAddress;
+            publishedDegree_ContractAddressValue.innerHTML        = publishDegreeContract.contractAddress;
         }
     }
 }

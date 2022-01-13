@@ -1,6 +1,6 @@
 {
   "develop": {
-    "deployDate": "2022-01-10T22:40:10.766Z",
+    "deployDate": "2022-01-12T23:18:31.741Z",
     "deployer_accountAddress": "0x65F979F898d54977eb3717181dC805EC7B23F647",
     "universityBuilder_contractAddress": "0x6dec23f85302FF8B35ef66C8a35c78cd344B489C",
     "universityTemplateContainer_contractAddress": "0x5BEA3a9df82d3571702459EB5B3cC55203C0Cf39",
@@ -8,13 +8,22 @@
     "UniversityTemplate_Logic_Contract": "0xD12aCB9BC30851eE929e61A4cd43112C8109659b",
     "universityTemplateDegreeContainer_contract": "0x4be10E5eaFbA13f839440F6772683e69903BFcFb"
   },
+  "ganache": {
+    "deployDate": "2022-01-12T22:49:27.045Z",
+    "deployer_accountAddress": "0x98d38879ece6e475d8c7949082376f98f6BA4952",
+    "universityBuilder_contractAddress": "0x4288dd20fc903834208d01EC835Ea253A4f434A6",
+    "universityTemplateContainer_contractAddress": "0x83B359fcA6c9C77969B65723120FdfA7889c65F6",
+    "universityTemplateGovernance_Contract": "0x4fF139b64Eccad4445f4E8fAD318f040c3d846a9",
+    "UniversityTemplate_Logic_Contract": "0x15F6DcD8e34D324Ab2458BFc3730A3EBe1f13Db9",
+    "universityTemplateDegreeContainer_contract": "0x8F59EF8e95597A2B804e1491072936146E4b5138"
+  },
   "rinkeby": {
-    "deployDate": "",
-    "deployer_accountAddress": "",
-    "universityBuilder_contractAddress": "",
-    "universityTemplateContainer_contractAddress": "",
-    "universityTemplateGovernance_Contract": "",
-    "UniversityTemplate_Logic_Contract": "",
-    "universityTemplateDegreeContainer_contract": ""
+    "deployDate": "2022-01-13T00:51:46.931Z",
+    "deployer_accountAddress": "0x58722947B1CaE6A18CFBb7A73BDe5b2dA289325F",
+    "universityBuilder_contractAddress": "0x9880Ca85583EF56740Cf5CCDDDb08bf44bDC3863",
+    "universityTemplateContainer_contractAddress": "0xdF66f6fB4E494d31771B3D655e91960F9e7828E8",
+    "universityTemplateGovernance_Contract": "0xAD32653c20DEE88424ea178742c86C2C1665139D",
+    "UniversityTemplate_Logic_Contract": "0xaf427dDA168AF02AD8fF023fe501c7BD2B8b9664",
+    "universityTemplateDegreeContainer_contract": "0xc13fca3b75A132cd39408515BA1B77ad0E1b7384"
   }
 }

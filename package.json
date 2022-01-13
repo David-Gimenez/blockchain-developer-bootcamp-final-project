@@ -30,6 +30,8 @@
     "truffle": "^5.4.15"
   },
   "dependencies": {
+    "@truffle/hdwallet-provider": "^2.0.0",
+    "dotenv": "^11.0.0",
     "live": "^0.1.25-beta.0",
     "server": "^1.0.36",
     "truffle-contract-size": "^2.0.1"
