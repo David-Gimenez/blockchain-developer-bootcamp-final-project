@@ -307,16 +307,10 @@ import "./UniversityTemplate_State.sol";
         StructDegree.DegreeObject storage degreeObject = degreePending[_degreeIndex];
         
         // Call external contract
-        //string memory methodToCallName  = "predictDegreeContractAddress(StructDegree.DegreeInformation,StructDegree.Signature,StructDegree.Signature,StructDegree.Signature,address,bytes32)";
-        //string memory methodToCallName = "predictDegreeContractAddress(((string,string,string,uint256,uint256),(string,uint256,address),(string,string,string,string,address),address,bytes32,bytes32),((string,address),uint256,bytes),((string,address),uint256,bytes),((string,address),uint256,bytes),address,bytes32)";
         string memory methodToCallName = "predictDegreeContractAddress(((string,string,string,uint256,uint256),(string,uint256,address),(string,string,string,string,address),address,bytes32,bytes32),address,bytes32)";
-        //string memory methodToCallName  = "predictDegreeContractAddress(address,bytes32)";
         bytes memory methodToCall       = abi.encodeWithSignature(methodToCallName,
                                             degreeObject.information,
-        //                                    degreeObject.signature[StructDegree.AuthorityPosition.Rector],
-        //                                    degreeObject.signature[StructDegree.AuthorityPosition.Dean],
-        //                                    degreeObject.signature[StructDegree.AuthorityPosition.Director],
-                                            universityDegreeTemplate_ContainerAddress, //degreeObject.information.university.contractAddress,
+                                            universityDegreeTemplate_ContainerAddress,
                                             degreeObject.information.hash_EIP712_ContractAddressSalt
                                             );
         (bool _success, bytes memory _returnData) = universityDegreeTemplate_ContainerAddress.staticcall(methodToCall);

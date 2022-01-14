@@ -3,17 +3,6 @@ const HDWalletProvider      = require("@truffle/hdwallet-provider");
 const ganahce_PrivateKeys   = [process.env.GANACHE_MANAGER_PK, process.env.GANACHE_RECTOR_PK, process.env.GANACHE_DEAN_PK, process.env.GANACHE_DIRECTOR_PK, process.env.GANACHE_GRADUATE_PK];
 const rinkeby_PrivateKeys   = [process.env.RINKEBY_MANAGER_PK, process.env.RINKEBY_RECTOR_PK, process.env.RINKEBY_DEAN_PK, process.env.RINKEBY_DIRECTOR_PK, process.env.RINKEBY_GRADUATE_PK];
 
-const ganache_provider      = new HDWalletProvider({
-                                privateKeys:        ganahce_PrivateKeys,
-                                providerOrUrl:      "HTTP://127.0.0.1:8545",
-                                numberOfAddresses:  5
-                            });
-const rinkeby_provider      = new HDWalletProvider({
-                                privateKeys:        rinkeby_PrivateKeys,
-                                providerOrUrl:      process.env.INFURA_API_KEY,
-                                numberOfAddresses:  5
-                            });
-
 module.exports = {
   networks: {
       develop: {
@@ -34,7 +23,12 @@ module.exports = {
         network_id: 5777,
         gas:        8500000000,
         from:       process.env.GANACHE_MANAGER_ADDRESS,
-        provider:   ganache_provider
+        provider:   function() { 
+                        return new HDWalletProvider({
+                            privateKeys:        ganahce_PrivateKeys,
+                            providerOrUrl:      "HTTP://127.0.0.1:8545",
+                            numberOfAddresses:  5
+                        })}
       },
 
       rinkeby: {
@@ -44,7 +38,12 @@ module.exports = {
         timeout:                20000,
         url:                    process.env.INFURA_API_KEY,
         from:                   process.env.RINKEBY_MANAGER_ADDRESS,
-        provider:               rinkeby_provider,
+        provider:               function() { 
+                                    return new HDWalletProvider({
+                                        privateKeys:        rinkeby_PrivateKeys,
+                                        providerOrUrl:      process.env.INFURA_API_KEY,
+                                        numberOfAddresses:  5
+                                    })},
         networkCheckTimeout:    1000000000,
         timeoutBlocks:          200000,
         skipDryRun:             true
