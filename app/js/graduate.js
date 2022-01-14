@@ -556,7 +556,11 @@ window.addEventListener('load', function(){
 metaMaskDiv.onclick = async () => {
     // Set the contract address to interact with
     universityDegree_contractAddress = document.getElementById('contractAddressInput').value;
-    if (universityDegree_contractAddress.length === 0){
+    
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (universityDegree_contractAddress.length === 0){
         alert("Please, set the contract address");
     }
     else if (universityDegree_contractAddress.indexOf("0x") === -1 || universityDegree_contractAddress === "0x0"){

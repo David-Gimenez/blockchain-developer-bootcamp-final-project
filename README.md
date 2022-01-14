@@ -20,7 +20,7 @@ Using a distributed database system based on Blockchain technology, asymmetric c
 ### Main project information
 
 **Public FrontEnd Web Site:**    
-http://
+[https://david-gimenez.github.io/blockchain-developer-bootcamp-final-project/index.html](https://david-gimenez.github.io/blockchain-developer-bootcamp-final-project/index.html)
 
 **Public Ethereum Address in Rinkeby:**
     **universityBuilder_contractAddress:**              0x553Caa0447374b29A53928666C6ec426c3eC9F4e

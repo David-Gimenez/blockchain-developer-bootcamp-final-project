@@ -1057,7 +1057,12 @@ window.addEventListener('load', function(){
 metaMaskDiv.onclick = async () => {
     // Set the contract address to interact with
     universityTemplate_contractAddress = document.getElementById('contractAddressInput').value;
-    if (universityTemplate_contractAddress.length === 0){
+    
+    
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (universityTemplate_contractAddress.length === 0){
         alert("Please, set the contract address");
     }
     else if (universityTemplate_contractAddress.indexOf("0x") === -1 || universityTemplate_contractAddress === "0x0"){
@@ -1144,7 +1149,10 @@ metaMaskDiv.onclick = async () => {
 // On-click method for save new University Template Contract address
 setGovernanceContractAddressButton.onclick = async () => {
 
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else if (governanceContractAddressInput.value.length === 0){
@@ -1172,7 +1180,10 @@ setGovernanceContractAddressButton.onclick = async () => {
 // On-click method for save new Logic Template Contract address
 setLogicContractAddressButton.onclick = async () => {
 
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else if (logicContractAddressInput.value.length === 0){
@@ -1200,7 +1211,10 @@ setLogicContractAddressButton.onclick = async () => {
 // On-click method for save new Degree Template Contract address
 setDegreeTemplateContractAddressButton.onclick = async () => {
 
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else if (degreeTemplateContractAddressInput.value.length === 0){
@@ -1228,7 +1242,10 @@ setDegreeTemplateContractAddressButton.onclick = async () => {
 // On-click method for add new authority person
 addAuthorityButton.onclick = async () => {
 
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else if (authorityPersonNameInput.value.length === 0){
@@ -1290,7 +1307,10 @@ addAuthorityButton.onclick = async () => {
 addPendingDegreeButton.onclick = async () => {
 
     // MetaMask connected check
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else if (ownerNameInput.value.length === 0){
@@ -1372,7 +1392,10 @@ addPendingDegreeButton.onclick = async () => {
 addSaltButton.onclick = async () => {
 
     // MetaMask connected check
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
@@ -1395,7 +1418,10 @@ addSaltButton.onclick = async () => {
 predictAddressButton.onclick = async () => {
 
     // MetaMask connected check
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
@@ -1418,7 +1444,10 @@ predictAddressButton.onclick = async () => {
 generateEIP712HashButton.onclick = async () => {
 
     // MetaMask connected check
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
@@ -1440,7 +1469,10 @@ generateEIP712HashButton.onclick = async () => {
 // On-click method for get the pending degree information
 getPendingDegreeToSignButton.onclick = async () => {
 
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
@@ -1477,7 +1509,11 @@ getPendingDegreeToSignButton.onclick = async () => {
 
 // On-click method for get the pending degree information HASH to sign
 getHashToSignButton.onclick = async () => {
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
@@ -1503,7 +1539,11 @@ getHashToSignButton.onclick = async () => {
 
 // On-click method for sign the degree information HASH of a pendning Degree
 signButton.onclick = async () => {
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
@@ -1564,7 +1604,10 @@ signButton.onclick = async () => {
 // On-click method for get the pending degree information
 getPendingDegreeToPublishButton.onclick = async () => {
 
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
@@ -1601,7 +1644,11 @@ getPendingDegreeToPublishButton.onclick = async () => {
 
 // On-click method for publish a Degree
 publishButton.onclick = async () => {
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
@@ -1637,7 +1684,10 @@ publishButton.onclick = async () => {
 // On-click method for get a issued degree information
 getPublishedDegreeButton.onclick = async () => {
 
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {

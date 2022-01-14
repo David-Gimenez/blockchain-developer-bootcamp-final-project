@@ -221,7 +221,11 @@ window.addEventListener('load', function(){
 metaMaskDiv.onclick = async () => {
     // Set the contract address to interact with
     universityBuilder_contractAddress = document.getElementById('contractAddressInput').value;
-    if (universityBuilder_contractAddress.length === 0){
+
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (universityBuilder_contractAddress.length === 0){
         alert("Please, set the contract address");
     }
     else if (universityBuilder_contractAddress.indexOf("0x") === -1 || universityBuilder_contractAddress === "0x0"){
@@ -273,7 +277,10 @@ metaMaskDiv.onclick = async () => {
 // On-click method for save new University Template Contract address
 saveButton.onclick = async () => {
 
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else if (UniversityTemplateContainerAddressInput.value.length === 0){
@@ -288,19 +295,6 @@ saveButton.onclick = async () => {
     else {
         // Set new address
         const tx = await contractInstance.methods.setUniversityTemplate(UniversityTemplateContainerAddressInput.value).send({ from: window.ethereum.selectedAddress });
-        
-        /*console.log(tx);
-        let tx_result = await web3.eth.getTransactionReceipt(tx.transactionHash);
-        console.log(tx_result);
-        let number = 0;
-        while (tx_result === null || tx_result === 'undefined'){
-            tx_result = await web3.eth.getTransactionReceipt(tx.transactionHash);
-            number = number + 1;
-        }
-        console.log(number);
-        if(tx_result.confirmations < 0 || tx_result === undefined){
-            alert("Please check your transaction: " + tx.transactionHash.toString() + "\n The transaction is undefined or has 0 confirmations.");
-        }*/
 
         // Update status content
         if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
@@ -313,7 +307,11 @@ saveButton.onclick = async () => {
 
 // On-click method for crear universities
 createButton.onclick = async () => {
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else if (nameInput.value.length         === 0 ||
@@ -379,10 +377,6 @@ createButton.onclick = async () => {
                 option.text = newUniversityContractAddress.name;
                 selectList.appendChild(option);
             });
-        
-        // Show results operation
-        //if(tx.transactionHash !== null && tx.transactionHash !== 'undefined'){
-        //}
     }
 }
 
@@ -391,45 +385,42 @@ queryButton.onclick = async () => {
     // Get createdUniversitiesSelect object
     let selectList = document.getElementById("createdUniversitiesSelect");
     
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else if (selectList.length === 0){
         alert("No University contract has been created yet");
-
-        //Create and append the options
-        for (let i = 1; i < 5; i++) {
-            let option = document.createElement("option");
-            option.value = i;
-            option.text = i.toString();
-            selectList.appendChild(option);
-        }
     }
     else {
+        // Show information of the university contract selected
+        const universityContract = await contractInstance.methods.universities(selectList.value).call();
 
+        // Load html elements
+        let universityContractAddressValue  = document.getElementById("universityContractAddressValue");
+        let universityNameValue             = document.getElementById("universityNameValue");
+        let universityFullNameValue         = document.getElementById("universityFullNameValue");
+        let universityCountryValue          = document.getElementById("universityCountryValue");
+        let universityStateValue            = document.getElementById("universityStateValue");
+                
+        // Set University contract information
+        universityContractAddressValue.innerHTML    = universityContract.contractAddress;
+        universityNameValue.innerHTML               = universityContract.name;
+        universityFullNameValue.innerHTML           = universityContract.fullName;
+        universityCountryValue.innerHTML            = universityContract.country;
+        universityStateValue.innerHTML              = universityContract.state;
     }
-    
-    // Show information of the university contract selected
-    const universityContract = await contractInstance.methods.universities(selectList.value).call();
-
-    // Load html elements
-    let universityContractAddressValue  = document.getElementById("universityContractAddressValue");
-    let universityNameValue             = document.getElementById("universityNameValue");
-    let universityFullNameValue         = document.getElementById("universityFullNameValue");
-    let universityCountryValue          = document.getElementById("universityCountryValue");
-    let universityStateValue            = document.getElementById("universityStateValue");
-            
-    // Set University contract information
-    universityContractAddressValue.innerHTML    = universityContract.contractAddress;
-    universityNameValue.innerHTML               = universityContract.name;
-    universityFullNameValue.innerHTML           = universityContract.fullName;
-    universityCountryValue.innerHTML            = universityContract.country;
-    universityStateValue.innerHTML              = universityContract.state;
 }
 
 // On-click method for extract ethers
 extractButton.onclick = async () => {
-    if (metaMaskDiv.innerHTML === "Connect MetaMask"){
+    
+    if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
+    else if (metaMaskDiv.innerHTML === "Connect MetaMask"){
         alert("Please, first connect MetaMask.");
     }
     else {
