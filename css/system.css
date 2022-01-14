@@ -126,7 +126,7 @@ body:not(.loaded) #slider img {
     font-weight: bold;
     color: rgb(0, 0, 65);
     display: inline-block;
-    width: 18rem;
+    width: 10rem;
 }
 
 .divValue {
