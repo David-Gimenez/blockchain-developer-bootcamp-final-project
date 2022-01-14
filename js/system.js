@@ -227,6 +227,9 @@ metaMaskDiv.onclick = async () => {
     else if (universityBuilder_contractAddress.indexOf("0x") === -1 || universityBuilder_contractAddress === "0x0"){
         alert("Invalid contract address.");
     }
+    else if (metaMaskDiv.innerHTML === "No wallet connected") {
+        alert("You have to install MetaMask to interact with this application. Please go to https://metamask.io/");
+    }
     else {
     
         // Connect to the contract
