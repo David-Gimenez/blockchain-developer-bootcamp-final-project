@@ -1,29 +1,29 @@
 {
-  "develop": {
-    "deployDate": "2022-01-14T00:20:47.321Z",
-    "deployer_accountAddress": "0x65F979F898d54977eb3717181dC805EC7B23F647",
-    "universityBuilder_contractAddress": "0x6dec23f85302FF8B35ef66C8a35c78cd344B489C",
-    "universityTemplateContainer_contractAddress": "0x5BEA3a9df82d3571702459EB5B3cC55203C0Cf39",
-    "universityTemplateGovernance_Contract": "0xc50De62e1A23bE08B5d7f734eC0A2c023bC404e5",
-    "UniversityTemplate_Logic_Contract": "0xD12aCB9BC30851eE929e61A4cd43112C8109659b",
-    "universityTemplateDegreeContainer_contract": "0x4be10E5eaFbA13f839440F6772683e69903BFcFb"
-  },
-  "ganache": {
-    "deployDate": "2022-01-12T22:49:27.045Z",
-    "deployer_accountAddress": "0x98d38879ece6e475d8c7949082376f98f6BA4952",
-    "universityBuilder_contractAddress": "0x4288dd20fc903834208d01EC835Ea253A4f434A6",
-    "universityTemplateContainer_contractAddress": "0x83B359fcA6c9C77969B65723120FdfA7889c65F6",
-    "universityTemplateGovernance_Contract": "0x4fF139b64Eccad4445f4E8fAD318f040c3d846a9",
-    "UniversityTemplate_Logic_Contract": "0x15F6DcD8e34D324Ab2458BFc3730A3EBe1f13Db9",
-    "universityTemplateDegreeContainer_contract": "0x8F59EF8e95597A2B804e1491072936146E4b5138"
-  },
-  "rinkeby": {
-    "deployDate": "2022-01-13T04:43:33.800Z",
-    "deployer_accountAddress": "0x58722947B1CaE6A18CFBb7A73BDe5b2dA289325F",
-    "universityBuilder_contractAddress": "0x553Caa0447374b29A53928666C6ec426c3eC9F4e",
-    "universityTemplateContainer_contractAddress": "0xa101CDB4B8D12AFd0556DfF4E109F8AC01e97a22",
-    "universityTemplateGovernance_Contract": "0x2da7Dc8B7cdC6f1066B16c8053F667B31CA489bc",
-    "UniversityTemplate_Logic_Contract": "0x570b440e86Eb0458e598fed7eb560848Be3B2371",
-    "universityTemplateDegreeContainer_contract": "0xfccC0F102C978BC463A0ce8AB1fDbb05b8f42803"
-  }
+    "develop": {
+        "deployDate": "2022-01-14T20:03:13.189Z",
+        "deployer_accountAddress": "0xe1d44D2354c3bf5bB2761dF47CCad6A4df46F30A",
+        "universityBuilder_contractAddress": "0x2D37a68D4138F81c8B552Fa73Cf3B272B9a8c6D5",
+        "universityTemplateContainer_contractAddress": "0x1781eD2A9a8FfE01fC4BA2Df2a28afB43f155d48",
+        "universityTemplateGovernance_Contract": "0x3f54D3439fb7d741B47Cb26Fc54A7D1B7dc2834F",
+        "UniversityTemplate_Logic_Contract": "0xd9E853D2dD76dD0618aeC1C3875e7584F2d21A2E",
+        "universityTemplateDegreeContainer_contract": "0x388a751E6605230676Bd44C302B1f1E325786E24"
+    },
+    "ganache": {
+        "deployDate": "2022-01-12T22:49:27.045Z",
+        "deployer_accountAddress": "0x98d38879ece6e475d8c7949082376f98f6BA4952",
+        "universityBuilder_contractAddress": "0x4288dd20fc903834208d01EC835Ea253A4f434A6",
+        "universityTemplateContainer_contractAddress": "0x83B359fcA6c9C77969B65723120FdfA7889c65F6",
+        "universityTemplateGovernance_Contract": "0x4fF139b64Eccad4445f4E8fAD318f040c3d846a9",
+        "UniversityTemplate_Logic_Contract": "0x15F6DcD8e34D324Ab2458BFc3730A3EBe1f13Db9",
+        "universityTemplateDegreeContainer_contract": "0x8F59EF8e95597A2B804e1491072936146E4b5138"
+    },
+    "rinkeby": {
+        "deployDate": "2022-01-14T22:56:28.148Z",
+        "deployer_accountAddress": "0xb89b9A6D5fD53ac3dbf3300DF221a5B9537278f1",
+        "universityBuilder_contractAddress": "0x61a6742C9Ce494Ea30EF3fb8d57ac84d35EEA14B",
+        "universityTemplateContainer_contractAddress": "0x8a00E40aa1b141684a9CBc529f26096A28dC3AE9",
+        "universityTemplateGovernance_Contract": "0xCD1560FB9b34861f256D5a4C426270b7513FBF74",
+        "UniversityTemplate_Logic_Contract": "0x8a0d1cFAa78BB7552ed79d14A9B8B38BeE71385F",
+        "universityTemplateDegreeContainer_contract": "0x88B5832bc31ED30C924ed75b366d51B5a1E87355"
+    }
 }

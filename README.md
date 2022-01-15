@@ -5,7 +5,7 @@ This is my final project repository for ConsenSys Academy 2021 Blockchain Develo
 
 ### My Ethereum Mainet Account Address
 
-**0x**
+**0x6fa544cA8e47a5F729562379d49a8c9d96Ab26De**
 
 ### Objective
 
@@ -22,27 +22,26 @@ Using a distributed database system based on Blockchain technology, asymmetric c
 **Public FrontEnd Web Site:**    
 [https://david-gimenez.github.io/blockchain-developer-bootcamp-final-project/index.html](https://david-gimenez.github.io/blockchain-developer-bootcamp-final-project/index.html)
 
-**Public Ethereum Address in Rinkeby:**
-    **universityBuilder_contractAddress:**              0x553Caa0447374b29A53928666C6ec426c3eC9F4e
-    **universityTemplateContainer_contractAddress:**    0xa101CDB4B8D12AFd0556DfF4E109F8AC01e97a22
-    **universityTemplateGovernance_Contract:**          0x2da7Dc8B7cdC6f1066B16c8053F667B31CA489bc
-    **UniversityTemplate_Logic_Contract:**              0x570b440e86Eb0458e598fed7eb560848Be3B2371
-    **universityTemplateDegreeContainer_contract:**     0xfccC0F102C978BC463A0ce8AB1fDbb05b8f42803
+**Public Ethereum Contract Address in Rinkeby:**
+    **universityBuilder_contractAddress:**              0x61a6742C9Ce494Ea30EF3fb8d57ac84d35EEA14B
+    **universityTemplateContainer_contractAddress:**    0x8a00E40aa1b141684a9CBc529f26096A28dC3AE9
+    **universityTemplateGovernance_Contract:**          0xCD1560FB9b34861f256D5a4C426270b7513FBF74
+    **UniversityTemplate_Logic_Contract:**              0x8a0d1cFAa78BB7552ed79d14A9B8B38BeE71385F
+    **universityTemplateDegreeContainer_contract:**     0x88B5832bc31ED30C924ed75b366d51B5a1E87355
 
 ### Tutorials videos
 
-**Installation process video**      https://youtube
-**Run tests video**                 https://youtube
-**Coplate demo of the protocol**    https://youtube
+**Configure the project and run the tests**     [https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-](https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-)
+**Coplate demo of the protocol in FrontEnd**    [https://youtu.be/If5yabPZhWQ](https://youtu.be/If5yabPZhWQ)
 
 
 ### Repository installation process
 
-1. Install Visual Sutidio Code: https://code.visualstudio.com/
+1. Install Visual Sutidio Code: [https://code.visualstudio.com/](https://code.visualstudio.com/)
 
-2. Install NodeJS that includes npm: https://nodejs.org/en/download/
+2. Install NodeJS that includes npm: [https://nodejs.org/en/download/](https://nodejs.org/en/download/)
 
-3. Install Git that includes bash terminal: https://git-scm.com/download/win
+3. Install Git that includes bash terminal: [https://git-scm.com/download/win](https://git-scm.com/download/win)
 
 4. **Recommended:** Set Git bush as you default terminal in VSCode
     * Open the command palette using Ctrl + Shift + P.
@@ -53,7 +52,7 @@ Using a distributed database system based on Blockchain technology, asymmetric c
     * Solidity - Juan Blanco
     * Live Server - Ritwick Dey
 
-6. Install MetaMask as an Chrome extension: https://metamask.io/
+6. Install MetaMask as an Chrome extension: [https://metamask.io/](https://metamask.io/)
 
 7. Install truffle with the following command
     * npm install -g truffle
@@ -82,6 +81,8 @@ Using a distributed database system based on Blockchain technology, asymmetric c
     * GANACHE_DIRECTOR_PK:      The private key used as the Director role in the protocole
     * GANACHE_GRADUATE_PK:      The private key used as the Graduated role in the protocole
 
+12. **Optionally** Install Ganache: [https://trufflesuite.com/ganache/](https://trufflesuite.com/ganache/)
+
 ### To run the tests
 
 1. Execute the following commands in this order
@@ -91,7 +92,7 @@ Using a distributed database system based on Blockchain technology, asymmetric c
 
 ### To test the project with live server and truffle develop
 
-- You can see the full demo at: 
+- You can see the full demo at: [https://youtu.be/If5yabPZhWQ](https://youtu.be/If5yabPZhWQ)
 
 1. Add the truffle develop virtual blockchain network to MetaMask. To do this, follow the following steps:
     1. Go to MetaMask and click on network list
@@ -142,9 +143,62 @@ Using a distributed database system based on Blockchain technology, asymmetric c
     * In all paths at the left side of the screen you will see the menu with the operation allowed for this path.
     
 7. Lets beggin with the administration path to set up the protocole.
-    1. Click on System path
+    1. Click on System path. A screen will be displayed with a menu on the left side and an inputbox in the header where you must enter the address of the **UniversityBuilder** contract instance with which you want to connect.
     2. The first option in the menu is '**Status**', this option will query the blockchain and show the information from the UniversityBuilder contract once you connect with MetaMask.
     3. To see the information connect MetaMask, click on '**Connect MetaMask**' button. This will query the bockchain and show the information.
+    4. **Set University Template Contract** allow you to set the address of the template contract for the creation of futurs universitis contracts
+    5. **Create University Contract** allow you to create a new instance of **UniversityTemplate** contract with the information set in the inputbox on screen.
+    This operation will return with the information of the contract that was created, included the address of the new contract.
+    6. **Query University Contract** allows you to retrieve the information of the contract already created. The combo box shown on the screen has four hard coded values ​​for easy access in the demo, but in the production environment this will be loaded from a relational database.
+    7. **Extract Ethers from contract** displays the amount of ethers in the **UniversityBuilder** contract and the amount of ethers in the user connected account via MetaMask, allowing you to extract the ethers of the contract in class if the amount is greater than zero.
+
+8. University path, for university administrator and authorities
+    1. A screen will be displayed with a menu on the left side and an inputbox in the header where you must enter the address of the **UniversityTemplate** contract instance with which you want to connect. This address was obtained at the time of the creation of the contract in step 5 of the previous route.
+    2. **Status** All the state variables of the university are displayed here, as well as the number of degree titles ordered, pending and issued.
+    3. **Administration** Aalows you to setup the addressess of the contracts with the governance logic, business logic and Degree template contract. All three contracts were deployed at the time of migration and their addresses are stored in the project's "deployedInformation" file.
+    Once loaded these addresses will be visible on the university *Status** screen.
+    4. **University Authorities** shows the name and external owned account of each of the University authorities: Rector, Dean, Director and Manager. 
+    This information is obtained from the blockchain by pressing the button to connect with MetaMask in the upper right corner of the screen.
+    5. **Add Authority Person** allows to add name and external owned account for each position of authority of the university: Rector, Dean, Director and Manager.
+    The Manager position was loaded at the time of contract creation, but this can be transferred by smart contract operations.
+    6. **Add Degree to Process** allows to create an object in the **UniversityTemplate** contract that represents the Degree title that has to be issued, with the information of the graduate and the Degree title that was entered on the screen.
+    This operation can only be executed if the account connected to MetaMask is the University Manager account.
+    7. **Predict Degree Address** before issuing the degrees, the university must ensure that the degree is signed by its authorities (Rector, Dean, Director). For that, it is necessary to generate a hash that contains all the information of the degree that will be issued, including the future address of the contract that will contain it.
+    For that, the three steps on this screen must be executed in descending order:
+        1. **Add Contract Address Salt to Pending Degree** this generates the Salt that will be used to hash the information. It is an internal process that involves all the information entered of the university and the student to graduate.
+        2. **Predict Degree Contract Address** using the salt calculated in the previous step, this operation calculates the address of the contract that will represent the Degree that will be issued.
+        This step is important so that the authorities can sign a hash of the information that already contains the address of the contract where the Degree will be represented.
+        3. **Generate EIP712 Hash for Signing** In this step, the hash of the information is generated, which will be signed by the university authorities. The information represented by this hash includes:
+            **Information on the university that issues the Degree**
+            **Information of the student receiving the Degree**
+            **Information of the contract that will represent the Degree in the blockchain as its future address**
+        The format of this hash follows the standard established in EIP-712 to encode and hash the information contained in struct objects. Nothing easy by the way :(
+        Each operation, when confirmed by the blockchain, will show a message next to the operation carried out in red.
+    8. **Sign Pending Degree** This operation allows the university authorities (Rector, Dean and Director) to digitally sign the hash generated in the previous point through MetaMask.
+    This operation can only be executed by the mentioned authorities.
+    On the screen you can consult the information of the Degree to be signed and the hash to be signed to contrast it with the one shown by MetaMask.
+    9. **Publish Degree** This screen is the final step in the university's process for issuing university degrees.
+    First, it allows you to consult the information of a title pending to be issued by retrieving the information from the object in the blockchain.
+    Keep in mind that the values ​​in the cobobox are harcoded for the demo.
+    The **Publish Degree** button will create a new contract at the previously calculated address with the information from the selected Degree object.
+    Once the operation is confirmed in the blockchain, a floating alert will be displayed.
+    10. **Query Published Degree** It allows to consult the information of the Degree Titles issued by the university, retrieving the information from the object loaded in the contract **UniversistyTemplate** of the university in question, not from the contract created in the previous point. But the information does include the address of the created contract.
+    The information displayed in the combobox was harcoded for this demo.
+
+9. Graduated path
+    This screen does not have operation menus.
+    In the header of the page in the center there is an inputbox to load the address of the contract **UniversityDegreeTemplate** created in the path of the university. It can be obtained from point 10 of the path of the University.
+
+    By clicking on the **Connect MetaMask** button the Degree title information will be retrieved from the contract created for that Degree title and displayed on the screen in each corresponding space:
+        **Graduate Name**
+        **Degree Name**
+        **University Name**
+        **Date**
+        **Each digital signature will be displayed too**
+    The digital signatures are displayed becasue together with the calculated hash for the can be checked and validated.
+
+    **NOTE:** The Degree title information retrieval is not restricted to just the graduate, to facilitate demonstration. But the extraction of ethers from the contract is restricted.
+    As a future improvement to the protocol, a way to enable access to certain people for a certain time.
 
 ### overview of the project
 
@@ -224,7 +278,15 @@ Query the information of your University Degree, through the smart contract that
 
 ### Smart Contracts Architecture
 
-![Contracts diagram](docs/University Degree Protocol diagram.jpg)
+Please do to the file: ![university_degree_protocol_diagram](docs/university_degree_protocol_diagram.jpg)
+
+### Design Patterns Decisions
+
+Please go to the file: ![design_pattern_decisions](docs/design_pattern_decisions.md)
+
+### Avoiding Common Attacks
+
+Please go to the file: ![avoiding_common_attacks](docs/avoiding_common_attacks.md)
 
 #### Smart Contracts responsibilities
 
@@ -339,21 +401,16 @@ There are two ways to do this
 
 2. Graduates who own a degree title can consult their degree information on the graduate screen
 
+#### Possible Issues with MetaMask
 
-Errores posibles
-Si al ejecutar una transacción da un error de TX no tiene el nonce correcto
-    Se debe resetear el nonce de la accunt en question
-    Para eso ir a el icono del usuario --> Configuracion --> Avanzado --> Restablecer cuenta
-    Confirmar la operacion
-
-
-------
-Install Ganache: https://trufflesuite.com/ganache/
+If when executing a transaction an error is generated with a message similar to: *"The account does not have the correct nonce"* Then the nonce of the account in question must be reset. 
+For that, go to MetaMask, in user icon --> Settings --> Advanced --> Reset account.
+Confirm the operation and try again. Good luck!
 
 ### About the author
 
 - Author:   **David Gimenez Gutierrez**
-- Linkedin: 
+- Linkedin: [linkedin.com/in/david-gimenez-gutierrez](linkedin.com/in/david-gimenez-gutierrez)
 
 
 
