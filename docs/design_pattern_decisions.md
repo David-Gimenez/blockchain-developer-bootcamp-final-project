@@ -2,7 +2,7 @@
 
 In the development of this project the following design patterns are used.
 
-All this relations can be saw easy on the contracts diagram: ![university_degree_protocol_diagram](docs/university_degree_protocol_diagram.jpg)
+![university_degree_protocol_diagram](university_degree_protocol_diagram.jpg)
 
 ### Inter Contract Execution
 

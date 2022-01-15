@@ -22,7 +22,7 @@ Using a distributed database system based on Blockchain technology, asymmetric c
 **Public FrontEnd Web Site:**    
 [https://david-gimenez.github.io/blockchain-developer-bootcamp-final-project/index.html](https://david-gimenez.github.io/blockchain-developer-bootcamp-final-project/index.html)
 
-### Public Ethereum Contract Address in Rinkeby:**
+### Public Ethereum Contract Address in Rinkeby:
     
 **universityBuilder_contractAddress:**              0x61a6742C9Ce494Ea30EF3fb8d57ac84d35EEA14B
 **universityTemplateContainer_contractAddress:**    0x8a00E40aa1b141684a9CBc529f26096A28dC3AE9
@@ -32,9 +32,9 @@ Using a distributed database system based on Blockchain technology, asymmetric c
 
 ### Tutorials videos
 
-* **Configure the project and run the tests**     [https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-](https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-)
+* **Configure the project and run the tests**     [Setup demo](https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-)
 
-* **Coplate demo of the protocol in FrontEnd**    [https://youtu.be/If5yabPZhWQ](https://youtu.be/If5yabPZhWQ)
+* **Coplate demo of the protocol in FrontEnd**    [Full frontend demo](https://youtu.be/If5yabPZhWQ)
 
 ### Repository installation process
 
