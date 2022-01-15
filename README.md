@@ -3,7 +3,7 @@
 
 This is my final project repository for ConsenSys Academy 2021 Blockchain Developer Bootcamp to obtain the certification of Blockchain Developer.
 
-### My Ethereum Mainet Account Address
+### My Ethereum Mainnet Account Address
 
 **0x6fa544cA8e47a5F729562379d49a8c9d96Ab26De**
 
@@ -22,18 +22,19 @@ Using a distributed database system based on Blockchain technology, asymmetric c
 **Public FrontEnd Web Site:**    
 [https://david-gimenez.github.io/blockchain-developer-bootcamp-final-project/index.html](https://david-gimenez.github.io/blockchain-developer-bootcamp-final-project/index.html)
 
-**Public Ethereum Contract Address in Rinkeby:**
-    **universityBuilder_contractAddress:**              0x61a6742C9Ce494Ea30EF3fb8d57ac84d35EEA14B
-    **universityTemplateContainer_contractAddress:**    0x8a00E40aa1b141684a9CBc529f26096A28dC3AE9
-    **universityTemplateGovernance_Contract:**          0xCD1560FB9b34861f256D5a4C426270b7513FBF74
-    **UniversityTemplate_Logic_Contract:**              0x8a0d1cFAa78BB7552ed79d14A9B8B38BeE71385F
-    **universityTemplateDegreeContainer_contract:**     0x88B5832bc31ED30C924ed75b366d51B5a1E87355
+### Public Ethereum Contract Address in Rinkeby:**
+    
+**universityBuilder_contractAddress:**              0x61a6742C9Ce494Ea30EF3fb8d57ac84d35EEA14B
+**universityTemplateContainer_contractAddress:**    0x8a00E40aa1b141684a9CBc529f26096A28dC3AE9
+**universityTemplateGovernance_Contract:**          0xCD1560FB9b34861f256D5a4C426270b7513FBF74
+**UniversityTemplate_Logic_Contract:**              0x8a0d1cFAa78BB7552ed79d14A9B8B38BeE71385F
+**universityTemplateDegreeContainer_contract:**     0x88B5832bc31ED30C924ed75b366d51B5a1E87355
 
 ### Tutorials videos
 
-**Configure the project and run the tests**     [https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-](https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-)
-**Coplate demo of the protocol in FrontEnd**    [https://youtu.be/If5yabPZhWQ](https://youtu.be/If5yabPZhWQ)
+* **Configure the project and run the tests**     [https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-](https://www.youtube.com/watch?v=ZDnCxVYB58w&list=PLeY7oRtekzoD1wTxxZlksKJgRxmq7Ppv-)
 
+* **Coplate demo of the protocol in FrontEnd**    [https://youtu.be/If5yabPZhWQ](https://youtu.be/If5yabPZhWQ)
 
 ### Repository installation process
 
@@ -278,7 +279,7 @@ Query the information of your University Degree, through the smart contract that
 
 ### Smart Contracts Architecture
 
-Please do to the file: ![university_degree_protocol_diagram](docs/university_degree_protocol_diagram.jpg)
+![university_degree_protocol_diagram](docs/university_degree_protocol_diagram.jpg)
 
 ### Design Patterns Decisions
 
